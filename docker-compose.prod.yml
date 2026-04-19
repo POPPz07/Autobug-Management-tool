@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: autorepro-api:latest
+    container_name: autorepro_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   # allows spawning sandbox containers
+      - ./data:/app/data                             # persists job JSONs + screenshots
+    env_file:
+      - .env.production
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # The sandbox image is NOT a long-running service.
+  # It is built here so `docker compose build` builds both images in one step.
+  # The API spawns fresh containers from autorepro-sandbox:latest per job.
+  sandbox:
+    build:
+      context: ./autorepro/sandbox
+      dockerfile: Dockerfile
+    image: autorepro-sandbox:latest
+    profiles:
+      - build-only   # never starts as a service; just ensures the image is built

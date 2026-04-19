@@ -1,0 +1,61 @@
+The original bug report was:
+{bug_report}
+
+You previously generated the following Selenium script to reproduce this bug:
+
+--- PREVIOUS SCRIPT ---
+{previous_script}
+
+It produced these results:
+
+--- EXECUTION RESULT ---
+{failure_json}
+
+Attempt history (do not repeat these mistakes):
+{history_summary}
+
+ACTUAL PAGE DOM (use these EXACT selectors — do NOT guess):
+{dom_context}
+
+DIAGNOSIS GUIDE — Read the execution result and identify the issue:
+
+1. If stdout contains "Bug not reproduced" or similar:
+   → Your VERIFICATION LOGIC is wrong. You are checking for the WRONG condition or using the wrong strategy.
+   → Remember: "reproducing a bug" means checking that the ERROR/BUG behavior is present.
+   → For a "login always fails" bug: check that an error message like "Invalid" appears in the visible body text.
+   → Do NOT check for success (redirect to dashboard, etc.) — the bug IS the failure.
+
+2. If stderr contains TimeoutException:
+   → An element was not found. The CSS selector is wrong.
+   → Try different selectors: button[type='submit'], input[type='submit'], #submit, .btn-login
+   → For input fields: input[name='username'], input[id='username'], input[type='text']
+
+3. If stderr contains NoSuchElementException:
+   → Element doesn't exist on the page. Check the HTML structure.
+
+4. If stderr contains NameError (e.g., 'time' is not defined):
+   → You forgot to import a module. Always import time at the top.
+
+5. If exit_code=0 but no "REPRODUCED" in stdout:
+   → The script ran fine but your verification check didn't match.
+   → Use driver.find_element(By.TAG_NAME, "body").text to search for specific error text. Do not search driver.page_source for generic keywords.
+
+6. If stderr contains ERR_CONNECTION_REFUSED:
+   → The target URL could not be reached from inside the Docker container.
+   → Do NOT change the URL. Keep the EXACT target URL: {target_url}
+   → The networking is handled by the system — just use the URL as given.
+   → Focus on fixing other parts of the script (selectors, logic, etc.)
+
+Instructions:
+1. Explain in 1-2 sentences what went wrong.
+2. Explain your fix in 1-2 sentences.
+3. Output the COMPLETE corrected Python script. No markdown fences.
+
+CRITICAL: NEVER change the target URL. Always use EXACTLY: {target_url}
+Do NOT replace it with localhost, 127.0.0.1, or any other address.
+
+Apply all rules: import time, WebDriverWait for elements, time.sleep(2) after form submit,
+check visible text or elements or URLs for bug evidence, print REPRODUCED on success, screenshot in except,
+driver.quit() in finally.
+IMPORTANT: Also add driver.save_screenshot("/screenshots/step_N_description.png")
+after EVERY significant step for visual proof of execution.

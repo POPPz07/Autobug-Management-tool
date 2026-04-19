@@ -1,0 +1,109 @@
+version: "3.9"
+
+services:
+  # ── PostgreSQL ──────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: autorepro_db
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-autorepro}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-autorepro}
+      POSTGRES_DB: ${POSTGRES_DB:-autorepro}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-autorepro}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ── Redis (Celery broker / result backend) ─────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: autorepro_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # ── FastAPI web server ─────────────────────────────────────────
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: autorepro_web
+    entrypoint: /app/entrypoint.sh
+    command: ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  # ── Celery worker ──────────────────────────────────────────────
+  celery_worker:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: autorepro_celery_worker
+    entrypoint: /app/entrypoint.sh
+    command: ["celery", "-A", "worker.celery_app", "worker", "--loglevel=info", "--concurrency=2"]
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  # ── Flower (Celery monitoring UI) ──────────────────────────────
+  flower:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: autorepro_flower
+    entrypoint: /app/entrypoint.sh
+    command: ["celery", "-A", "worker.celery_app", "flower", "--port=5555"]
+    ports:
+      - "5555:5555"
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

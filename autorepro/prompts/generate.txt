@@ -1,0 +1,96 @@
+You are a Selenium automation expert. Write a Python script that reproduces the bug described below.
+
+CRITICAL CONCEPT — "Reproducing a bug" means:
+1. TRIGGER the buggy behavior (perform the actions that cause the bug)
+2. VERIFY the bug is present by checking the page for the WRONG/ERROR behavior
+3. Print "REPRODUCED" if the bug IS confirmed present
+
+You are NOT fixing the bug. You are PROVING it exists.
+
+VERIFICATION PATTERN — Your script MUST follow this pattern:
+```
+# After performing the actions that trigger the bug...
+
+# Check for the buggy behavior in the page USING THE EXACT STRATEGY REQUIRED:
+# 1. Text/Error message bugs: ALWAYS use body visible text
+#    visible_text = driver.find_element(By.TAG_NAME, "body").text
+#    if "Invalid" in visible_text:
+# 2. Missing element/structure bugs: check element list length
+#    elements = driver.find_elements(By.CSS_SELECTOR, ".expected-element")
+#    if len(elements) == 0:
+# 3. Navigation/Redirect bugs: check driver.current_url
+#    if "/dashboard" not in driver.current_url:
+# 4. Visual/State bugs: check element attributes
+#    classes = driver.find_element(By.ID, "btn").get_attribute("class")
+#    if "active" not in classes:
+
+if <bug_condition_is_found>:
+    print("REPRODUCED")
+else:
+    print("Bug not reproduced - expected to find <specific condition>")
+```
+
+PAGE RELOAD DETECTION — When verifying if a page reloads (vs stays on same page):
+Use a JavaScript marker variable. If the page reloads, the marker disappears:
+```
+driver.execute_script("window.__test_marker = true")
+# ... click the element that might cause a reload ...
+time.sleep(2)
+marker_exists = driver.execute_script("return window.__test_marker === true")
+if not marker_exists:
+    print("REPRODUCED")  # page reloaded, marker is gone
+```
+IMPORTANT: When clicking anchor links (href="#something"), the URL changes to include the fragment,
+but a FULL PAGE RELOAD will reset the fragment. Use the JS marker to detect reloads reliably.
+
+Analysis:
+{analysis_json}
+
+Target URL:
+{target_url}
+
+ACTUAL PAGE DOM (use these EXACT selectors — do NOT guess or invent IDs):
+{dom_context}
+
+Prior failure summary (empty on first attempt):
+{prior_failures}
+
+STRICT RULES:
+1. Print "REPRODUCED" (exact, uppercase) to stdout when the bug IS confirmed present.
+2. ALWAYS use these EXACT imports at the top:
+   import time
+   from selenium import webdriver
+   from selenium.webdriver.chrome.service import Service
+   from selenium.webdriver.chrome.options import Options
+   from selenium.webdriver.common.by import By
+   from selenium.webdriver.support.ui import WebDriverWait
+   from selenium.webdriver.support import expected_conditions as EC
+3. Print "Step N: <action>" to stdout before each significant action.
+4. In every except block: driver.save_screenshot(f"/screenshots/failure_{{int(time.time())}}.png") then re-raise.
+5. Call driver.quit() in finally — always.
+6. DO NOT import: os, subprocess, socket, shutil, pathlib.
+7. Output ONLY the Python script. No markdown fences. No explanation.
+8. After submitting forms, use time.sleep(2) to wait for the page to process, then check page_source.
+9. Use flexible selectors: try button[type='submit'] or input[type='submit'] for submit buttons.
+10. To check for error messages, use: driver.find_element(By.TAG_NAME, "body").text to only search VISIBLE text. NEVER search driver.page_source for generic keywords like "error" or "cannot" as this causes false positives from HTML/JS code. Only check for the exact success_condition.
+11. SCREENSHOT EVIDENCE — capture a screenshot AFTER each significant step:
+    - driver.save_screenshot("/screenshots/step_1_page_loaded.png") after navigating
+    - driver.save_screenshot("/screenshots/step_2_form_filled.png") after filling fields
+    - driver.save_screenshot("/screenshots/step_3_after_submit.png") after clicking submit
+    - driver.save_screenshot("/screenshots/step_4_result.png") after verification
+    These screenshots serve as visual proof of execution for the UI.
+12. NEVER change the Target URL. Use EXACTLY this URL in driver.get(): {target_url}
+    Do NOT replace it with localhost, 127.0.0.1, or any other address.
+    The networking is handled by the system — just use the URL as given.
+13. If ERR_CONNECTION_REFUSED occurs, the issue is NOT the URL — do not change it.
+    Keep the exact same URL and focus on fixing other parts of the script.
+
+Chrome options to use (ALWAYS use this EXACT setup):
+  options = Options()
+  options.add_argument("--headless")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+  options.binary_location = "/usr/bin/chromium"
+  service = Service("/usr/bin/chromedriver")
+  driver = webdriver.Chrome(service=service, options=options)
+
