@@ -41,12 +41,15 @@ def _get_llm():
     if config.LLM_PROVIDER == "anthropic":
         from langchain_anthropic import ChatAnthropic
         return ChatAnthropic(model=config.LLM_MODEL, temperature=0)
-    if config.LLM_PROVIDER == "google":
+    if config.LLM_PROVIDER == "google" or config.LLM_PROVIDER == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI
         return ChatGoogleGenerativeAI(model=config.LLM_MODEL, temperature=0)
     if config.LLM_PROVIDER == "ollama":
         from langchain_ollama import ChatOllama
         return ChatOllama(model=config.LLM_MODEL, temperature=0)
+    if config.LLM_PROVIDER == "groq":
+        from langchain_groq import ChatGroq
+        return ChatGroq(model=config.LLM_MODEL, temperature=0)
     from langchain_openai import ChatOpenAI
     return ChatOpenAI(model=config.LLM_MODEL, temperature=0)
 

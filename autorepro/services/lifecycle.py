@@ -41,6 +41,7 @@ from sqlmodel import Session
 from db.models import (
     ActivityLog, Bug, BugStatus, UserRole,
 )
+from services.webhooks import trigger_webhook
 from utils.logger import get_logger
 
 log = get_logger(__name__)
@@ -363,6 +364,23 @@ def transition_bug(
         by_role    = ctx.role.value,
         by_user    = str(ctx.user_id) if ctx.user_id else "SYSTEM",
     )
+
+    # FIX 5 — Fire webhook for bug.status_changed (best-effort; never block the transition)
+    try:
+        trigger_webhook(
+            db,
+            bug.company_id,
+            "bug.status_changed",
+            {
+                "bug_id":  str(bug.id),
+                "from":    old_status.value,
+                "to":      new_status.value,
+                "by_user": str(ctx.user_id) if ctx.user_id else "SYSTEM",
+            },
+        )
+    except Exception as _wh_err:
+        log.warning("webhook_status_changed_failed", bug_id=str(bug.id), error=str(_wh_err))
+
     return bug
 
 

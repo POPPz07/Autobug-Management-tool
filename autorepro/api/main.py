@@ -31,9 +31,20 @@ from api.bug_routes     import bug_router       # /api/v1/bugs/*
 from api.team_routes    import teams_router     # /api/v1/teams/*
 from api.job_routes     import job_router       # /api/v1/jobs/*
 from api.comment_routes import comments_router  # /api/v1/bugs/{id}/comments
+# V2.0 routers
+from api.platform_routes     import router as platform_router    # /api/v1/platform/*
+from api.notification_routes import router as notification_router # /api/v1/notifications/*
+from api.template_routes     import router as template_router    # /api/v1/templates/*
+from api.label_routes        import router as label_router       # /api/v1/labels/*
+from api.webhook_routes      import router as webhook_router     # /api/v1/webhooks/*
+from api.bulk_routes         import router as bulk_router        # /api/v1/bugs/bulk/*
+from api.websocket_routes    import router as ws_router          # /ws
+from api.sse_routes          import router as sse_router         # /api/v1/events/*
+from api.api_key_routes      import router as api_key_router     # /api/v1/api-keys/*
 
 from db.session import engine
-from db import models  # noqa: F401 — registers all SQLModel table metadata
+from db import models     # noqa: F401 — registers all SQLModel table metadata
+from db import models_v2  # noqa: F401 — registers V2.0 model tables
 from utils import config
 from utils.logger import get_logger
 
@@ -65,7 +76,8 @@ class NoCompressAuthMiddleware(BaseHTTPMiddleware):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Startup tasks: create DB tables, verify Docker socket, ensure data dirs."""
+    """Startup: create DB tables, verify Docker, ensure data dirs, start WebSocket broadcaster."""
+    # Create all tables (existing + V2.0 new models)
     SQLModel.metadata.create_all(engine)
     log.info("db_tables_ready")
 
@@ -77,6 +89,15 @@ async def lifespan(app: FastAPI):
 
     Path(config.DATA_DIR, "jobs").mkdir(parents=True, exist_ok=True)
     Path(config.DATA_DIR, "artifacts").mkdir(parents=True, exist_ok=True)
+    Path(config.UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
+
+    # Start Redis broadcaster for WebSocket real-time events
+    if config.ENABLE_WEBSOCKETS:
+        import asyncio
+        from realtime.broadcaster import broadcaster
+        asyncio.create_task(broadcaster.start())
+        log.info("realtime_broadcaster_started")
+
     yield
 
 
@@ -144,11 +165,22 @@ app.include_router(router)
 # Phase 1.5 — Auth & RBAC
 app.include_router(auth_router)
 
-# Phase 2 — Enterprise API
+# Phase 2 — Enterprise API (existing)
 app.include_router(bug_router)
 app.include_router(teams_router)
 app.include_router(job_router)
 app.include_router(comments_router)
+
+# V2.0 — New routes (Phases 2-10)
+app.include_router(platform_router)     # /api/v1/platform/*
+app.include_router(notification_router) # /api/v1/notifications/*
+app.include_router(template_router)     # /api/v1/templates/*
+app.include_router(label_router)        # /api/v1/labels/*
+app.include_router(webhook_router)      # /api/v1/webhooks/*
+app.include_router(bulk_router)         # /api/v1/bugs/bulk/*
+app.include_router(ws_router)           # /ws (WebSocket)
+app.include_router(sse_router)          # /api/v1/events/*
+app.include_router(api_key_router)      # /api/v1/api-keys/*
 
 
 # ── Static assets (only when built frontend is present) ───────────

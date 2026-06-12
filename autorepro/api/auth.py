@@ -311,7 +311,7 @@ def require_role(*roles: UserRole):
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Requires one of: {allowed}",
             )
-    return Depends(dependency)
+    return dependency
 
 
 def require_min_role(min_role: UserRole):
@@ -333,7 +333,7 @@ def require_min_role(min_role: UserRole):
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Requires at least {min_role.value} role",
             )
-    return Depends(dependency)
+    return dependency
 
 
 def require_permission(perm: str):
@@ -355,7 +355,7 @@ def require_permission(perm: str):
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Missing permission: {perm}",
             )
-    return Depends(dependency)
+    return dependency
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -584,3 +584,142 @@ def deactivate_user(
     session.refresh(user)
     log.info("user_deactivated", target=str(user_id), by=str(current_user.id))
     return UserPublic.model_validate(user)
+
+
+# ═══════════════════════════════════════════════════════════════════
+# V2.0: PASSWORD RESET FLOW
+# ═══════════════════════════════════════════════════════════════════
+
+class ForgotPasswordRequest(_BM):
+    email: str
+
+
+class ResetPasswordRequest(_BM):
+    token: str
+    new_password: str
+
+
+@auth_router.post("/forgot-password")
+def forgot_password(body: ForgotPasswordRequest, session: SessionDep):
+    """
+    Initiate password reset — sends a reset link via email.
+
+    ALWAYS returns 200 regardless of whether the email exists,
+    to prevent user enumeration attacks.
+    """
+    from services.auth import create_password_reset_token
+    from services.notifications import send_email_async
+
+    token = create_password_reset_token(session, body.email)
+
+    if token:
+        # Only send email if user actually exists
+        reset_link = f"http://localhost:3000/reset-password?token={token}"
+        send_email_async(
+            to=body.email,
+            subject="Reset your AutoRepro password",
+            body=f"Click the link to reset your password (expires in 1 hour):\n\n{reset_link}",
+        )
+        log.info("password_reset_requested", email=body.email)
+
+    return {"message": "If that email exists, a reset link has been sent"}
+
+
+@auth_router.post("/reset-password")
+def reset_password(body: ResetPasswordRequest, session: SessionDep):
+    """
+    Complete the password reset flow.
+
+    Validates the token, updates the password hash, and marks the token as used.
+    Token expires after 1 hour and is single-use.
+    """
+    from services.auth import mark_token_used, verify_password_reset_token
+
+    user = verify_password_reset_token(session, body.token)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token",
+        )
+
+    user.password_hash = hash_password(body.new_password)
+    user.updated_at    = datetime.now(timezone.utc)
+    session.add(user)
+    session.commit()
+
+    mark_token_used(session, body.token)
+    log.info("password_reset_completed", user_id=str(user.id))
+
+    return {"message": "Password reset successfully"}
+
+
+# ═══════════════════════════════════════════════════════════════════
+# V2.0: EMAIL VERIFICATION FLOW
+# ═══════════════════════════════════════════════════════════════════
+
+class VerifyEmailRequest(_BM):
+    token: str
+
+
+@auth_router.post("/verify-email")
+def verify_email(body: VerifyEmailRequest, session: SessionDep):
+    """
+    Verify email address using the token sent during registration.
+
+    Clears the verification token after use.
+    """
+    user = session.exec(
+        select(User).where(
+            User.email_verification_token == body.token,
+            User.is_deleted == False,  # noqa: E712
+        )
+    ).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid verification token",
+        )
+
+    user.email_verified            = True
+    user.email_verification_token  = None   # Clear token after use
+    user.updated_at                = datetime.now(timezone.utc)
+    session.add(user)
+    session.commit()
+
+    log.info("email_verified", user_id=str(user.id))
+    return {"message": "Email verified successfully"}
+
+
+@auth_router.post("/resend-verification")
+def resend_verification(current_user: CurrentUser, session: SessionDep):
+    """
+    Resend the email verification link for the current user.
+
+    Generates a new token and queues it for email delivery.
+    """
+    if current_user.email_verified:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email is already verified",
+        )
+
+    from services.auth import generate_email_verification_token
+    from services.notifications import send_email_async
+
+    new_token = generate_email_verification_token()
+    current_user.email_verification_token = new_token
+    current_user.updated_at               = datetime.now(timezone.utc)
+    session.add(current_user)
+    session.commit()
+
+    verify_link = f"http://localhost:3000/verify-email?token={new_token}"
+    send_email_async(
+        to=current_user.email,
+        subject="Verify your AutoRepro email",
+        body=f"Click the link to verify your email:\n\n{verify_link}",
+    )
+
+    log.info("verification_email_resent", user_id=str(current_user.id))
+    return {"message": "Verification email sent"}
+

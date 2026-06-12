@@ -41,6 +41,8 @@ from db.models import (
     ActivityLog, Bug, BugAssignment, User, UserRole,
 )
 from services.lifecycle import ServiceContext, _role_level, _guard_company, _guard_not_deleted, transition_bug
+from services.notifications import notify_bug_assigned
+from services.webhooks import trigger_webhook
 from utils.logger import get_logger
 
 log = get_logger(__name__)
@@ -260,4 +262,29 @@ def assign_bug(
         by          = str(ctx.user_id) if ctx.user_id else "SYSTEM",
         by_role     = ctx.role.value,
     )
+
+    # FIX 4 — Fire in-app notification so the assignee is alerted immediately.
+    # Wrapped in try/except so a Redis failure never breaks the assignment.
+    try:
+        actor = db.get(User, ctx.user_id) if ctx.user_id else None
+        if actor:
+            notify_bug_assigned(db, bug, assignee, actor)
+    except Exception as _notif_err:
+        log.warning("notify_bug_assigned_failed", bug_id=str(bug.id), error=str(_notif_err))
+
+    # FIX 5 — Fire webhook for bug.assigned event (best-effort)
+    try:
+        trigger_webhook(
+            db,
+            bug.company_id,
+            "bug.assigned",
+            {
+                "bug_id":      str(bug.id),
+                "assigned_to": str(assign_to_user_id),
+                "assigned_by": str(ctx.user_id) if ctx.user_id else "SYSTEM",
+            },
+        )
+    except Exception as _wh_err:
+        log.warning("webhook_bug_assigned_failed", bug_id=str(bug.id), error=str(_wh_err))
+
     return assignment

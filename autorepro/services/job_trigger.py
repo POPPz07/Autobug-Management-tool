@@ -219,20 +219,16 @@ def trigger_autorepro(
             )
             return TriggerResult(job=cached_job, cache_hit=True)
 
-    # ── 5. Company-level concurrency ceiling ────────────────────────
-    company_id_str    = str(bug.company_id)
-    company_active    = get_company_active_job_count(company_id_str)
-    if company_active >= MAX_COMPANY_CONCURRENT_JOBS:
+    # ── 5. Quota and subscription limits ────────────────────────────
+    from services.usage import check_quota
+    is_allowed, block_reason = check_quota(db, bug.company_id, ctx.user_id)
+    if not is_allowed and not ctx.bypasses_rules:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             detail={
                 "error": {
-                    "code":    "COMPANY_CONCURRENCY_EXCEEDED",
-                    "message": (
-                        f"Your organisation already has {company_active} active jobs running. "
-                        f"Maximum allowed: {MAX_COMPANY_CONCURRENT_JOBS}. "
-                        "Wait for a job to finish before triggering another."
-                    ),
+                    "code":    "QUOTA_EXCEEDED",
+                    "message": block_reason,
                 }
             },
         )
@@ -314,7 +310,11 @@ def trigger_autorepro(
         bug_id     = bug.id,
         company_id = bug.company_id,
     )
-    enqueue_job(payload, triggered_by_user_id=str(ctx.user_id) if ctx.user_id else "SYSTEM")
+    enqueue_job(
+        payload, 
+        triggered_by_user_id=str(ctx.user_id) if ctx.user_id else "SYSTEM",
+        priority=job.priority
+    )
 
     log.info(
         "autorepro_triggered",

@@ -30,7 +30,7 @@ from api.auth import (
     assert_same_company, assert_team_access,
     require_min_role, require_permission,
 )
-from api.dependencies import BugFilter, Ctx, Page
+from api.dependencies import BugFilter, Ctx, Page, require_ctx_permission
 from api.responses import (
     bad_request, forbidden, not_found, ok, ok_list,
 )
@@ -84,7 +84,7 @@ def create_bug(
     body:    BugCreate,
     session: SessionDep,
     ctx:     Ctx,
-    _:       None = Depends(require_permission(Perm.BUG_CREATE)),
+    _:       None = Depends(require_ctx_permission(Perm.BUG_CREATE)),
 ):
     """Create a new bug report."""
     bug = Bug(
@@ -163,6 +163,57 @@ def list_bugs(
         [BugPublic.model_validate(b) for b in bugs],
         limit=page.limit, offset=page.offset, total=total,
     )
+
+
+# ═══════════════════════════════════════════════════════════════════
+    tsvector_expr = text("to_tsvector('english', title || ' ' || coalesce(description, ''))")
+    tsquery_expr  = text(f"plainto_tsquery('english', '{safe_q}')")
+
+    # Match condition
+    base = base.where(tsvector_expr.op('@@')(tsquery_expr))
+
+    # Order by rank
+    rank_expr = text(f"ts_rank({tsvector_expr}, {tsquery_expr}) DESC")
+    base = base.order_by(rank_expr, Bug.created_at.desc())
+
+    total = session.exec(select(func.count()).select_from(base.subquery())).one()
+    bugs  = session.exec(base.offset(page.offset).limit(page.limit)).all()
+
+    return ok_list(
+        [BugPublic.model_validate(b) for b in bugs],
+        limit=page.limit, offset=page.offset, total=total,
+    )
+
+
+# ═══════════════════════════════════════════════════════════════════
+# V2.0: FULL-TEXT SEARCH
+# ═══════════════════════════════════════════════════════════════════
+
+from services.search import search_bugs
+
+
+@bug_router.get("/search")
+def search_bugs_endpoint(
+    q:       str,
+    session: SessionDep,
+    ctx:     Ctx,
+    status:  Optional[str] = None,
+    _:       None = Depends(require_permission(Perm.BUG_READ)),
+):
+    """
+    Full-text search on bug title + description using Postgres tsvector.
+    Returns bugs ranked by relevance.
+    """
+    filters = {}
+    if status:
+        filters["status"] = status
+
+    bugs = search_bugs(session, ctx.company_id, q, filters)
+    return ok_list(
+        [BugPublic.model_validate(b) for b in bugs],
+        limit=len(bugs), offset=0, total=len(bugs),
+    )
+
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -384,3 +435,123 @@ def get_bug_jobs(
         [JobPublic.model_validate(j) for j in jobs],
         limit=page.limit, offset=page.offset, total=total,
     )
+
+
+# ═══════════════════════════════════════════════════════════════════
+# V2.0: ATTACHMENTS
+# ═══════════════════════════════════════════════════════════════════
+
+from fastapi import UploadFile, File
+from db.models_v2 import BugAttachment
+from services.attachments import save_attachment, delete_attachment
+
+
+@bug_router.post("/{bug_id}/attachments", status_code=201)
+def upload_attachment(
+    bug_id:  uuid.UUID,
+    file:    UploadFile = File(...),
+    session: SessionDep  = ...,
+    ctx:     Ctx         = ...,
+):
+    """Upload a file attachment to a bug (max size configurable via MAX_ATTACHMENT_SIZE_MB)."""
+    bug = _get_bug_or_404(session, bug_id)
+    assert_same_company(ctx.user, bug.company_id)
+
+    try:
+        attachment = save_attachment(session, bug_id, bug.company_id, file, ctx.user)
+    except ValueError as e:
+        raise bad_request(str(e))
+
+    return ok(attachment)
+
+
+@bug_router.get("/{bug_id}/attachments")
+def list_attachments(bug_id: uuid.UUID, session: SessionDep, ctx: Ctx):
+    """List all non-deleted attachments for a bug."""
+    bug = _get_bug_or_404(session, bug_id)
+    assert_same_company(ctx.user, bug.company_id)
+
+    stmt = select(BugAttachment).where(
+        BugAttachment.bug_id == bug_id,
+        BugAttachment.is_deleted == False,  # noqa
+    )
+    attachments = session.exec(stmt).all()
+    return ok_list(attachments, limit=len(attachments), offset=0, total=len(attachments))
+
+
+# ═══════════════════════════════════════════════════════════════════
+# V2.0: BUG DEPENDENCIES (blocks/is-blocked-by)
+# ═══════════════════════════════════════════════════════════════════
+
+from db.models_v2 import BugDependency
+
+
+class AddDependencyRequest(_BM):
+    blocks_bug_id: uuid.UUID
+
+
+@bug_router.post("/{bug_id}/dependencies", status_code=201)
+def add_dependency(
+    bug_id:  uuid.UUID,
+    body:    AddDependencyRequest,
+    session: SessionDep,
+    ctx:     Ctx,
+):
+    """Add a 'bug A blocks bug B' dependency relationship."""
+    bug = _get_bug_or_404(session, bug_id)
+    assert_same_company(ctx.user, bug.company_id)
+
+    # Prevent self-dependency
+    if bug_id == body.blocks_bug_id:
+        raise bad_request("A bug cannot depend on itself")
+
+    dep = BugDependency(
+        bug_id=bug_id,
+        blocks_bug_id=body.blocks_bug_id,
+        created_by_user_id=ctx.user_id,
+    )
+    session.add(dep)
+    session.commit()
+    return ok(dep)
+
+
+# ═══════════════════════════════════════════════════════════════════
+# V2.0: WATCH / UNWATCH
+# ═══════════════════════════════════════════════════════════════════
+
+@bug_router.post("/{bug_id}/watch")
+def watch_bug(bug_id: uuid.UUID, session: SessionDep, ctx: Ctx):
+    """Subscribe to notifications for this bug."""
+    bug = _get_bug_or_404(session, bug_id)
+    assert_same_company(ctx.user, bug.company_id)
+
+    watchers = bug.watchers or []
+    user_id_str = str(ctx.user_id)
+
+    if user_id_str not in watchers:
+        watchers.append(user_id_str)
+        bug.watchers = watchers
+        session.add(bug)
+        session.commit()
+
+    return ok({"message": "Watching bug", "watcher_count": len(watchers)})
+
+
+@bug_router.delete("/{bug_id}/watch")
+def unwatch_bug(bug_id: uuid.UUID, session: SessionDep, ctx: Ctx):
+    """Unsubscribe from notifications for this bug."""
+    bug = _get_bug_or_404(session, bug_id)
+    assert_same_company(ctx.user, bug.company_id)
+
+    watchers = bug.watchers or []
+    user_id_str = str(ctx.user_id)
+
+    if user_id_str in watchers:
+        watchers.remove(user_id_str)
+        bug.watchers = watchers
+        session.add(bug)
+        session.commit()
+
+    return ok({"message": "Unwatched bug", "watcher_count": len(watchers)})
+
+

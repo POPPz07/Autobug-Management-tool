@@ -19,19 +19,13 @@ from pydantic import BaseModel as _BM
 from sqlmodel import select, func
 
 from api.auth import Perm, assert_same_company, require_permission
-from api.dependencies import Ctx, Page
+from api.dependencies import Ctx, Page, require_ctx_permission
 from api.responses import not_found, ok, ok_list, rate_limited
 from db.models import Bug, Job, JobPublic, JobStatus
 from db.session import SessionDep
 from services.lifecycle import ServiceContext
 from services.job_trigger import trigger_autorepro, TriggerResult
-from worker.runner import (
-    get_job_status_from_cache,
-    get_user_active_job_count,
-    get_user_daily_run_count,
-    increment_user_daily_run_count,
-)
-from utils.config import MAX_RUNS_PER_USER_PER_DAY, MAX_USER_CONCURRENT_JOBS
+from worker.runner import get_job_status_from_cache
 from utils.logger import get_logger
 
 log = get_logger(__name__)
@@ -66,37 +60,18 @@ def trigger_job(
     body:    TriggerRequest,
     session: SessionDep,
     ctx:     Ctx,
-    _:       None = Depends(require_permission(Perm.JOB_TRIGGER)),
+    _:       None = Depends(require_ctx_permission(Perm.JOB_TRIGGER)),
 ):
     """
     Trigger an AutoRepro execution for the given bug.
 
-    Route pre-flight (rate/concurrency limits — HTTP-layer concerns):
-      1. Daily rate limit per user
-      2. Max concurrent active jobs per user
-
     Execution pre-flight (enforced inside trigger_autorepro service):
-      3. Bug exists and is not deleted
-      4. Bug must be IN_PROGRESS
-      5. attempt_number <= max_attempts (unless MANAGER+)
+      1. Quota & Subscription Limits (from usage service)
+      2. Bug exists and is not deleted
+      3. Bug must be IN_PROGRESS
+      4. attempt_number <= max_attempts (unless MANAGER+)
     """
     user_id_str = str(ctx.user_id)
-
-    # ── 1: Daily rate limit (HTTP-layer concern) ───────────────────
-    daily_count = get_user_daily_run_count(user_id_str)
-    if daily_count >= MAX_RUNS_PER_USER_PER_DAY:
-        raise rate_limited(
-            f"Daily execution limit of {MAX_RUNS_PER_USER_PER_DAY} reached. "
-            "Limit resets at midnight UTC."
-        )
-
-    # ── 2: Concurrency limit (HTTP-layer concern) ──────────────
-    active_count = get_user_active_job_count(user_id_str)
-    if active_count >= MAX_USER_CONCURRENT_JOBS:
-        raise rate_limited(
-            f"You already have {active_count} active job(s) running. "
-            f"Maximum allowed: {MAX_USER_CONCURRENT_JOBS}."
-        )
 
     # ── Load bug ───────────────────────────────────────────────────────────────────
     bug = session.get(Bug, body.bug_id)
@@ -128,9 +103,6 @@ def trigger_job(
     # New job: commit the session (job row + RUNNING_AUTOREPRO transition)
     session.commit()
     session.refresh(result.job)
-
-    # Increment rate counter only after successful commit
-    increment_user_daily_run_count(user_id_str)
 
     log.info(
         "job_trigger_route_ok",
@@ -201,3 +173,108 @@ def list_jobs(session: SessionDep, ctx: Ctx, page: Page):
         [JobPublic.model_validate(j) for j in jobs],
         limit=page.limit, offset=page.offset, total=total,
     )
+
+
+# ═══════════════════════════════════════════════════════════════════
+# V2.0: CANCEL JOB
+# POST /api/v1/jobs/{job_id}/cancel
+# ═══════════════════════════════════════════════════════════════════
+
+import redis
+from utils.config import REDIS_URL
+
+r = redis.from_url(REDIS_URL)
+
+
+@job_router.post("/{job_id}/cancel")
+def cancel_job(job_id: uuid.UUID, session: SessionDep, ctx: Ctx):
+    """
+    Cancel a running or pending job.
+
+    Sets a Redis cancel signal that the worker polls.
+    Also marks the job as FAILED with cancelled_at timestamp.
+    The worker detects this signal and stops cleanly.
+    """
+    job = session.get(Job, job_id)
+    if not job:
+        raise not_found("job", job_id)
+
+    bug = session.get(Bug, job.bug_id)
+    if bug:
+        assert_same_company(ctx.user, bug.company_id)
+
+    if job.status not in (JobStatus.PENDING, JobStatus.RUNNING):
+        from api.responses import bad_request
+        raise bad_request("Job is already completed or cancelled")
+
+    # Set Redis cancel signal — worker checks this on each iteration
+    cancel_key = f"autorepro:job:{job_id}:cancel"
+    r.setex(cancel_key, 60, "1")   # TTL 60s — auto-cleanup
+
+    # Persist cancellation in DB
+    job.status              = JobStatus.FAILED
+    job.cancelled_at        = _utcnow()
+    job.cancelled_by_user_id = ctx.user_id
+    job.completed_at        = _utcnow()
+
+    session.add(job)
+    session.commit()
+
+    log.info("job_cancelled", job_id=str(job_id), by=str(ctx.user_id))
+    return ok({"message": "Job cancelled"})
+
+
+# ═══════════════════════════════════════════════════════════════════
+# V2.0: DOWNLOAD JOB ARTIFACTS
+# GET /api/v1/jobs/{job_id}/download
+# ═══════════════════════════════════════════════════════════════════
+
+import io
+import os
+import zipfile
+
+from fastapi.responses import StreamingResponse
+
+
+@job_router.get("/{job_id}/download")
+def download_job_artifacts(job_id: uuid.UUID, session: SessionDep, ctx: Ctx):
+    """
+    Download a ZIP archive of job artifacts: logs, script, and screenshots.
+
+    Uses streaming response to avoid loading large files into memory.
+    """
+    job = session.get(Job, job_id)
+    if not job:
+        raise not_found("job", job_id)
+
+    bug = session.get(Bug, job.bug_id)
+    if bug:
+        assert_same_company(ctx.user, bug.company_id)
+
+    # Build ZIP in memory
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+        # Include logs
+        if job.logs:
+            zf.writestr(f"job_{job_id}/logs.txt", job.logs)
+
+        # Include generated script
+        if job.script:
+            zf.writestr(f"job_{job_id}/script.py", job.script)
+
+        # Include screenshots
+        if job.screenshots:
+            for screenshot_path in job.screenshots:
+                if os.path.isfile(screenshot_path):
+                    zf.write(screenshot_path, os.path.basename(screenshot_path))
+
+    buffer.seek(0)
+
+    return StreamingResponse(
+        buffer,
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f"attachment; filename=job_{job_id}_artifacts.zip",
+        },
+    )
+

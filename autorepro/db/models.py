@@ -15,8 +15,7 @@ from enum import Enum
 from typing import Optional
 
 from sqlmodel import Field, SQLModel
-from sqlalchemy import Column, Text
-import sqlalchemy.dialects.postgresql as pg
+from sqlalchemy import Column, JSON, Text
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -116,6 +115,16 @@ class Company(BaseTenantModel, table=True):
     name: str       = Field(index=True, max_length=255)
     slug: str       = Field(unique=True, index=True, max_length=100)  # URL-safe identifier
 
+    # ── V2.0: Subscription & settings ─────────────────────────────
+    subscription_plan_id: Optional[uuid.UUID] = Field(
+        default=None, foreign_key="subscription_plans.id",
+        description="Links company to its subscription tier (FREE/STARTER/PRO/ENTERPRISE)",
+    )
+    settings: Optional[dict] = Field(
+        default=None, sa_column=Column(JSON),
+        description="Company-level config: enable_webhooks, retention_days, max_attachment_size_mb etc.",
+    )
+
 
 # ═══════════════════════════════════════════════════════════════════
 # TABLE: users
@@ -134,6 +143,12 @@ class User(BaseTenantModel, table=True):
     # FK constraints
     company_id: uuid.UUID           = Field(foreign_key="companies.id", index=True)
     team_id:    Optional[uuid.UUID] = Field(default=None, foreign_key="teams.id", index=True)
+
+    # ── V2.0: Email verification & ToS ────────────────────────────
+    email_verified: bool            = Field(default=False, description="Set True after email link click")
+    email_verification_token: Optional[str] = Field(default=None, max_length=128)
+    tos_accepted_at: Optional[datetime]     = Field(default=None)
+    tos_version:     Optional[str]          = Field(default=None, max_length=10, description='e.g. "2.1"')
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -207,6 +222,19 @@ class Bug(BaseTenantModel, table=True):
     # failure_count: incremented by worker on each failed job (never decremented)
     failure_count: int = Field(default=0, description="Cumulative AutoRepro execution failures")
 
+    # ── V2.0: Templates, watchers, token tracking ─────────────────
+    template_id: Optional[uuid.UUID] = Field(
+        default=None, foreign_key="bug_templates.id",
+        description="If created from a template, links back to it",
+    )
+    watchers: Optional[list] = Field(
+        default=None, sa_column=Column(JSON),
+        description="JSON list of user_id UUIDs watching this bug for notifications",
+    )
+    gemini_tokens_used: int = Field(
+        default=0, description="Cumulative Gemini tokens consumed across all jobs for this bug",
+    )
+
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -271,12 +299,23 @@ class Job(SQLModel, table=True):
     failure_reason_summary: Optional[str]  = Field(default=None, sa_column=Column(Text))
 
     # Screenshots: JSON array of relative artifact paths ["artifacts/{job_id}/s1.png", ...]
-    screenshots: Optional[list] = Field(default=None, sa_column=Column(pg.JSONB))
+    screenshots: Optional[list] = Field(default=None, sa_column=Column(JSON))
 
     # Structured execution steps — populated by the worker after agent completion.
     # Schema: [{"step": int, "label": str, "status": "ok"|"fail", "detail": str|None}]
-    # Stored as JSONB; None until the job completes.
-    steps: Optional[list] = Field(default=None, sa_column=Column(pg.JSONB))
+    # Stored as JSON; None until the job completes.
+    steps: Optional[list] = Field(default=None, sa_column=Column(JSON))
+
+    # ── V2.0: Priority, tokens, cancellation, real-time progress ──
+    priority: str = Field(default="NORMAL", max_length=10, description="LOW, NORMAL, or HIGH")
+    gemini_tokens_input:  int = Field(default=0, description="Input tokens consumed by Gemini")
+    gemini_tokens_output: int = Field(default=0, description="Output tokens consumed by Gemini")
+    cancelled_at:         Optional[datetime]  = Field(default=None)
+    cancelled_by_user_id: Optional[uuid.UUID] = Field(default=None, foreign_key="users.id")
+    progress_percent: int          = Field(default=0, description="0-100 real-time progress")
+    current_step:     Optional[str] = Field(default=None, max_length=255, description='e.g. "Analyzing DOM"')
+    steps_completed:  int          = Field(default=0)
+    total_steps:      int          = Field(default=5, description="analyze, inspect, generate, execute, refine")
 
 
 
@@ -300,6 +339,12 @@ class Comment(BaseTenantModel, table=True):
 
     # company_id for tenant isolation (inherited logic, explicitly stored)
     company_id: uuid.UUID = Field(foreign_key="companies.id", index=True)
+
+    # ── V2.0: @mentions ───────────────────────────────────────────
+    mentions: Optional[list] = Field(
+        default=None, sa_column=Column(JSON),
+        description="JSON list of user_id UUIDs @mentioned in this comment",
+    )
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -327,7 +372,7 @@ class ActivityLog(SQLModel, table=True):
     company_id: uuid.UUID = Field(foreign_key="companies.id", index=True)
 
     # Arbitrary JSON payload: {"from": "CREATED", "to": "TRIAGED"} etc.
-    metadata_json: Optional[dict] = Field(default=None, sa_column=Column(pg.JSONB))
+    metadata_json: Optional[dict] = Field(default=None, sa_column=Column(JSON))
 
 
 # ═══════════════════════════════════════════════════════════════════

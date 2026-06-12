@@ -15,6 +15,7 @@ Canonical Redis key schema (DO NOT deviate):
   autorepro:active_jobs:{company_id}            → STRING (company-level active job count, no TTL)
 """
 
+import uuid
 import concurrent.futures
 import json
 import signal
@@ -27,10 +28,14 @@ from db.models import Bug, BugStatus, Job, JobStatus, RedisJobPayload
 from db.session import engine
 from agent.orchestrator import run_agent
 from services.lifecycle import mark_resolved, mark_back_to_in_progress
+from services.webhooks import trigger_webhook
 from utils.config import REDIS_URL, MAX_ATTEMPTS, SANDBOX_TIMEOUT_SECONDS, MAX_COMPANY_CONCURRENT_JOBS, MAX_USER_CONCURRENT_JOBS
 from utils.logger import get_logger
 
 from sqlmodel import Session
+
+# File-based job store (legacy agent output — used as bridge to SQL Job row)
+import storage.jobs as job_store
 
 log = get_logger(__name__)
 
@@ -38,7 +43,10 @@ log = get_logger(__name__)
 redis_client = redis.from_url(REDIS_URL, decode_responses=True)
 
 # ── Canonical key constants ──────────────────────────────────────────────────────────────────────
-QUEUE_KEY              = "autorepro:queue:jobs"
+QUEUE_HIGH             = "autorepro:queue:jobs:high"
+QUEUE_NORMAL           = "autorepro:queue:jobs:normal"
+QUEUE_LOW              = "autorepro:queue:jobs:low"
+ALL_QUEUES             = [QUEUE_HIGH, QUEUE_NORMAL, QUEUE_LOW]
 STATUS_KEY_TTL         = 86_400   # 24 hours in seconds
 # MAX_USER_CONCURRENT_JOBS and MAX_COMPANY_CONCURRENT_JOBS are imported from utils.config (env-driven)
 
@@ -141,9 +149,9 @@ def _decrement_active_jobs(user_id: str, company_id: str | None = None) -> None:
 # QUEUE ENQUEUE  (called from API thread)
 # ═══════════════════════════════════════════════════════════════════
 
-def enqueue_job(payload: RedisJobPayload, triggered_by_user_id: str) -> None:
+def enqueue_job(payload: RedisJobPayload, triggered_by_user_id: str, priority: str = "NORMAL") -> None:
     """
-    Push a job onto the Redis execution queue.
+    Push a job onto the Redis execution queue based on priority.
 
     Also increments both user-level and company-level active job counters.
     """
@@ -153,7 +161,14 @@ def enqueue_job(payload: RedisJobPayload, triggered_by_user_id: str) -> None:
         "company_id":           str(payload.company_id),
         "triggered_by_user_id": triggered_by_user_id,
     })
-    redis_client.rpush(QUEUE_KEY, data)
+    
+    target_queue = QUEUE_NORMAL
+    if priority == "HIGH":
+        target_queue = QUEUE_HIGH
+    elif priority == "LOW":
+        target_queue = QUEUE_LOW
+        
+    redis_client.rpush(target_queue, data)
     _set_job_status_cache(str(payload.job_id), JobStatus.PENDING)
     _increment_active_jobs(triggered_by_user_id, str(payload.company_id))
     log.info(
@@ -162,6 +177,7 @@ def enqueue_job(payload: RedisJobPayload, triggered_by_user_id: str) -> None:
         bug_id=str(payload.bug_id),
         user=triggered_by_user_id,
         company_id=str(payload.company_id),
+        queue=target_queue,
     )
 
 
@@ -273,6 +289,14 @@ def _process_job(raw_payload: str) -> None:
             _decrement_active_jobs(triggered_by, company_id)
             return
 
+        # ── 5. Cancellation Check ───────────────────────────────────────
+        cancel_key = f"autorepro:job:{job_id}:cancel"
+        if redis_client.exists(cancel_key):
+            log.warning("worker_job_cancelled_before_start", job_id=job_id)
+            # Job already marked cancelled/failed by API
+            _decrement_active_jobs(triggered_by, company_id)
+            return
+
         # ── Mark RUNNING ────────────────────────────────────────────────────────────────
         job.status = JobStatus.RUNNING
         session.add(job)
@@ -285,6 +309,16 @@ def _process_job(raw_payload: str) -> None:
         # Read fields before closing session
         bug_description = bug.description
         target_url      = bug.target_url or ""
+        llm_used_str    = job.llm_used or "gemini/gemini-2.0-flash"
+
+    # ── Set dynamic LLM config for this job ───────────────────────────
+    from utils import config
+    try:
+        provider, model = llm_used_str.split("/", 1)
+        config.LLM_PROVIDER = provider
+        config.LLM_MODEL = model
+    except Exception as e:
+        log.warning("invalid_llm_used_format", llm_used=llm_used_str, error=str(e))
 
     # ── Execute agent with timeout ──────────────────────────────────
     # Run inside a thread so we can enforce SANDBOX_TIMEOUT_SECONDS via Future.result().
@@ -307,6 +341,28 @@ def _process_job(raw_payload: str) -> None:
         success        = result.get("success", False)
         new_job_status = JobStatus.SUCCESS if success else JobStatus.FAILED
 
+        # ── Agent→SQL Bridge: read from file-based store, extract screenshots ────────────
+        # The agent writes its output (including screenshot_paths) to the legacy file store.
+        # We read that here and merge it into our result dict — do NOT modify orchestrator.py.
+        try:
+            file_result = job_store.get(job_id) or {}
+            # screenshot_paths come from sandbox/runner.py inside the agent
+            file_screenshots = file_result.get("screenshot_paths", []) or []
+            # history inside the file store has the execution_result with screenshots
+            for history_entry in file_result.get("history", []):
+                exec_result = history_entry.get("result", {})
+                file_screenshots.extend(exec_result.get("screenshot_paths", []))
+            # Deduplicate while preserving order
+            seen = set()
+            merged_screenshots = []
+            for p in file_screenshots:
+                if p and p not in seen:
+                    seen.add(p)
+                    merged_screenshots.append(p)
+        except Exception as _bridge_err:
+            log.warning("agent_sql_bridge_read_failed", job_id=job_id, error=str(_bridge_err))
+            merged_screenshots = []
+
         # ── Structured log: enrich agent stdout with [STEP] tags ─────────────────────────
         raw_stdout_lines = [
             h.get("result", {}).get("stdout", "")
@@ -325,7 +381,8 @@ def _process_job(raw_payload: str) -> None:
             result.get("failure_reason")
             or result.get("analysis", {}).get("summary")
         )
-        screenshots     = result.get("screenshot_paths", [])
+        # Use merged screenshots from bridge (file store + result dict)
+        screenshots     = merged_screenshots or result.get("screenshot_paths", [])
 
     except concurrent.futures.TimeoutError:
         # ── TIMEOUT PATH ─────────────────────────────────────────────
@@ -453,6 +510,45 @@ def _process_job(raw_payload: str) -> None:
 
         session.commit()
 
+        # Update daily usage tracking
+        from services.usage import record_job_usage
+        try:
+            if company_id:
+                record_job_usage(session, uuid.UUID(company_id), job)
+        except Exception as e:
+            log.error(f"Failed to record usage for job {job_id}: {e}")
+
+    # Emit completion event via WebSocket/SSE
+    completion_event = {
+        "type": "job.completed" if new_job_status == JobStatus.SUCCESS else "job.failed",
+        "data": {
+            "job_id": job_id,
+            "bug_id": bug_id,
+            "status": new_job_status.value
+        },
+        "user_id": triggered_by,
+        "company_id": company_id
+    }
+    redis_client.publish("realtime:events", json.dumps(completion_event))
+
+    # FIX 5 — Trigger webhook on job completion/failure (best-effort, never crash the worker)
+    if company_id:
+        try:
+            with Session(engine) as _wh_session:
+                trigger_webhook(
+                    _wh_session,
+                    uuid.UUID(company_id),
+                    "job.completed" if new_job_status == JobStatus.SUCCESS else "job.failed",
+                    {
+                        "job_id":   job_id,
+                        "bug_id":   bug_id,
+                        "status":   new_job_status.value,
+                        "success":  new_job_status == JobStatus.SUCCESS,
+                    },
+                )
+        except Exception as _wh_err:
+            log.warning("webhook_trigger_failed", job_id=job_id, error=str(_wh_err))
+
     _set_job_status_cache(job_id, new_job_status)
     _decrement_active_jobs(triggered_by, company_id)
     log.info(
@@ -488,10 +584,10 @@ def run_worker() -> None:
     signal.signal(signal.SIGTERM, _handle_shutdown)
     signal.signal(signal.SIGINT,  _handle_shutdown)
 
-    log.info("worker_started", queue=QUEUE_KEY, max_active_per_user=MAX_USER_CONCURRENT_JOBS)
+    log.info("worker_started", queues=ALL_QUEUES, max_active_per_user=MAX_USER_CONCURRENT_JOBS)
 
     while _running:
-        item = redis_client.blpop(QUEUE_KEY, timeout=5)
+        item = redis_client.blpop(ALL_QUEUES, timeout=5)
         if item is None:
             continue   # timeout — re-check _running flag
         _, raw_payload = item

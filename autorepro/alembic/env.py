@@ -12,14 +12,8 @@ from sqlalchemy import engine_from_config, pool
 # ── Import SQLModel + all models so metadata is populated ─────────
 from sqlmodel import SQLModel
 
-from db.models import (  # noqa: F401 — imported for side-effect (table registration)
-    User,
-    Team,
-    Bug,
-    BugRun,
-    Artifact,
-    Comment,
-)
+from db import models     # noqa: F401 — imported for side-effect (table registration)
+from db import models_v2  # noqa: F401
 from utils.config import DATABASE_URL
 
 # ── Alembic Config object ────────────────────────────────────────
