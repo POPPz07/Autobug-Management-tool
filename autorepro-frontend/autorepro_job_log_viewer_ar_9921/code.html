@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Job #AR-9921 - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e3e2e5",
+                        "on-secondary-fixed": "#140067",
+                        "surface-container-lowest": "#0d0e10",
+                        "outline": "#849396",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#2c303a",
+                        "primary": "#c3f5ff",
+                        "tertiary-fixed": "#dfe2ee",
+                        "inverse-surface": "#e3e2e5",
+                        "surface-container-low": "#1b1c1e",
+                        "outline-variant": "#3b494c",
+                        "surface-container-highest": "#343537",
+                        "tertiary-container": "#cdd0dc",
+                        "on-surface": "#e3e2e5",
+                        "surface-tint": "#00daf3",
+                        "surface-container-high": "#292a2c",
+                        "surface-variant": "#343537",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-primary-fixed-variant": "#004f58",
+                        "surface-dim": "#121315",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "on-secondary": "#2500a2",
+                        "background": "#121315",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "surface-container": "#1f2022",
+                        "surface": "#121315",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#e9ecf9",
+                        "secondary": "#c5c0ff",
+                        "on-tertiary-container": "#555963",
+                        "error": "#ffb4ab",
+                        "primary-container": "#00e5ff",
+                        "inverse-on-surface": "#303033",
+                        "on-primary-container": "#00626e",
+                        "primary-fixed": "#9cf0ff",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "secondary-fixed": "#e3dfff",
+                        "inverse-primary": "#006875",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#b2acff",
+                        "on-primary-fixed": "#001f24",
+                        "secondary-container": "#3c28bf",
+                        "on-primary": "#00363d",
+                        "surface-bright": "#38393b",
+                        "on-tertiary-fixed": "#181c24",
+                        "on-surface-variant": "#bac9cc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-sm": "12px",
+                        "container-max": "1440px",
+                        "gutter": "16px",
+                        "margin-md": "24px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Syne", "sans-serif"],
+                        "body-sm": ["DM Sans", "sans-serif"],
+                        "label-caps": ["JetBrains Mono", "monospace"],
+                        "display-metrics": ["Syne", "sans-serif"],
+                        "body-md": ["DM Sans", "sans-serif"],
+                        "headline-lg": ["Syne", "sans-serif"],
+                        "code-md": ["JetBrains Mono", "monospace"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #0d0e10; }
+        .cyber-panel { background-color: #111318; border: 1px solid #22262F; }
+        .cyber-input { background-color: transparent; border: 1px solid #22262F; color: #e3e2e5; transition: all 0.2s; }
+        .cyber-input:focus { border-color: #00e5ff; outline: none; box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.2); background-color: rgba(0, 229, 255, 0.05); }
+        .cyber-btn-primary { border: 1px solid #00e5ff; color: #00e5ff; background: transparent; transition: all 0.2s; }
+        .cyber-btn-primary:hover { box-shadow: 0 0 8px rgba(0, 229, 255, 0.4); background: rgba(0, 229, 255, 0.1); }
+        .cyber-btn-ghost { border: 1px solid transparent; color: #bac9cc; transition: all 0.2s; }
+        .cyber-btn-ghost:hover { color: #e3e2e5; border-color: #3b494c; background: rgba(255,255,255,0.05); }
+        
+        /* Custom scrollbar for terminal */
+        .terminal-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+        .terminal-scroll::-webkit-scrollbar-track { background: #0A0B0D; }
+        .terminal-scroll::-webkit-scrollbar-thumb { background: #22262F; border-radius: 4px; }
+        .terminal-scroll::-webkit-scrollbar-thumb:hover { background: #3b494c; }
+        
+        .log-success { color: #4ade80; }
+        .log-warn { color: #fbbf24; }
+        .log-info { color: #9ca3af; }
+        .log-time { color: #6b7280; }
+    </style>
+</head>
+<body class="text-on-background font-body-md bg-surface-container-lowest h-screen overflow-hidden flex">
+<!-- Side Navigation Shell -->
+<nav class="hidden md:flex flex-col h-full py-margin-md px-margin-sm bg-surface-container border-r border-outline-variant fixed left-0 top-0 w-64 z-40">
+<!-- Brand -->
+<div class="mb-8 px-4">
+<h1 class="font-headline-sm text-headline-sm text-primary">Core Engine</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">V2.4.0-STABLE</p>
+</div>
+<!-- CTA -->
+<button class="mb-6 w-full flex justify-center items-center gap-2 py-2 px-4 cyber-btn-primary rounded font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[16px]">add</span>
+            NEW REPRODUCTION
+        </button>
+<!-- Main Nav -->
+<div class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">bug_report</span>
+<span class="font-label-caps text-label-caps flex-1">Active Bugs</span>
+<span class="bg-error-container text-on-error-container font-label-caps text-[9px] px-1.5 py-0.5 rounded border border-error/20">3</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded bg-primary-container/10 text-primary border-r-2 border-primary scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-label-caps text-label-caps">Reproductions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">groups</span>
+<span class="font-label-caps text-label-caps">Teams</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">extension</span>
+<span class="font-label-caps text-label-caps">Integrations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">history</span>
+<span class="font-label-caps text-label-caps">Audit Logs</span>
+</a>
+</div>
+<!-- Footer Nav -->
+<div class="mt-auto flex flex-col gap-1 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span class="font-label-caps text-label-caps">Docs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<div class="mt-4 flex items-center gap-3 px-4">
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline-variant overflow-hidden shrink-0">
+<img alt="System Administrator" class="w-full h-full object-cover grayscale opacity-80" data-alt="A futuristic headshot of a system administrator in a dark, high-tech command center environment. Cool cyan lighting highlights her features against a deep black background. The aesthetic is cyber-minimalist, focused, and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDqprKEp6Bv-LKthY1bVw47haFk7e4c-spMS3GQBm_Qf410kiTv0QuL6HaNn9BYD_ZeCHZX_hxM4MQao7Yf7X7o1wo-8p6W_NpZKxzI_JNBwpYgp3BtXwJ-KLMGXDbpLT1cvt0Ut2QpMg4WB3N8Ev8yiuPqPZhBm14MctZ2qAo3XrF-202xenbGq5hZLjcFr3Fa8fg73JU8hLDw4Jy82ck8weiaxoDOpfC2Vhp7juFRuZPxHVzbfYtQTFB6hg5X-emvLjoGTCtlJs"/>
+</div>
+<div class="overflow-hidden">
+<p class="font-body-sm text-body-sm text-on-surface truncate">Sys Admin</p>
+<p class="font-label-caps text-[9px] text-on-surface-variant truncate">ID: ADM-9092</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col ml-0 md:ml-64 h-full relative z-0">
+<!-- TopAppBar: Job Header -->
+<header class="flex justify-between items-center w-full px-gutter h-14 shrink-0 bg-surface border-b border-outline-variant z-10">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm">
+<a class="hover:text-primary transition-colors" href="#">Automation</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface">#AR-9921</span>
+</div>
+<div class="h-4 w-px bg-outline-variant hidden sm:block"></div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface hidden sm:block">Job #AR-9921</h2>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 bg-[#064e3b]/20 border border-[#059669]/30 px-2 py-1 rounded">
+<div class="w-1.5 h-1.5 bg-[#4ade80] shadow-[0_0_4px_#4ade80]"></div>
+<span class="font-label-caps text-label-caps text-[#4ade80]">SUCCESS</span>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 cyber-btn-primary rounded font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[16px]">folder_zip</span>
+<span class="hidden sm:inline">Download Artifacts</span>
+</button>
+</div>
+</header>
+<!-- Two Column Layout Canvas -->
+<div class="flex-1 flex flex-col lg:flex-row overflow-hidden p-unit">
+<!-- LEFT PANEL: Job Summary (35%) -->
+<div class="w-full lg:w-[35%] lg:min-w-[320px] lg:max-w-[450px] cyber-panel m-unit rounded flex flex-col h-[calc(100%-8px)] overflow-y-auto terminal-scroll">
+<div class="p-4 border-b border-[#22262F]">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-2">TARGET ISSUE</h3>
+<a class="font-body-md text-body-md text-primary hover:underline flex items-start gap-2" href="#">
+<span class="material-symbols-outlined text-[18px] shrink-0 mt-0.5">link</span>
+                        Null pointer exception in auth service during concurrent login bursts
+                    </a>
+</div>
+<div class="p-4 border-b border-[#22262F] flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ATTEMPT</span>
+<span class="font-label-caps text-label-caps text-on-surface">2 OF 3</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">DURATION</span>
+<span class="font-label-caps text-label-caps text-on-surface">4m 32s</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">STARTED</span>
+<span class="font-label-caps text-label-caps text-on-surface text-right">OCT 24, 2024<br/>14:32:01 UTC</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">COMPLETED</span>
+<span class="font-label-caps text-label-caps text-on-surface text-right">OCT 24, 2024<br/>14:36:33 UTC</span>
+</div>
+</div>
+<div class="p-6 border-b border-[#22262F] flex flex-col items-center justify-center bg-[#0d0e10]/50 relative overflow-hidden">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[rgba(74,222,128,0.05)] to-transparent pointer-events-none"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-2 z-10">REPRODUCTION CONFIDENCE</span>
+<div class="font-display-metrics text-display-metrics text-[#4ade80] drop-shadow-[0_0_12px_rgba(74,222,128,0.3)] z-10">
+                        0.94
+                    </div>
+</div>
+<div class="p-4 border-b border-[#22262F] flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TRIGGERED BY</span>
+<div class="flex items-center gap-2">
+<img alt="Sarah Connor" class="w-6 h-6 rounded-full border border-outline-variant grayscale" data-alt="A small, circular avatar portrait of a female engineer. Cyber-minimalist dark mode aesthetic with high contrast and desaturated tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATUztkHq0HZUWPviHYqKdtv8o03wsgt55DzDCDfTldCGuQ8NTFByX_Xoz9jnYEzjp5bLIbp0PZXZp-SwCooyRwSSsZCds57EE3UIN3LqOkrIJRaH-BQ1eBLVizRw0XheO9LqQoHL8fmCa_ZXpMEYGVLJsmTM2a50KgaDkFiFNXF2MpgnjZeA9SK_Ynklwr-O9Px6akzqMr5ZKEPi49_3mJTfJtv1pLxpzJMyRkToDEJwUFY6wzFEagO8O5aKEE7TDXCtsWX0o662k"/>
+<span class="font-body-sm text-body-sm text-on-surface">Sarah Connor</span>
+</div>
+</div>
+<div class="p-4 flex-1">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4">EXECUTION PIPELINE</h3>
+<div class="flex flex-col gap-0 relative">
+<!-- Connecting Line -->
+<div class="absolute left-[11px] top-4 bottom-6 w-px bg-[#22262F] z-0"></div>
+<!-- Step 1 -->
+<div class="flex gap-4 items-start relative z-10 mb-4">
+<div class="w-[24px] h-[24px] rounded-full bg-[#111318] border border-[#059669] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[14px] text-[#4ade80]">check</span>
+</div>
+<div class="flex-1 pt-0.5">
+<p class="font-body-sm text-body-sm text-on-surface">Environment Analysis</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">45s</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex gap-4 items-start relative z-10 mb-4">
+<div class="w-[24px] h-[24px] rounded-full bg-[#111318] border border-[#059669] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[14px] text-[#4ade80]">check</span>
+</div>
+<div class="flex-1 pt-0.5">
+<p class="font-body-sm text-body-sm text-on-surface">DOM Parsing</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">1m 12s</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex gap-4 items-start relative z-10 mb-4">
+<div class="w-[24px] h-[24px] rounded-full bg-[#111318] border border-[#059669] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[14px] text-[#4ade80]">check</span>
+</div>
+<div class="flex-1 pt-0.5">
+<p class="font-body-sm text-body-sm text-on-surface">Script Generation</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">48s</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex gap-4 items-start relative z-10 mb-4">
+<div class="w-[24px] h-[24px] rounded-full bg-[#111318] border border-[#059669] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[14px] text-[#4ade80]">check</span>
+</div>
+<div class="flex-1 pt-0.5">
+<p class="font-body-sm text-body-sm text-on-surface">Execution Payload</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">1m 27s</p>
+</div>
+</div>
+<!-- Step 5 -->
+<div class="flex gap-4 items-start relative z-10">
+<div class="w-[24px] h-[24px] rounded-full bg-[#111318] border border-[#059669] flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(74,222,128,0.2)]">
+<span class="material-symbols-outlined text-[14px] text-[#4ade80]">check</span>
+</div>
+<div class="flex-1 pt-0.5">
+<p class="font-body-sm text-body-sm text-on-surface">Verification</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">20s</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: Log Viewer (65%) -->
+<div class="w-full lg:w-[65%] flex-1 flex flex-col m-unit ml-0 lg:ml-unit rounded border border-[#22262F] bg-surface overflow-hidden h-[calc(100%-8px)]">
+<!-- Terminal Tabs -->
+<div class="flex border-b border-[#22262F] bg-[#111318] shrink-0">
+<button class="px-6 py-3 font-label-caps text-label-caps text-primary border-b-2 border-primary bg-[rgba(0,229,255,0.05)]">
+                        EXECUTION LOG
+                    </button>
+<button class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface hover:bg-[#1A1D24] transition-colors border-b-2 border-transparent">
+                        GENERATED SCRIPT
+                    </button>
+<button class="px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface hover:bg-[#1A1D24] transition-colors border-b-2 border-transparent">
+                        SCREENSHOTS (4)
+                    </button>
+</div>
+<!-- Terminal Content -->
+<div class="flex-1 bg-[#0A0B0D] p-4 overflow-y-auto terminal-scroll font-code-md text-code-md flex flex-col">
+<div class="mb-4 text-[#3b494c] select-none border-b border-[#22262F] pb-2 inline-block">
+                        // AutoRepro Engine v2.4.0<br/>
+                        // Session ID: AR-9921-XJ<br/>
+                        // Target: https://app.production.com
+                    </div>
+<div class="flex flex-col gap-1.5 whitespace-pre-wrap font-mono">
+<div><span class="log-time">[14:32:01]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Bootstrapping isolated environment (Node 18.x)...</span></div>
+<div><span class="log-time">[14:32:02]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Loaded target URL: https://app.production.com</span></div>
+<div><span class="log-time">[14:32:03]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Injecting diagnostic hooks into main thread.</span></div>
+<div><span class="log-time">[14:32:05]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-warn font-bold">WARN</span> <span class="text-[#fbbf24] ml-4">Rate limit threshold near (85%) for endpoint /api/v1/auth/session</span></div>
+<div><span class="log-time">[14:32:08]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Executing payload sequence A-44 (Concurrent Login Simulation)...</span></div>
+<div><span class="log-time">[14:32:15]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Spawning 5 virtual users for concurrent requests.</span></div>
+<div><span class="log-time">[14:32:30]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Intercepted uncaughtException: TypeError: Cannot read properties of null (reading 'token')</span></div>
+<div><span class="log-time">[14:32:31]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Stack trace captured. See artifacts.</span></div>
+<div><span class="log-time">[14:32:45]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">DOM snapshot captured (2.4MB). Checkpoint C-90.</span></div>
+<div><span class="log-time">[14:33:12]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Generating minimal reproduction script via AST reduction...</span></div>
+<div><span class="log-time">[14:34:45]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Script generated. Complexity score: Low.</span></div>
+<div><span class="log-time">[14:35:01]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Script execution started (Verification phase).</span></div>
+<div><span class="log-time">[14:36:28]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Assertion passed: error state successfully reproduced locally.</span></div>
+<div class="mt-2 p-2 bg-[#064e3b]/10 border border-[#059669]/20 rounded"><span class="log-time">[14:36:33]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-success font-bold">SUCCESS</span> <span class="text-[#4ade80] ml-1">Reproduction confirmed. Confidence Score: 0.94</span></div>
+<div><span class="log-time">[14:36:34]</span> <span class="text-[#3b494c] mx-2">|</span> <span class="log-info">INFO</span> <span class="text-on-background ml-4">Pipeline terminated gracefully. Artifacts packed.</span></div>
+<div class="mt-4 flex items-center gap-2">
+<span class="w-2 h-4 bg-primary animate-pulse inline-block"></span>
+</div>
+</div>
+</div>
+<!-- Terminal Footer Actions -->
+<div class="h-12 border-t border-[#22262F] bg-[#111318] flex justify-between items-center px-4 shrink-0">
+<button class="cyber-btn-ghost flex items-center gap-2 px-3 py-1.5 rounded font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+                        COPY LOG
+                    </button>
+<button class="cyber-btn-ghost flex items-center gap-2 px-3 py-1.5 rounded font-label-caps text-label-caps group">
+                        SCROLL TO BOTTOM
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-y-0.5 transition-transform">arrow_downward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

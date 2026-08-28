@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bug Dependencies &amp; Comments</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#006875",
+                      "surface-variant": "#343537",
+                      "on-primary": "#00363d",
+                      "background": "#121315",
+                      "tertiary": "#e9ecf9",
+                      "secondary-fixed-dim": "#c5c0ff",
+                      "surface-container-lowest": "#0d0e10",
+                      "primary": "#c3f5ff",
+                      "tertiary-fixed-dim": "#c3c6d2",
+                      "on-secondary-container": "#b2acff",
+                      "surface-container-high": "#292a2c",
+                      "surface-dim": "#121315",
+                      "outline-variant": "#3b494c",
+                      "tertiary-fixed": "#dfe2ee",
+                      "surface-container-highest": "#343537",
+                      "primary-fixed": "#9cf0ff",
+                      "on-primary-fixed": "#001f24",
+                      "surface-tint": "#00daf3",
+                      "secondary-fixed": "#e3dfff",
+                      "on-secondary": "#2500a2",
+                      "primary-fixed-dim": "#00daf3",
+                      "on-surface-variant": "#bac9cc",
+                      "inverse-surface": "#e3e2e5",
+                      "error-container": "#93000a",
+                      "surface-bright": "#38393b",
+                      "inverse-on-surface": "#303033",
+                      "outline": "#849396",
+                      "on-tertiary-container": "#555963",
+                      "tertiary-container": "#cdd0dc",
+                      "on-tertiary-fixed-variant": "#434751",
+                      "primary-container": "#00e5ff",
+                      "on-secondary-fixed": "#140067",
+                      "surface-container": "#1f2022",
+                      "on-primary-container": "#00626e",
+                      "secondary-container": "#3c28bf",
+                      "error": "#ffb4ab",
+                      "secondary": "#c5c0ff",
+                      "on-tertiary-fixed": "#181c24",
+                      "on-background": "#e3e2e5",
+                      "surface-container-low": "#1b1c1e",
+                      "surface": "#121315",
+                      "on-tertiary": "#2c303a",
+                      "on-secondary-fixed-variant": "#3c28bf",
+                      "on-error": "#690005",
+                      "on-surface": "#e3e2e5",
+                      "on-primary-fixed-variant": "#004f58"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-sm": "12px",
+                      "margin-md": "24px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "body-md": ["DM Sans"],
+                      "body-sm": ["DM Sans"],
+                      "label-caps": ["JetBrains Mono"],
+                      "headline-lg": ["Syne"],
+                      "display-metrics": ["Syne"],
+                      "code-md": ["JetBrains Mono"],
+                      "headline-sm": ["Syne"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                      "body-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                      "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                      "display-metrics": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "code-md": ["13px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Cyber-minimalist glow utilities */
+        .glow-hover:hover {
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+            border-color: #00e5ff;
+        }
+        .active-glow {
+            background-color: rgba(0, 229, 255, 0.05);
+            border-color: #00e5ff;
+            box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.1);
+        }
+        
+        /* Material symbols specific fill adjustment */
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen flex overflow-hidden">
+<!-- Shared Component: SideNavBar -->
+<nav class="hidden md:flex flex-col h-full py-margin-md bg-surface-container-low border-r border-outline-variant w-64 flex-shrink-0 transition-all duration-200 ease-in-out">
+<div class="px-margin-md mb-margin-md flex items-center gap-margin-sm">
+<div class="w-8 h-8 rounded bg-surface-bright border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" style="font-size: 18px;">terminal</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-primary leading-none">Command Center</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-unit">V2.4.0-Stable</p>
+</div>
+</div>
+<div class="px-margin-md mb-margin-md">
+<button class="w-full flex items-center justify-center gap-unit py-2 border border-outline-variant rounded font-label-caps text-label-caps text-on-surface hover:border-primary-container glow-hover transition-all">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                New Report
+            </button>
+</div>
+<ul class="flex flex-col gap-unit flex-grow px-margin-sm">
+<!-- Inactive -->
+<li>
+<a class="flex items-center gap-margin-sm px-margin-sm py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 hover:text-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<!-- Active (Matches Bug Details Intent) -->
+<li>
+<a class="flex items-center gap-margin-sm px-margin-sm py-2 rounded text-primary border-l-2 border-primary bg-primary/10 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="bug_report">bug_report</span>
+                    Active Bugs
+                </a>
+</li>
+<!-- Inactive -->
+<li>
+<a class="flex items-center gap-margin-sm px-margin-sm py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 hover:text-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+                    Repository
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-margin-sm px-margin-sm py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 hover:text-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+                    Analytics
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-margin-sm px-margin-sm py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 hover:text-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+                    Team
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-margin-sm px-margin-sm py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 hover:text-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+                    Logs
+                </a>
+</li>
+</ul>
+<div class="mt-auto px-margin-sm pt-margin-md border-t border-outline-variant mx-margin-sm">
+<ul class="flex flex-col gap-unit">
+<li>
+<a class="flex items-center gap-margin-sm px-margin-sm py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+                        Documentation
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-margin-sm px-margin-sm py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+                        Support
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col overflow-y-auto bg-background p-margin-md md:p-[32px] gap-[32px]">
+<!-- Page Header -->
+<header class="flex items-center justify-between pb-margin-sm border-b border-outline-variant">
+<div>
+<div class="flex items-center gap-unit text-on-surface-variant mb-unit">
+<span class="font-label-caps text-label-caps">#AR-1284</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-caps text-label-caps text-primary-container">IN_PROGRESS</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Bug Dependencies &amp; Comments</h2>
+</div>
+<div class="flex gap-margin-sm">
+<button class="px-4 py-2 border border-outline-variant rounded text-on-surface font-label-caps text-label-caps hover:bg-surface-bright transition-colors flex items-center gap-unit">
+<span class="material-symbols-outlined text-[16px]">share</span>
+                    Share
+                </button>
+</div>
+</header>
+<!-- TOP SECTION: Bug Dependencies -->
+<section class="flex flex-col gap-margin-sm">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-unit">
+<span class="material-symbols-outlined text-on-surface-variant">account_tree</span>
+                    Dependencies
+                </h3>
+<button class="px-4 py-2 border border-outline-variant rounded text-primary-container font-label-caps text-label-caps hover:border-primary-container glow-hover transition-all bg-transparent flex items-center gap-unit">
+<span class="material-symbols-outlined text-[16px]">add_link</span>
+                    Add Dependency
+                </button>
+</div>
+<!-- Flow Diagram Container -->
+<div class="bg-surface-container-low border border-outline-variant rounded p-[32px] relative overflow-x-auto">
+<div class="min-w-[800px] flex items-stretch justify-between gap-margin-md relative">
+<!-- Left Column: THIS BUG BLOCKS -->
+<div class="flex flex-col w-[280px] gap-margin-sm relative z-10">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-unit flex items-center justify-between">
+<span>THIS BUG BLOCKS</span>
+<span class="w-4 h-4 rounded bg-surface-bright flex items-center justify-center text-[10px]">2</span>
+</div>
+<!-- Blocked Bug 1 -->
+<div class="bg-background border border-outline-variant rounded p-margin-sm flex flex-col gap-unit hover:bg-surface-bright transition-colors cursor-pointer relative group">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md text-on-surface-variant">#AR-1290</span>
+<span class="px-2 py-1 border border-outline-variant rounded font-label-caps text-label-caps text-tertiary-container bg-tertiary-container/10">IN_PROGRESS</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface truncate">Payment timeout during load</p>
+<!-- Connector Arrow -->
+<div class="absolute top-1/2 -right-[32px] transform -translate-y-1/2 w-[32px] h-[2px] bg-error flex items-center justify-end z-0">
+<span class="material-symbols-outlined text-error text-[16px] -mr-[6px]" data-weight="fill">arrow_right</span>
+</div>
+</div>
+<!-- Blocked Bug 2 -->
+<div class="bg-background border border-outline-variant rounded p-margin-sm flex flex-col gap-unit hover:bg-surface-bright transition-colors cursor-pointer relative group">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md text-on-surface-variant">#AR-1291</span>
+<span class="px-2 py-1 border border-outline-variant rounded font-label-caps text-label-caps text-on-surface-variant bg-surface-variant/30">CREATED</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface truncate">Checkout failure on edge cases</p>
+<!-- Connector Arrow -->
+<div class="absolute top-1/2 -right-[32px] transform -translate-y-1/2 w-[32px] h-[2px] bg-error flex items-center justify-end z-0">
+<span class="material-symbols-outlined text-error text-[16px] -mr-[6px]" data-weight="fill">arrow_right</span>
+</div>
+</div>
+</div>
+<!-- Center Column: CURRENT BUG -->
+<div class="flex flex-col w-[320px] justify-center relative z-20">
+<div class="active-glow border border-primary-container rounded p-margin-md flex flex-col gap-margin-sm relative">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary-container text-[18px]">target</span>
+<span class="font-code-md text-code-md text-primary-container">#AR-1284</span>
+</div>
+<span class="px-2 py-1 border border-primary-container rounded font-label-caps text-label-caps text-primary-container">IN_PROGRESS</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md text-on-surface font-bold">Auth Gateway Timeout</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-unit">Affecting downstream microservices and preventing standard checkout flows.</p>
+</div>
+<!-- Connector input points -->
+<div class="absolute top-1/2 -left-[4px] w-[8px] h-[8px] rounded-full border border-primary-container bg-background transform -translate-y-1/2"></div>
+<div class="absolute top-1/2 -right-[4px] w-[8px] h-[8px] rounded-full border border-primary-container bg-background transform -translate-y-1/2"></div>
+</div>
+</div>
+<!-- Right Column: BLOCKED BY -->
+<div class="flex flex-col w-[280px] justify-center gap-margin-sm relative z-10">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-unit flex items-center justify-between">
+<span>BLOCKED BY</span>
+<span class="w-4 h-4 rounded bg-surface-bright flex items-center justify-center text-[10px]">1</span>
+</div>
+<!-- Blocking Bug -->
+<div class="bg-background border border-outline-variant rounded p-margin-sm flex flex-col gap-unit opacity-70 relative">
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md text-on-surface-variant line-through">#AR-1101</span>
+<span class="px-2 py-1 border border-outline-variant rounded font-label-caps text-label-caps text-on-surface-variant">RESOLVED</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-through truncate">OAuth token refresh loop</p>
+<!-- Dashed Connector Arrow (pointing LEFT from this node to Center) -->
+<!-- Visually, it connects from Right to Center. Arrowhead at center. -->
+<div class="absolute top-1/2 -left-[32px] transform -translate-y-1/2 w-[32px] flex items-center justify-start z-0">
+<div class="w-full h-[2px] border-b-2 border-dashed border-outline-variant absolute"></div>
+<span class="material-symbols-outlined text-outline-variant text-[16px] -ml-[6px] relative bg-background" data-weight="fill" style="transform: rotate(180deg);">arrow_right</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-unit flex items-center gap-unit">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                Resolving blockers may unblock 2 dependent bugs downstream.
+            </p>
+</section>
+<!-- Divider -->
+<hr class="border-outline-variant my-margin-sm"/>
+<!-- BOTTOM SECTION: Nested Comments -->
+<section class="flex flex-col gap-margin-md pb-margin-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-unit">
+<span class="material-symbols-outlined text-on-surface-variant">forum</span>
+                Nested Comments
+            </h3>
+<!-- Comments Container -->
+<div class="bg-surface-container-low border border-outline-variant rounded flex flex-col">
+<!-- Thread List -->
+<div class="flex flex-col p-margin-md gap-[24px]">
+<!-- Comment 1 (Top Level) -->
+<div class="flex flex-col gap-unit">
+<div class="flex items-start gap-margin-sm">
+<div class="w-8 h-8 rounded border border-outline-variant bg-surface-bright flex items-center justify-center flex-shrink-0">
+<span class="font-label-caps text-label-caps text-on-surface">SC</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-margin-sm mb-unit">
+<span class="font-body-sm text-body-sm text-on-surface font-bold">Sarah Connor</span>
+<span class="px-1.5 py-0.5 border border-outline-variant rounded font-label-caps text-label-caps text-tertiary-container bg-tertiary-container/10">SUPERVISOR</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant ml-auto">2 hours ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+                                    I've verified that the OAuth token refresh loop (#AR-1101) has been merged to stable. Can we confirm if this unblocks the gateway timeout we are seeing here? We need to get this moving before the end of the sprint.
+                                </p>
+<div class="flex gap-margin-sm mt-margin-sm">
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-container transition-colors">Reply</button>
+</div>
+</div>
+</div>
+<!-- Replies Container (Indented) -->
+<div class="flex flex-col gap-margin-sm mt-margin-sm ml-[40px]">
+<!-- Reply 1 -->
+<div class="flex items-start gap-margin-sm pl-margin-sm border-l-2 border-primary-container relative">
+<div class="w-6 h-6 rounded border border-outline-variant bg-surface-bright flex items-center justify-center flex-shrink-0">
+<span class="font-label-caps text-label-caps text-on-surface text-[8px]">JD</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-margin-sm mb-unit">
+<span class="font-body-sm text-body-sm text-on-surface font-bold">John Doe</span>
+<span class="px-1.5 py-0.5 border border-outline-variant rounded font-label-caps text-label-caps text-on-surface-variant bg-surface-variant/30">DEVELOPER</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant ml-auto">1 hour ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+                                        Looking into the logs now. It seems the gateway is still caching the old token signature. I might need to force a cache invalidation on the pod.
+                                    </p>
+</div>
+</div>
+<!-- Reply 2 -->
+<div class="flex items-start gap-margin-sm pl-margin-sm border-l-2 border-primary-container relative">
+<div class="w-6 h-6 rounded border border-outline-variant bg-surface-bright flex items-center justify-center flex-shrink-0">
+<span class="font-label-caps text-label-caps text-on-surface text-[8px]">AR</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-margin-sm mb-unit">
+<span class="font-body-sm text-body-sm text-on-surface font-bold">Alex R.</span>
+<span class="px-1.5 py-0.5 border border-outline-variant rounded font-label-caps text-label-caps text-secondary-container bg-secondary-container/10">ORG_ADMIN</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant ml-auto">45 mins ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">
+                                        @John Doe, please execute the invalidation script from the ops-toolkit repo. Make sure to log the transaction ID.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Comment 2 (System/Bot) -->
+<div class="flex items-start gap-margin-sm pl-margin-sm border-l-2 border-primary-container bg-primary-container/5 py-margin-sm -mx-margin-md px-margin-md">
+<div class="w-8 h-8 rounded border border-primary-container bg-background flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[18px]">smart_toy</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-margin-sm mb-unit">
+<span class="font-body-sm text-body-sm text-primary-container font-bold">AutoRepro Bot</span>
+<span class="px-1.5 py-0.5 border border-primary-container rounded font-label-caps text-label-caps text-primary-container bg-primary-container/10">SYSTEM</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant ml-auto">10 mins ago</span>
+</div>
+<p class="font-code-md text-code-md text-on-surface mt-unit bg-background border border-outline-variant p-unit rounded inline-block">
+                                [SYS-LOG] Cache invalidation script triggered via CI/CD pipeline. Status: PENDING.
+                            </p>
+<div class="mt-margin-sm">
+<a class="font-label-caps text-label-caps text-primary-container hover:text-primary transition-colors flex items-center gap-unit inline-flex" href="#">
+                                    View Job <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-margin-md border-t border-outline-variant bg-background/50">
+<div class="flex flex-col gap-margin-sm relative">
+<textarea class="w-full min-h-[100px] bg-background border border-outline-variant rounded p-margin-sm font-body-md text-body-md text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container focus:outline-none resize-y transition-all" placeholder="Add a comment..."></textarea>
+<div class="flex items-center justify-between">
+<span class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-unit">
+<span class="material-symbols-outlined text-[14px]">markdown</span>
+                                Markdown supported
+                            </span>
+<button class="px-[24px] py-[8px] border border-primary-container rounded font-label-caps text-label-caps text-primary-container hover:bg-primary-container/10 glow-hover transition-all">
+                                Submit
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

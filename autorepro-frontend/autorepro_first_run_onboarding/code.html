@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - First Run Onboarding</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#181c24",
+                        "inverse-primary": "#006875",
+                        "on-background": "#e3e2e5",
+                        "background": "#121315",
+                        "primary-fixed-dim": "#00daf3",
+                        "surface-dim": "#121315",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "primary": "#c3f5ff",
+                        "outline-variant": "#3b494c",
+                        "on-primary": "#00363d",
+                        "surface": "#121315",
+                        "surface-container-highest": "#343537",
+                        "on-secondary": "#2500a2",
+                        "surface-container-low": "#1b1c1e",
+                        "inverse-on-surface": "#303033",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "surface-container-lowest": "#0d0e10",
+                        "inverse-surface": "#e3e2e5",
+                        "on-tertiary-container": "#555963",
+                        "on-primary-container": "#00626e",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#2c303a",
+                        "secondary-container": "#3c28bf",
+                        "surface-container": "#1f2022",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "surface-bright": "#38393b",
+                        "primary-container": "#00e5ff",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "tertiary": "#e9ecf9",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed": "#e3dfff",
+                        "secondary": "#c5c0ff",
+                        "on-primary-fixed": "#001f24",
+                        "on-surface": "#e3e2e5",
+                        "surface-container-high": "#292a2c",
+                        "surface-variant": "#343537",
+                        "outline": "#849396",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#dfe2ee",
+                        "surface-tint": "#00daf3",
+                        "on-primary-fixed-variant": "#004f58",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#bac9cc",
+                        "on-secondary-container": "#b2acff",
+                        "tertiary-container": "#cdd0dc",
+                        "primary-fixed": "#9cf0ff",
+                        "on-secondary-fixed": "#140067"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-md": "24px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-sm": "12px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["DM Sans", "sans-serif"],
+                        "headline-lg": ["Syne", "sans-serif"],
+                        "code-md": ["JetBrains Mono", "monospace"],
+                        "label-caps": ["JetBrains Mono", "monospace"],
+                        "body-sm": ["DM Sans", "sans-serif"],
+                        "display-metrics": ["Syne", "sans-serif"],
+                        "headline-sm": ["Syne", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Cyber-Minimalist Utilities */
+        .glass-panel {
+            background: rgba(18, 19, 21, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .pulse-cyan {
+            animation: pulse-border 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse-border {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hover-cyan-glow:hover {
+            border-color: #00daf3;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.15), inset 0 0 12px rgba(0, 229, 255, 0.05);
+            background-color: rgba(0, 229, 255, 0.02);
+        }
+
+        .btn-cyan-outline {
+            border: 1px solid #00daf3;
+            color: #c3f5ff;
+            transition: all 0.2s ease-out;
+        }
+        
+        .btn-cyan-outline:hover {
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+            background-color: rgba(0, 229, 255, 0.08);
+            text-shadow: 0 0 4px rgba(195, 245, 255, 0.5);
+        }
+
+        /* Custom Scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0e10; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494c; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #849396; 
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body-md text-body-md h-screen w-full overflow-hidden flex antialiased selection:bg-primary/20 selection:text-primary">
+<!-- JSON Component: SideNavBar -->
+<nav class="bg-surface-container-low dark:bg-surface-container-low flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant z-40 docked left-0 w-64 flex-shrink-0">
+<!-- Header -->
+<div class="h-16 flex items-center px-margin-md border-b border-outline-variant shrink-0">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 border border-primary/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight leading-none">AutoRepro</h1>
+<div class="font-label-caps text-label-caps text-on-surface-variant mt-1">v4.2.0-stable</div>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto py-margin-sm px-3 flex flex-col gap-1">
+<!-- Active Tab: Dashboard -->
+<a class="h-10 px-3 rounded border-l-2 border-primary bg-primary/10 text-primary font-bold flex items-center gap-2 font-label-caps text-label-caps uppercase transition-colors relative group" href="#">
+<div class="absolute left-[-2px] top-1/2 -translate-y-1/2 w-[6px] h-[6px] bg-primary pulse-cyan"></div>
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span class="tracking-widest">Dashboard</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="h-10 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]">bug_report</span>
+<span class="tracking-widest">Active Bugs</span>
+</a>
+<a class="h-10 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]">replay</span>
+<span class="tracking-widest">Reproductions</span>
+</a>
+<div class="my-2 border-t border-outline-variant/30 mx-2"></div>
+<a class="h-10 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]">group</span>
+<span class="tracking-widest">Teams</span>
+</a>
+<a class="h-10 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]">extension</span>
+<span class="tracking-widest">Integrations</span>
+</a>
+<a class="h-10 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span class="tracking-widest">Audit Logs</span>
+</a>
+<div class="my-2 border-t border-outline-variant/30 mx-2"></div>
+<a class="h-10 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]">manage_accounts</span>
+<span class="tracking-widest">Account</span>
+</a>
+<a class="h-10 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]">security</span>
+<span class="tracking-widest">Security</span>
+</a>
+<a class="h-10 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span class="tracking-widest">System</span>
+</a>
+</div>
+<!-- Footer -->
+<div class="p-3 border-t border-outline-variant shrink-0 flex flex-col gap-1">
+<a class="h-8 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[16px]">help</span>
+<span class="tracking-widest">Support</span>
+</a>
+<a class="h-8 px-3 rounded text-on-surface-variant flex items-center gap-2 opacity-80 font-label-caps text-label-caps uppercase hover:bg-surface-variant/50 hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[16px]">description</span>
+<span class="tracking-widest">Documentation</span>
+</a>
+<div class="mt-3 pt-3 border-t border-outline-variant/30 flex items-center gap-3 px-2">
+<div class="w-8 h-8 rounded bg-surface-variant border border-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px] text-on-surface">person</span>
+</div>
+<div class="overflow-hidden">
+<div class="font-body-sm text-body-sm text-on-surface truncate">System Operator</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant truncate opacity-60">Admin Access</div>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 flex flex-col h-screen overflow-hidden bg-surface-container-lowest relative">
+<!-- Top ambient glow -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+<!-- Header / Breadcrumb area (minimal) -->
+<header class="h-16 flex items-center px-margin-md border-b border-outline-variant shrink-0 z-10 glass-panel">
+<div class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">home</span>
+<span>/</span>
+<span class="text-primary tracking-widest uppercase">Dashboard</span>
+</div>
+<div class="ml-auto flex items-center gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant border border-outline-variant rounded px-3 py-1 font-code-md text-code-md bg-surface">
+<div class="w-[6px] h-[6px] bg-primary rounded-sm pulse-cyan"></div>
+                    System Status: Nominal
+                </div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-margin-md flex flex-col z-10">
+<div class="max-w-container-max mx-auto w-full flex-1 flex flex-col h-full">
+<!-- Zero-State Metric Cards Row -->
+<div class="grid grid-cols-4 gap-gutter mb-margin-md shrink-0">
+<!-- Metric: Bugs -->
+<div class="bg-surface border border-outline-variant rounded p-4 flex flex-col hover-cyan-glow transition-all group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Active Bugs</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-[20px]">bug_report</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-on-surface mt-auto">0</div>
+<div class="font-code-md text-code-md text-outline mt-1 opacity-50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">horizontal_rule</span> No data
+                        </div>
+</div>
+<!-- Metric: Jobs -->
+<div class="bg-surface border border-outline-variant rounded p-4 flex flex-col hover-cyan-glow transition-all group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Active Jobs</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-[20px]">memory</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-on-surface mt-auto">0</div>
+<div class="font-code-md text-code-md text-outline mt-1 opacity-50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">horizontal_rule</span> Awaiting input
+                        </div>
+</div>
+<!-- Metric: Success Rate -->
+<div class="bg-surface border border-outline-variant rounded p-4 flex flex-col hover-cyan-glow transition-all group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Success Rate</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-[20px]">analytics</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-on-surface mt-auto opacity-50">--%</div>
+<div class="font-code-md text-code-md text-outline mt-1 opacity-50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span> Requires 10+ runs
+                        </div>
+</div>
+<!-- Metric: Team Members -->
+<div class="bg-surface border border-outline-variant rounded p-4 flex flex-col hover-cyan-glow transition-all group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Team Members</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors text-[20px]">group</span>
+</div>
+<div class="font-display-metrics text-display-metrics text-on-surface mt-auto">0</div>
+<div class="font-code-md text-code-md text-outline mt-1 opacity-50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">horizontal_rule</span> Just you
+                        </div>
+</div>
+</div>
+<!-- Centered Empty State Main Canvas -->
+<div class="flex-1 flex items-center justify-center min-h-[500px]">
+<!-- Large Empty State Card -->
+<div class="bg-surface border border-dashed border-primary/50 rounded-xl p-10 w-full max-w-[960px] flex flex-col items-center text-center relative overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+<!-- Decorative inner corner accents -->
+<div class="absolute top-0 left-0 w-4 h-4 border-t border-l border-primary/50"></div>
+<div class="absolute top-0 right-0 w-4 h-4 border-t border-r border-primary/50"></div>
+<div class="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-primary/50"></div>
+<div class="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-primary/50"></div>
+<!-- Top Logo Mark -->
+<div class="w-20 h-20 rounded-full bg-primary/5 border border-primary/20 flex items-center justify-center mb-6 relative">
+<div class="absolute inset-0 rounded-full bg-primary/10 blur-md"></div>
+<span class="material-symbols-outlined text-primary text-[48px] relative z-10" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<!-- Headings -->
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2 tracking-tight">Welcome to AutoRepro</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg mb-12">Your engineering command center is ready. Initialize your workspace by setting up your first reproduction target.</p>
+<!-- Three Step Cards Row -->
+<div class="grid grid-cols-3 gap-6 w-full text-left mb-10">
+<!-- STEP 1 -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-6 relative overflow-hidden group hover:border-primary/50 transition-colors">
+<!-- Large Background Number -->
+<div class="absolute -right-4 -bottom-8 font-display-metrics text-[120px] font-bold text-primary/5 pointer-events-none select-none leading-none">01</div>
+<div class="relative z-10 flex flex-col h-full">
+<span class="material-symbols-outlined text-primary mb-4 text-[28px]">bug_report</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Report your first bug</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-grow">Create a bug report with a target URL and reproduction steps.</p>
+<button class="btn-cyan-outline font-label-caps text-label-caps uppercase tracking-widest py-2 px-4 rounded w-max flex items-center gap-2">
+                                        Create Bug
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- STEP 2 -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-6 relative overflow-hidden group hover:border-primary/50 transition-colors">
+<!-- Large Background Number -->
+<div class="absolute -right-4 -bottom-8 font-display-metrics text-[120px] font-bold text-primary/5 pointer-events-none select-none leading-none">02</div>
+<div class="relative z-10 flex flex-col h-full">
+<span class="material-symbols-outlined text-primary mb-4 text-[28px]">group_add</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Invite your team</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-grow">Add developers, testers and supervisors to collaborate seamlessly.</p>
+<button class="btn-cyan-outline font-label-caps text-label-caps uppercase tracking-widest py-2 px-4 rounded w-max flex items-center gap-2">
+                                        Invite Members
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- STEP 3 -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-6 relative overflow-hidden group hover:border-primary/50 transition-colors">
+<!-- Large Background Number -->
+<div class="absolute -right-4 -bottom-8 font-display-metrics text-[120px] font-bold text-primary/5 pointer-events-none select-none leading-none">03</div>
+<div class="relative z-10 flex flex-col h-full">
+<span class="material-symbols-outlined text-primary mb-4 text-[28px]">bolt</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Trigger AutoRepro</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-grow">Let AI automatically reproduce and analyze your submitted bugs.</p>
+<button class="text-on-surface-variant border border-transparent hover:text-primary font-label-caps text-label-caps uppercase tracking-widest py-2 px-0 rounded w-max flex items-center gap-2 transition-colors">
+                                        Learn More
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Help Links -->
+<div class="mt-4 pt-6 border-t border-outline-variant/30 w-full flex items-center justify-center gap-6">
+<span class="font-body-sm text-body-sm text-outline">Need help getting started?</span>
+<div class="flex items-center gap-4">
+<a class="font-code-md text-code-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">menu_book</span>
+                                    View Documentation
+                                </a>
+<span class="text-outline-variant">•</span>
+<a class="font-code-md text-code-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">support_agent</span>
+                                    Contact Support
+                                </a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

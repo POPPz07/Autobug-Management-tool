@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Email Verification - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#00e5ff",
+                      "on-secondary-fixed": "#140067",
+                      "surface-container-high": "#292a2c",
+                      "on-surface-variant": "#bac9cc",
+                      "background": "#121315",
+                      "surface-container-highest": "#343537",
+                      "on-secondary-fixed-variant": "#3c28bf",
+                      "error-container": "#93000a",
+                      "on-primary-fixed-variant": "#004f58",
+                      "primary-fixed": "#9cf0ff",
+                      "tertiary-fixed-dim": "#c3c6d2",
+                      "tertiary-fixed": "#dfe2ee",
+                      "secondary-fixed-dim": "#c5c0ff",
+                      "on-secondary": "#2500a2",
+                      "secondary": "#c5c0ff",
+                      "on-primary": "#00363d",
+                      "surface-container-low": "#1b1c1e",
+                      "secondary-fixed": "#e3dfff",
+                      "outline-variant": "#3b494c",
+                      "inverse-primary": "#006875",
+                      "on-error-container": "#ffdad6",
+                      "surface-tint": "#00daf3",
+                      "on-error": "#690005",
+                      "tertiary": "#e9ecf9",
+                      "surface-bright": "#38393b",
+                      "tertiary-container": "#cdd0dc",
+                      "on-secondary-container": "#b2acff",
+                      "surface": "#121315",
+                      "on-tertiary-fixed": "#181c24",
+                      "secondary-container": "#3c28bf",
+                      "primary": "#c3f5ff",
+                      "outline": "#849396",
+                      "surface-dim": "#121315",
+                      "surface-container": "#1f2022",
+                      "on-tertiary-container": "#555963",
+                      "on-primary-container": "#00626e",
+                      "inverse-surface": "#e3e2e5",
+                      "error": "#ffb4ab",
+                      "on-background": "#e3e2e5",
+                      "primary-fixed-dim": "#00daf3",
+                      "inverse-on-surface": "#303033",
+                      "on-tertiary-fixed-variant": "#434751",
+                      "on-primary-fixed": "#001f24",
+                      "surface-container-lowest": "#0d0e10",
+                      "surface-variant": "#343537",
+                      "on-tertiary": "#2c303a",
+                      "on-surface": "#e3e2e5",
+                      "success": "#4ade80" // Adding a specific success color for the prompt requirements, falling back to a sensible green
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "margin-md": "24px",
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "margin-sm": "12px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Syne"],
+                      "body-sm": ["DM Sans"],
+                      "headline-sm": ["Syne"],
+                      "label-caps": ["JetBrains Mono"],
+                      "display-metrics": ["Syne"],
+                      "body-md": ["DM Sans"],
+                      "code-md": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                      "body-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                      "headline-sm": ["20px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                      "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "display-metrics": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                      "code-md": ["13px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "custom-h1": ["28px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Base styles */
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-surface');
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Technical Dot Grid Pattern */
+        .dot-grid-bg {
+            background-image: radial-gradient(theme('colors.surface-variant') 1px, transparent 1px);
+            background-size: 24px 24px;
+            position: relative;
+        }
+
+        .dot-grid-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(0, 229, 255, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        /* Glowing dots scatter effect (simulated via CSS box-shadow for a few specific points) */
+        .scattered-glow {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: theme('colors.primary-container');
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px rgba(0, 229, 255, 0.6);
+        }
+
+        .glow-1 { top: 20%; left: 30%; }
+        .glow-2 { top: 60%; left: 70%; }
+        .glow-3 { top: 80%; left: 20%; }
+        .glow-4 { top: 40%; left: 85%; }
+
+        /* Component-specific utilities */
+        .btn-outline-cyan {
+            border: 1px solid theme('colors.primary-container');
+            color: theme('colors.primary-container');
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-outline-cyan:hover {
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+            background-color: rgba(0, 229, 255, 0.05);
+        }
+
+        .input-technical {
+            border: 1px solid theme('colors.outline-variant');
+            background: transparent;
+            transition: border-color 0.2s;
+        }
+
+        .input-technical:focus {
+            border-color: theme('colors.primary-container');
+            outline: none;
+        }
+
+        /* Container borders */
+        .tech-border {
+            border: 1px solid theme('colors.surface-container-highest');
+        }
+
+        /* Typography overrides for specific sizes requested */
+        .text-custom-h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+        }
+
+        .icon-lg {
+            font-size: 48px;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+        }
+        
+        .icon-lg-fill {
+            font-size: 48px;
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+        }
+
+        /* Scrollbar hiding for clean split view */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* 1px rule separator */
+        .hr-technical {
+            border: 0;
+            height: 1px;
+            background-color: #22262F; /* Specific color from style guide */
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen w-full overflow-hidden antialiased">
+<!-- LEFT HALF: Branding & Ambient Background -->
+<!-- Custom background color mapping closely to #0A0B0D while using theme structure where possible -->
+<div class="relative hidden md:flex flex-col w-1/2 h-full p-8 dot-grid-bg border-r border-surface-container-highest" style="background-color: #0A0B0D;">
+<!-- Ambient Glowing Dots -->
+<div class="scattered-glow glow-1"></div>
+<div class="scattered-glow glow-2"></div>
+<div class="scattered-glow glow-3"></div>
+<div class="scattered-glow glow-4"></div>
+<!-- Logo Area -->
+<div class="flex items-center gap-3 z-10">
+<span class="material-symbols-outlined text-primary-container text-3xl">terminal</span>
+<span class="font-headline-sm text-headline-sm text-primary tracking-tighter">AutoRepro</span>
+</div>
+<!-- Spacer -->
+<div class="flex-grow"></div>
+<!-- Tagline Area -->
+<div class="z-10 pb-12 pl-4">
+<div class="font-headline-lg text-headline-lg text-on-surface opacity-90">One step</div>
+<div class="font-headline-lg text-headline-lg text-primary-container mt-2">to get started.</div>
+</div>
+</div>
+<!-- RIGHT HALF: Functional Canvas -->
+<!-- Background: #111318 (matches surface-dim/background closely, hardcoding to ensure spec match) -->
+<div class="flex flex-col w-full md:w-1/2 h-full overflow-y-auto px-6 py-12 md:p-12 lg:p-24 relative justify-center items-center" style="background-color: #111318;">
+<!-- Content Container -->
+<div class="w-full max-w-md mx-auto flex flex-col gap-12">
+<!-- STATE 1: Check your inbox -->
+<div class="flex flex-col items-center text-center gap-6">
+<!-- Icon Container -->
+<div class="h-20 w-20 rounded-full border border-primary-container/30 flex items-center justify-center bg-primary-container/5 relative">
+<div class="absolute inset-0 rounded-full bg-primary-container/10 blur-xl opacity-50"></div>
+<span class="material-symbols-outlined text-primary-container icon-lg">mail</span>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col gap-2 w-full">
+<h1 class="text-custom-h1 text-on-surface">Verify your email</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">We sent a verification link to</p>
+<!-- Email Badge -->
+<div class="mt-2 inline-block self-center px-4 py-2 tech-border bg-surface-container-low rounded">
+<span class="font-code-md text-code-md text-primary-container tracking-wide">j.doe@company.com</span>
+</div>
+</div>
+<!-- Actions Container -->
+<div class="flex flex-col items-center w-full mt-4 gap-4">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Didn't receive it?</p>
+<button class="w-full py-3 px-4 rounded btn-outline-cyan font-label-caps text-label-caps flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base">refresh</span>
+                        RESEND VERIFICATION EMAIL
+                    </button>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-60 mt-2">Link expires in 24 hours</p>
+</div>
+</div>
+<!-- DIVIDER -->
+<hr class="hr-technical w-full my-4"/>
+<!-- STATE 2: Success State -->
+<div class="flex flex-col items-center text-center gap-4 p-8 tech-border bg-surface-container-low/30 rounded-lg relative overflow-hidden">
+<!-- Success Glow -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-success/10 blur-3xl rounded-full"></div>
+<span class="material-symbols-outlined text-success icon-lg-fill relative z-10">check_circle</span>
+<h2 class="font-headline-sm text-headline-sm text-success relative z-10">Email verified!</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant relative z-10">Your account is now active. Redirecting you in 3s...</p>
+<a class="font-body-sm text-body-sm text-primary-container/80 hover:text-primary-container underline underline-offset-4 mt-2 transition-colors relative z-10" href="#">Click here if not redirected</a>
+</div>
+<!-- Back Link (Global to the flow) -->
+<div class="flex justify-center mt-8">
+<a class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+                    Back to sign in
+                </a>
+</div>
+</div>
+</div>
+<script>
+        // Minimal script to handle the visual transition of the timer (simulated)
+        document.addEventListener('DOMContentLoaded', () => {
+            // In a real app, this would handle the countdown logic
+            console.log("Engineering Command Terminal Initialized.");
+        });
+    </script>
+</body></html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Webhooks - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;family=Syne:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#4d4465",
+                        "on-primary-fixed": "#22005d",
+                        "background": "#0A0B0D", // Overridden for specific request
+                        "secondary": "#cdc0e9",
+                        "primary": "#00E5FF", // Overridden for specific request
+                        "inverse-primary": "#6750a4",
+                        "on-surface": "#e6e0e9",
+                        "surface-container-highest": "#36343a",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "inverse-surface": "#e6e0e9",
+                        "on-tertiary": "#3e2e00",
+                        "error-container": "#93000a",
+                        "surface-bright": "#3b383e",
+                        "tertiary": "#e7c365",
+                        "surface-dim": "#141218",
+                        "on-primary": "#0A0B0D",
+                        "surface-variant": "#36343a",
+                        "inverse-on-surface": "#322f35",
+                        "outline": "#948e9c",
+                        "on-tertiary-container": "#503d00",
+                        "on-secondary-fixed-variant": "#4b4263",
+                        "on-primary-container": "#e0d2ff",
+                        "on-primary-fixed-variant": "#4f378a",
+                        "on-error": "#690005",
+                        "tertiary-container": "#c9a74d",
+                        "surface-container": "#211f24",
+                        "primary-fixed-dim": "#cfbcff",
+                        "on-secondary-container": "#bfb2da",
+                        "on-secondary-fixed": "#1f1635",
+                        "on-surface-variant": "#cbc4d2",
+                        "tertiary-fixed-dim": "#e7c365",
+                        "outline-variant": "#494551",
+                        "secondary-fixed": "#e9ddff",
+                        "primary-fixed": "#e9ddff",
+                        "surface-container-low": "#111318", // Overridden for cards/sidebar
+                        "surface-container-lowest": "#0f0d13",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e6e0e9",
+                        "surface-container-high": "#2b292f",
+                        "surface": "#1A1D24", // Overridden for modal
+                        "on-secondary": "#342b4b",
+                        "surface-tint": "#cfbcff",
+                        "secondary-fixed-dim": "#cdc0e9",
+                        "on-tertiary-fixed": "#241a00",
+                        "tertiary-fixed": "#ffdf93",
+                        "primary-container": "#6750a4",
+                        "error": "#FF4757",
+                        "violet-accent": "#7B6FFF"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "xl": "48px",
+                        "sm": "8px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Syne"],
+                        "h3": ["Syne"],
+                        "body-md": ["DM Sans"],
+                        "body-lg": ["DM Sans"],
+                        "code-sm": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "code-md": ["JetBrains Mono"],
+                        "h2": ["Syne"],
+                        "body-sm": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "h3": ["18px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "500" }],
+                        "code-sm": ["11px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "code-md": ["13px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-sm": ["12px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0B0D;
+            color: #e6e0e9;
+        }
+        .btn-primary {
+            background-color: #00E5FF;
+            color: #0A0B0D;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        }
+        .input-dark {
+            background-color: #0A0B0D;
+            border: 1px solid #2A2E3A;
+            color: #e6e0e9;
+        }
+        .input-dark:focus {
+            border-color: #00E5FF;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+        }
+        .toggle-active {
+            background-color: #00E5FF;
+        }
+        .toggle-inactive {
+            background-color: #494551;
+        }
+        .webhook-card {
+            background-color: #111318;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .slide-panel {
+            background-color: #1A1D24;
+            border-left: 1px solid #2A2E3A;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+<!-- SideNavBar (Generated from JSON) -->
+<nav class="bg-surface-container-low dark:bg-surface-container-low fixed left-0 top-0 h-full w-[240px] border-r border-outline-variant dark:border-outline-variant flex flex-col h-full py-lg z-20">
+<div class="px-md mb-xl flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary font-bold">A</div>
+<div>
+<div class="font-h2 text-h2 font-bold text-on-surface dark:text-on-surface">AutoRepro</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">v2.4.0-stable</div>
+</div>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full btn-primary font-body-md text-body-md font-medium py-2 rounded flex items-center justify-center gap-2 active:scale-[0.98] transition-transform duration-100">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                New Repro
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto px-sm flex flex-col gap-1">
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all p-2 rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">dashboard</span>
+<span class="font-body-md text-body-md font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all p-2 rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">bug_report</span>
+<span class="font-body-md text-body-md font-medium">Incidents</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all p-2 rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">robot_2</span>
+<span class="font-body-md text-body-md font-medium">Automation</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all p-2 rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">account_tree</span>
+<span class="font-body-md text-body-md font-medium">Workflows</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all p-2 rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">analytics</span>
+<span class="font-body-md text-body-md font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-md text-on-surface dark:text-on-surface border-l-2 border-primary pl-[6px] bg-surface-container-highest p-2 rounded ml-[-8px]" href="#">
+<span class="material-symbols-outlined text-primary" style="font-size: 20px;">settings</span>
+<span class="font-body-md text-body-md font-medium text-primary">Settings</span>
+</a>
+</div>
+<div class="px-sm mt-auto flex flex-col gap-1 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all p-2 rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">help</span>
+<span class="font-body-md text-body-md font-medium">Support</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all p-2 rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">menu_book</span>
+<span class="font-body-md text-body-md font-medium">Documentation</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-[240px] flex-1 flex flex-col relative h-full">
+<!-- Top Bar -->
+<header class="h-20 px-lg flex items-center justify-between border-b border-outline-variant shrink-0">
+<h1 class="font-h1 text-h1 text-on-surface">Webhooks</h1>
+<button class="btn-primary font-body-md text-body-md font-medium px-4 py-2 rounded flex items-center gap-2" onclick="toggleModal()">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                Register Webhook
+            </button>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 overflow-y-auto p-lg">
+<div class="max-w-5xl mx-auto flex flex-col gap-4">
+<!-- Webhook Card 1 (Active) -->
+<div class="webhook-card rounded-lg p-md flex items-center justify-between hover:border-primary transition-colors cursor-default">
+<div class="flex-1 flex flex-col gap-1">
+<span class="font-body-lg text-body-lg text-on-surface font-bold">Production Slack Notifier</span>
+<span class="font-code-md text-code-md text-on-surface-variant truncate max-w-[300px]">https://api.acme.co/webhooks/slack/v1/notify...</span>
+</div>
+<div class="flex-1 flex gap-2 flex-wrap">
+<span class="bg-[#1A1D24] text-[#7B6FFF] border border-[#2A2E3A] px-2 py-1 rounded font-code-sm text-code-sm">bug.created</span>
+<span class="bg-[#1A1D24] text-[#7B6FFF] border border-[#2A2E3A] px-2 py-1 rounded font-code-sm text-code-sm">job.failed</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface px-3 py-1 border border-outline-variant rounded transition-colors">View Deliveries</button>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in cursor-pointer">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-background border-2 border-[#111318] appearance-none cursor-pointer transition-transform duration-200 ease-in-out translate-x-5" id="toggle1" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-[#00E5FF] cursor-pointer" for="toggle1"></label>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+<!-- Webhook Card 2 (Active) -->
+<div class="webhook-card rounded-lg p-md flex items-center justify-between hover:border-primary transition-colors cursor-default">
+<div class="flex-1 flex flex-col gap-1">
+<span class="font-body-lg text-body-lg text-on-surface font-bold">Jira Sync Controller</span>
+<span class="font-code-md text-code-md text-on-surface-variant truncate max-w-[300px]">https://sync.internal.net/hooks/jira/ingest...</span>
+</div>
+<div class="flex-1 flex gap-2 flex-wrap">
+<span class="bg-[#1A1D24] text-[#7B6FFF] border border-[#2A2E3A] px-2 py-1 rounded font-code-sm text-code-sm">bug.assigned</span>
+<span class="bg-[#1A1D24] text-[#7B6FFF] border border-[#2A2E3A] px-2 py-1 rounded font-code-sm text-code-sm">bug.updated</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface px-3 py-1 border border-outline-variant rounded transition-colors">View Deliveries</button>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in cursor-pointer">
+<input checked="" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-background border-2 border-[#111318] appearance-none cursor-pointer transition-transform duration-200 ease-in-out translate-x-5" id="toggle2" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-[#00E5FF] cursor-pointer" for="toggle2"></label>
+</div>
+<button class="text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+<!-- Webhook Card 3 (Inactive) -->
+<div class="webhook-card rounded-lg p-md flex items-center justify-between hover:border-outline transition-colors cursor-default opacity-75 hover:opacity-100">
+<div class="flex-1 flex flex-col gap-1">
+<span class="font-body-lg text-body-lg text-on-surface-variant font-bold">Legacy Metrics Endpoint</span>
+<span class="font-code-md text-code-md text-outline truncate max-w-[300px]">https://metrics.v1.acme.co/collect...</span>
+</div>
+<div class="flex-1 flex gap-2 flex-wrap">
+<span class="bg-[#1A1D24] text-outline border border-[#2A2E3A] px-2 py-1 rounded font-code-sm text-code-sm">job.completed</span>
+<span class="bg-[#1A1D24] text-outline border border-[#2A2E3A] px-2 py-1 rounded font-code-sm text-code-sm">job.started</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-body-sm text-body-sm text-outline hover:text-on-surface px-3 py-1 border border-[#2A2E3A] rounded transition-colors" disabled="">View Deliveries</button>
+<div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in cursor-pointer">
+<input class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-background border-2 border-[#111318] appearance-none cursor-pointer transition-transform duration-200 ease-in-out" id="toggle3" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-5 rounded-full bg-[#494551] cursor-pointer" for="toggle3"></label>
+</div>
+<button class="text-outline hover:text-error transition-colors">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Slide-in Modal Overlay -->
+<div class="absolute inset-0 bg-black/50 z-30 hidden transition-opacity opacity-0 backdrop-blur-sm" id="modalOverlay" onclick="toggleModal()"></div>
+<!-- Slide-in Panel -->
+<aside class="slide-panel absolute top-0 right-0 h-full w-[480px] z-40 transform translate-x-full transition-transform duration-300 ease-out flex flex-col shadow-2xl" id="slidePanel">
+<header class="p-lg border-b border-outline-variant flex justify-between items-center shrink-0">
+<h2 class="font-h2 text-h2 text-on-surface">Register Webhook</h2>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors" onclick="toggleModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</header>
+<div class="flex-1 overflow-y-auto p-lg flex flex-col gap-xl">
+<!-- Form Fields -->
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-2">
+<label class="font-body-sm text-body-sm text-on-surface-variant font-medium uppercase tracking-wider">Name</label>
+<input class="input-dark rounded p-2 font-body-md text-body-md w-full" placeholder="e.g., OpsGenie Alerting" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-body-sm text-body-sm text-on-surface-variant font-medium uppercase tracking-wider">Payload URL</label>
+<input class="input-dark rounded p-2 font-code-md text-code-md w-full" placeholder="https://" type="url"/>
+</div>
+</div>
+<!-- Events Selection -->
+<div class="flex flex-col gap-3">
+<label class="font-body-sm text-body-sm text-on-surface-variant font-medium uppercase tracking-wider mb-1">Trigger Events</label>
+<div class="grid grid-cols-2 gap-3">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox bg-[#0A0B0D] border-outline-variant text-[#00E5FF] rounded focus:ring-[#00E5FF] focus:ring-offset-0 focus:ring-1" type="checkbox"/>
+<span class="font-code-sm text-code-sm text-on-surface group-hover:text-[#00E5FF] transition-colors">bug.created</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox bg-[#0A0B0D] border-outline-variant text-[#00E5FF] rounded focus:ring-[#00E5FF] focus:ring-offset-0 focus:ring-1" type="checkbox"/>
+<span class="font-code-sm text-code-sm text-on-surface group-hover:text-[#00E5FF] transition-colors">job.started</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox bg-[#0A0B0D] border-outline-variant text-[#00E5FF] rounded focus:ring-[#00E5FF] focus:ring-offset-0 focus:ring-1" type="checkbox"/>
+<span class="font-code-sm text-code-sm text-on-surface group-hover:text-[#00E5FF] transition-colors">bug.assigned</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox bg-[#0A0B0D] border-outline-variant text-[#00E5FF] rounded focus:ring-[#00E5FF] focus:ring-offset-0 focus:ring-1" type="checkbox"/>
+<span class="font-code-sm text-code-sm text-on-surface group-hover:text-[#00E5FF] transition-colors">job.completed</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox bg-[#0A0B0D] border-outline-variant text-[#00E5FF] rounded focus:ring-[#00E5FF] focus:ring-offset-0 focus:ring-1" type="checkbox"/>
+<span class="font-code-sm text-code-sm text-on-surface group-hover:text-[#00E5FF] transition-colors">bug.updated</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="form-checkbox bg-[#0A0B0D] border-outline-variant text-[#00E5FF] rounded focus:ring-[#00E5FF] focus:ring-offset-0 focus:ring-1" type="checkbox"/>
+<span class="font-code-sm text-code-sm text-on-surface group-hover:text-[#00E5FF] transition-colors">job.failed</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group col-span-2">
+<input class="form-checkbox bg-[#0A0B0D] border-outline-variant text-[#00E5FF] rounded focus:ring-[#00E5FF] focus:ring-offset-0 focus:ring-1" type="checkbox"/>
+<span class="font-code-sm text-code-sm text-on-surface group-hover:text-[#00E5FF] transition-colors">comment.created</span>
+</label>
+</div>
+</div>
+<!-- Secret -->
+<div class="flex flex-col gap-2">
+<label class="font-body-sm text-body-sm text-on-surface-variant font-medium uppercase tracking-wider flex justify-between items-end">
+                        HMAC Secret
+                        <button class="text-[#00E5FF] hover:text-white transition-colors flex items-center gap-1 text-xs normal-case tracking-normal">
+<span class="material-symbols-outlined" style="font-size: 14px;">content_copy</span> Copy
+                        </button>
+</label>
+<div class="bg-[#0A0B0D] border border-[#2A2E3A] rounded p-3 font-code-md text-code-md text-on-surface-variant tracking-[0.2em]">
+                        ••••••••••••••••••••••••••••••••
+                    </div>
+<div class="mt-2 bg-[#93000a]/20 border border-[#93000a] text-[#ffb4ab] p-2 rounded flex items-center gap-2 font-body-sm text-body-sm">
+<span class="material-symbols-outlined" style="font-size: 16px;">warning</span>
+                        Save this secret — it cannot be recovered.
+                    </div>
+</div>
+</div>
+<footer class="p-lg border-t border-outline-variant flex justify-end gap-3 shrink-0 bg-[#1A1D24]">
+<button class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface px-4 py-2 border border-transparent hover:border-outline-variant rounded transition-colors" onclick="toggleModal()">Cancel</button>
+<button class="btn-primary font-body-md text-body-md font-medium px-4 py-2 rounded flex items-center gap-2">
+                    Register
+                </button>
+</footer>
+</aside>
+</main>
+<script>
+        function toggleModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const panel = document.getElementById('slidePanel');
+            
+            if (overlay.classList.contains('hidden')) {
+                // Open
+                overlay.classList.remove('hidden');
+                // Small delay to allow display:block to apply before animating opacity
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                    panel.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                // Close
+                overlay.classList.add('opacity-0');
+                panel.classList.add('translate-x-full');
+                // Wait for transition to finish before hiding
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            }
+        }
+    </script>
+</body></html>

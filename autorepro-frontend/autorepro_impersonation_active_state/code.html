@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Impersonation Active State - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-background": "#e3e2e5",
+                        "primary": "#c3f5ff",
+                        "tertiary": "#e9ecf9",
+                        "secondary-fixed": "#e3dfff",
+                        "surface-container-highest": "#343537",
+                        "secondary-container": "#3c28bf",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#343537",
+                        "on-secondary-fixed": "#140067",
+                        "inverse-on-surface": "#303033",
+                        "surface-container-lowest": "#0d0e10",
+                        "tertiary-fixed": "#dfe2ee",
+                        "secondary": "#c5c0ff",
+                        "on-surface-variant": "#bac9cc",
+                        "on-secondary-container": "#b2acff",
+                        "surface-container-low": "#1b1c1e",
+                        "surface": "#121315",
+                        "background": "#121315",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "primary-fixed": "#9cf0ff",
+                        "on-secondary": "#2500a2",
+                        "error-container": "#93000a",
+                        "inverse-surface": "#e3e2e5",
+                        "on-tertiary": "#2c303a",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-primary-fixed-variant": "#004f58",
+                        "on-primary-container": "#00626e",
+                        "outline": "#849396",
+                        "on-surface": "#e3e2e5",
+                        "tertiary-container": "#cdd0dc",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#38393b",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-tertiary-fixed": "#181c24",
+                        "surface-container-high": "#292a2c",
+                        "on-primary-fixed": "#001f24",
+                        "on-primary": "#00363d",
+                        "inverse-primary": "#006875",
+                        "surface-tint": "#00daf3",
+                        "primary-container": "#00e5ff",
+                        "surface-dim": "#121315",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "surface-container": "#1f2022",
+                        "on-tertiary-container": "#555963",
+                        "outline-variant": "#3b494c",
+                        "amber-accent": "#ffb020",
+                        "amber-bg": "rgba(255, 176, 32, 0.15)",
+                        "amber-overlay": "rgba(255, 176, 32, 0.05)"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "gutter": "16px",
+                        "margin-md": "24px",
+                        "container-max": "1440px",
+                        "margin-sm": "12px",
+                        "unit": "4px"
+                    },
+                    fontFamily: {
+                        "code-md": ["JetBrains Mono"],
+                        "display-metrics": ["Syne"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg": ["Syne"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-sm": ["DM Sans"],
+                        "headline-sm": ["Syne"]
+                    },
+                    fontSize: {
+                        "code-md": ["13px", { lineHeight: "1.5", letterSpacing: "0em", fontWeight: "400" }],
+                        "display-metrics": ["48px", { lineHeight: "1.1", letterSpacing: "0.05em", fontWeight: "700" }],
+                        "body-md": ["14px", { lineHeight: "1.4", letterSpacing: "-0.01em", fontWeight: "400" }],
+                        "headline-lg": ["32px", { lineHeight: "1.2", letterSpacing: "0.02em", fontWeight: "700" }],
+                        "label-caps": ["10px", { lineHeight: "1", letterSpacing: "0.1em", fontWeight: "700" }],
+                        "body-sm": ["12px", { lineHeight: "1.4", letterSpacing: "-0.01em", fontWeight: "400" }],
+                        "headline-sm": ["20px", { lineHeight: "1.2", letterSpacing: "0.02em", fontWeight: "700" }]
+                    },
+                    backgroundImage: {
+                        'dot-grid': 'radial-gradient(#3b494c 1px, transparent 1px)'
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0B0D; /* Dark base override */
+        }
+        .bg-dot-pattern {
+            background-image: radial-gradient(rgba(59, 73, 76, 0.4) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+        .impersonation-border-l { border-left: 2px solid #ffb020; }
+        .impersonation-border-r { border-right: 2px solid #ffb020; }
+        
+        .glow-cyan {
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        }
+        .glow-amber-text {
+            text-shadow: 0 0 8px rgba(255, 176, 32, 0.4);
+        }
+        
+        .metric-card {
+            background: #111318;
+            border: 1px solid #22262F;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md h-screen flex flex-col overflow-hidden">
+<!-- IMPERSONATION BANNER -->
+<div class="w-full flex items-center justify-between px-gutter py-2 bg-[rgba(255,140,0,0.15)] impersonation-border-l impersonation-border-r border-amber-accent border-b border-t border-b-outline-variant/30 border-t-outline-variant/30 z-50 shrink-0">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-amber-accent">warning</span>
+<span class="font-code-md text-code-md text-amber-accent glow-amber-text">Impersonating: alex.r@autorepro.dev (ORG_ADMIN)</span>
+</div>
+<div class="hidden md:block font-body-sm text-body-sm text-on-surface-variant">
+            All actions are being logged to the audit trail
+        </div>
+<div class="flex items-center gap-4">
+<span class="font-code-md text-code-md text-amber-accent">Session: 08:42</span>
+<button class="border border-error text-error px-4 py-1.5 rounded-DEFAULT font-label-caps text-label-caps hover:bg-error/10 transition-colors uppercase">
+                Exit Impersonation
+            </button>
+</div>
+</div>
+<div class="flex flex-1 overflow-hidden relative">
+<!-- SIDE NAV -->
+<aside class="hidden md:flex flex-col h-full w-64 left-0 top-0 border-r border-outline-variant bg-background shrink-0 relative">
+<div class="absolute inset-0 bg-[rgba(255,140,0,0.05)] pointer-events-none z-0"></div> <!-- Amber Impersonation Overlay -->
+<div class="p-6 relative z-10 flex flex-col gap-1 h-full">
+<div class="mb-8">
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-wider uppercase">AutoRepro</span>
+<div class="font-label-caps text-label-caps text-on-surface-variant mt-1">V2.04.1</div>
+</div>
+<div class="space-y-2 flex-1">
+<a class="flex items-center gap-3 py-2 px-4 border-l-2 border-primary bg-primary-container/10 text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">bug_report</span>
+<span class="font-body-md text-body-md">Bug Matrix</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-body-md text-body-md">Trace Logs</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">speed</span>
+<span class="font-body-md text-body-md">Systems Performance</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="font-body-md text-body-md">Network Map</span>
+</a>
+</div>
+<div class="mt-auto space-y-2">
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<button class="w-full border border-primary text-primary px-4 py-2 mt-4 font-label-caps text-label-caps uppercase hover:glow-cyan transition-all duration-300">
+                        New Instance
+                    </button>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background relative z-10">
+<!-- Background Texture -->
+<div class="absolute inset-0 bg-dot-pattern opacity-50 pointer-events-none z-0"></div>
+<!-- TOP APP BAR -->
+<header class="flex justify-between items-center px-gutter h-14 border-b border-outline-variant bg-surface/80 backdrop-blur-md shrink-0 relative z-20">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-sm text-headline-sm text-on-surface font-bold">ORG_ADMIN Dashboard</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">notifications</span>
+<div class="flex items-center gap-2 border-l border-outline-variant pl-4">
+<span class="bg-amber-accent/20 border border-amber-accent text-amber-accent font-label-caps text-label-caps px-2 py-0.5 rounded-sm">IMPERSONATION MODE</span>
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline overflow-hidden">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A futuristic digital avatar portrait of a technical systems administrator, set against a dark cybernetic background with subtle cyan lighting accents. The style is hyper-realistic and modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCViJsN92fDuk3vpxN0bxEf6D6Z6o1LwCUh71SUPDkesS20wj7-D5DGaxPNXXs0b30bnRfdO4EXLuzELvs8JAdlcgHYL8PCkdSqCMj0RwpFKy_BmwBWyAYKEKA4ynp6OeaEt937dyVccKpRWnGJUx4AddEmFBICl5aF2ZMjzBVVid40hyLEUmRFf6k4cbTpaP4qk9wzVqtlndjIsY7YT7CDryfhTw5AIsduAmqXYuS_C8nDflTN5DKGYCgF-VZy2pu3IY0JMc4_pX0"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SCROLLABLE CONTENT -->
+<div class="flex-1 overflow-y-auto p-6 relative z-10">
+<div class="max-w-container-max mx-auto space-y-6">
+<!-- METRICS BENTO GRID -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="metric-card p-4 rounded-DEFAULT">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Active Bugs</div>
+<div class="font-display-metrics text-display-metrics text-primary">142</div>
+<div class="font-code-md text-code-md text-error mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> 12% vs last week
+                            </div>
+</div>
+<div class="metric-card p-4 rounded-DEFAULT">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Avg Triage Time</div>
+<div class="font-display-metrics text-display-metrics text-on-surface">1h 45m</div>
+<div class="font-code-md text-code-md text-primary mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span> 8% improvement
+                            </div>
+</div>
+<div class="metric-card p-4 rounded-DEFAULT">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase">Success Rate</div>
+<div class="font-display-metrics text-display-metrics text-on-surface">99.9%</div>
+<div class="font-code-md text-code-md text-on-surface-variant mt-2 flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-primary rounded-none"></span> Optimal
+                            </div>
+</div>
+<div class="metric-card p-4 rounded-DEFAULT border-amber-accent/30 bg-amber-accent/5">
+<div class="font-label-caps text-label-caps text-amber-accent mb-2 uppercase">Active Nodes</div>
+<div class="font-display-metrics text-display-metrics text-amber-accent glow-amber-text">8,042</div>
+<div class="font-code-md text-code-md text-amber-accent mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">admin_panel_settings</span> Elevated Access
+                            </div>
+</div>
+</div>
+<!-- TWO COL LAYOUT -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- AutoRepro Jobs Monitor -->
+<div class="lg:col-span-1 metric-card rounded-DEFAULT flex flex-col">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-sm text-headline-sm">AutoRepro Jobs</h2>
+<span class="material-symbols-outlined text-primary text-[18px]">autorenew</span>
+</div>
+<div class="p-4 space-y-4">
+<div>
+<div class="flex justify-between font-code-md text-code-md mb-1">
+<span class="text-on-surface">Data Replication #492</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-none">
+<div class="h-full bg-primary" style="width: 85%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-code-md text-code-md mb-1">
+<span class="text-on-surface">Index Rebuild [Cluster B]</span>
+<span class="text-amber-accent">42%</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-none">
+<div class="h-full bg-amber-accent" style="width: 42%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-code-md text-code-md mb-1">
+<span class="text-on-surface">Sanitization Protocol</span>
+<span class="text-on-surface-variant">Queued</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-none">
+<div class="h-full bg-surface-variant" style="width: 0%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Incidents Table -->
+<div class="lg:col-span-2 metric-card rounded-DEFAULT overflow-hidden">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-sm text-headline-sm">Recent Incidents</h2>
+<button class="font-label-caps text-label-caps text-primary border border-primary px-3 py-1 hover:bg-primary/10 transition-colors uppercase">View All</button>
+</div>
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container/50">
+<th class="p-3 font-label-caps text-label-caps text-on-surface-variant font-normal">ID</th>
+<th class="p-3 font-label-caps text-label-caps text-on-surface-variant font-normal">Severity</th>
+<th class="p-3 font-label-caps text-label-caps text-on-surface-variant font-normal">Component</th>
+<th class="p-3 font-label-caps text-label-caps text-on-surface-variant font-normal">Status</th>
+<th class="p-3 font-label-caps text-label-caps text-on-surface-variant font-normal">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-high transition-colors cursor-pointer">
+<td class="p-3 font-code-md text-code-md text-primary">INC-092</td>
+<td class="p-3">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-error rounded-none"></span> Critical
+                                            </div>
+</td>
+<td class="p-3">Auth Service</td>
+<td class="p-3"><span class="px-2 py-0.5 border border-error text-error text-[10px] uppercase font-code-md">Investigating</span></td>
+<td class="p-3 font-code-md text-on-surface-variant">10m ago</td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-high transition-colors cursor-pointer">
+<td class="p-3 font-code-md text-code-md text-primary">INC-091</td>
+<td class="p-3">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-amber-accent rounded-none"></span> High
+                                            </div>
+</td>
+<td class="p-3">Database Replica</td>
+<td class="p-3"><span class="px-2 py-0.5 border border-amber-accent text-amber-accent text-[10px] uppercase font-code-md">Mitigated</span></td>
+<td class="p-3 font-code-md text-on-surface-variant">45m ago</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors cursor-pointer">
+<td class="p-3 font-code-md text-code-md text-primary">INC-090</td>
+<td class="p-3">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-secondary rounded-none"></span> Low
+                                            </div>
+</td>
+<td class="p-3">UI Dashboard</td>
+<td class="p-3"><span class="px-2 py-0.5 border border-primary text-primary text-[10px] uppercase font-code-md">Resolved</span></td>
+<td class="p-3 font-code-md text-on-surface-variant">2h ago</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- TOAST NOTIFICATION -->
+<div class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#111318] border border-amber-accent p-4 shadow-lg impersonation-border-l">
+<span class="material-symbols-outlined text-amber-accent">visibility</span>
+<div class="font-body-sm text-body-sm text-on-surface">
+            You are now impersonating <span class="font-code-md text-amber-accent">alex.r</span> — all actions logged
+        </div>
+<button class="ml-4 text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</body></html>

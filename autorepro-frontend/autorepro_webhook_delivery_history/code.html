@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Webhook Delivery History - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#2c303a",
+                        "surface-container": "#1f2022",
+                        "surface-container-low": "#1b1c1e",
+                        "on-primary-fixed": "#001f24",
+                        "surface-container-lowest": "#0d0e10",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-tertiary-fixed": "#181c24",
+                        "surface-container-high": "#292a2c",
+                        "background": "#121315",
+                        "surface-dim": "#121315",
+                        "tertiary-container": "#cdd0dc",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "inverse-primary": "#006875",
+                        "on-tertiary-container": "#555963",
+                        "on-primary-fixed-variant": "#004f58",
+                        "tertiary": "#e9ecf9",
+                        "primary-fixed": "#9cf0ff",
+                        "on-primary-container": "#00626e",
+                        "on-background": "#e3e2e5",
+                        "inverse-surface": "#e3e2e5",
+                        "surface-container-highest": "#343537",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-secondary-fixed": "#140067",
+                        "surface-tint": "#00daf3",
+                        "on-secondary": "#2500a2",
+                        "surface-variant": "#343537",
+                        "secondary": "#c5c0ff",
+                        "primary-container": "#00e5ff",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "primary": "#c3f5ff",
+                        "outline-variant": "#3b494c",
+                        "on-secondary-container": "#b2acff",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#849396",
+                        "surface-bright": "#38393b",
+                        "secondary-fixed": "#e3dfff",
+                        "surface": "#121315",
+                        "tertiary-fixed": "#dfe2ee",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "on-surface-variant": "#bac9cc",
+                        "on-surface": "#e3e2e5",
+                        "on-primary": "#00363d",
+                        "secondary-container": "#3c28bf",
+                        "inverse-on-surface": "#303033",
+                        "tertiary-fixed-dim": "#c3c6d2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-sm": "12px",
+                        "gutter": "16px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-md": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["DM Sans"],
+                        "code-md": ["JetBrains Mono"],
+                        "headline-sm": ["Syne"],
+                        "display-metrics": ["Syne"],
+                        "body-md": ["DM Sans"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0A0B0D; color: #e3e2e5; }
+        .cyber-border { border: 1px solid #22262F; }
+        .cyber-border-primary { border: 1px solid #00e5ff; }
+        .cyber-hover:hover { border-color: #00e5ff; box-shadow: 0 0 8px rgba(0, 229, 255, 0.4); }
+        .cyber-glow { background-color: rgba(0, 229, 255, 0.12); border-left: 2px solid #00e5ff; }
+        .bg-panel { background-color: #111318; }
+        
+        /* Scrollbar styles */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #343537; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555963; }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex bg-background font-body-md text-on-surface">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full py-margin-md bg-surface-container-lowest border-r border-outline-variant w-64 shrink-0 z-10">
+<div class="px-margin-md mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="bug_report">bug_report</span>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-primary tracking-tight">AutoRepro</h1>
+<p class="font-code-md text-code-md text-on-surface-variant text-[10px]">v4.2.0-stable</p>
+</div>
+</div>
+<div class="px-margin-md mb-6">
+<button class="w-full py-2 px-4 cyber-border cyber-hover text-primary font-label-caps text-label-caps transition-all duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="add">add</span> New Report
+            </button>
+</div>
+<div class="flex-1 flex flex-col gap-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-margin-md py-3 text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps">Command Center</span>
+</a>
+<a class="flex items-center gap-3 px-margin-md py-3 text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="bug_report">bug_report</span>
+<span class="font-label-caps text-label-caps">Bug Matrix</span>
+</a>
+<a class="flex items-center gap-3 px-margin-md py-3 text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="history_edu">history_edu</span>
+<span class="font-label-caps text-label-caps">Trace Logs</span>
+</a>
+<a class="flex items-center gap-3 px-margin-md py-3 text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="insights">insights</span>
+<span class="font-label-caps text-label-caps">Systems Performance</span>
+</a>
+<a class="flex items-center gap-3 px-margin-md py-3 text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps">Network Map</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-1 pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-margin-md py-3 border-l-2 border-primary bg-primary/10 text-primary font-bold translate-x-1" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-margin-md py-3 text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area (Blurred Background Context) -->
+<main class="flex-1 relative overflow-hidden bg-background">
+<!-- TopAppBar (Simulated behind blur) -->
+<header class="flex justify-between items-center w-full px-margin-md h-16 bg-surface-container-low border-b border-outline-variant z-0 absolute top-0 w-full blur-sm opacity-50">
+<div class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">AutoRepro Settings</div>
+</header>
+<!-- Dummy Content for Context -->
+<div class="p-8 pt-24 h-full overflow-y-auto blur-sm opacity-50 pointer-events-none">
+<h2 class="font-headline-lg text-headline-lg mb-6">Webhooks</h2>
+<div class="space-y-4">
+<div class="cyber-border bg-surface-container p-4 rounded">
+<div class="flex justify-between items-center mb-2">
+<span class="font-code-md text-code-md font-bold text-primary">Production Slack Notifier</span>
+<span class="text-on-surface-variant font-code-md text-[12px]">https://example.com/webhook/slack/T000...</span>
+</div>
+<div class="flex gap-2">
+<span class="px-2 py-1 cyber-border text-[10px] text-secondary">job.completed</span>
+<span class="px-2 py-1 cyber-border text-[10px] text-secondary">bug.assigned</span>
+</div>
+</div>
+<!-- More dummy cards -->
+<div class="cyber-border bg-surface-container p-4 rounded opacity-70"></div>
+<div class="cyber-border bg-surface-container p-4 rounded opacity-70"></div>
+</div>
+</div>
+<!-- Slide-over Panel -->
+<div class="absolute top-0 right-0 h-full w-[520px] bg-panel border-l border-white/10 shadow-2xl flex flex-col z-50 transform transition-transform duration-300 translate-x-0">
+<!-- Panel Header -->
+<div class="px-6 py-5 border-b border-outline-variant shrink-0 relative">
+<button class="absolute top-5 right-5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+<h2 class="font-headline-sm text-headline-sm mb-1 text-on-surface">Delivery History</h2>
+<p class="font-code-md text-code-md text-on-surface-variant mb-6 text-sm">Production Slack Notifier</p>
+<!-- Filter Tabs -->
+<div class="flex gap-6 border-b border-outline-variant">
+<button class="pb-3 px-1 font-label-caps text-label-caps text-primary border-b-2 border-primary">All</button>
+<button class="pb-3 px-1 font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors">Success</button>
+<button class="pb-3 px-1 font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors">Failed</button>
+</div>
+</div>
+<!-- Delivery List (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-6 space-y-4">
+<!-- Row 1: Success -->
+<div class="cyber-border p-4 hover:bg-surface-container-low transition-colors group">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 bg-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.6)]"></div>
+<span class="px-2 py-0.5 cyber-border text-secondary font-code-md text-[11px]">job.completed</span>
+</div>
+<div class="text-right">
+<span class="font-code-md text-code-md text-[#00E5FF]">200 OK</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between text-on-surface-variant font-code-md text-[12px]">
+<span>Oct 24, 2024 14:36:33</span>
+<span>142ms</span>
+</div>
+<div class="mt-3 hidden group-hover:flex justify-end border-t border-outline-variant pt-2">
+<button class="text-primary font-label-caps text-[10px] hover:underline flex items-center gap-1">
+                            View Payload <span class="material-symbols-outlined text-[12px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Row 2: Success -->
+<div class="cyber-border p-4 hover:bg-surface-container-low transition-colors group">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 bg-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.6)]"></div>
+<span class="px-2 py-0.5 cyber-border text-secondary font-code-md text-[11px]">bug.assigned</span>
+</div>
+<div class="text-right">
+<span class="font-code-md text-code-md text-[#00E5FF]">200 OK</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between text-on-surface-variant font-code-md text-[12px]">
+<span>Oct 24, 14:15:22</span>
+<span>89ms</span>
+</div>
+<div class="mt-3 hidden group-hover:flex justify-end border-t border-outline-variant pt-2">
+<button class="text-primary font-label-caps text-[10px] hover:underline flex items-center gap-1">
+                            View Payload <span class="material-symbols-outlined text-[12px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Row 3: Failed (Expanded) -->
+<div class="cyber-border border-error/30 bg-error-container/5 p-4">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 bg-error shadow-[0_0_8px_rgba(255,180,171,0.6)]"></div>
+<span class="px-2 py-0.5 cyber-border text-secondary font-code-md text-[11px]">bug.created</span>
+</div>
+<div class="text-right">
+<span class="font-code-md text-code-md text-error">500 ERR</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between text-on-surface-variant font-code-md text-[12px]">
+<span>Oct 24, 13:50:09</span>
+<span>3002ms</span>
+</div>
+<!-- Expanded Error Detail -->
+<div class="mt-4 p-3 bg-surface-container-low cyber-border border-error/20 font-code-md text-[11px] text-error">
+<p class="mb-1">Connection timeout after 3000ms.</p>
+<p class="text-on-surface-variant break-all">Target: https://example.com/webhook/slack/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX</p>
+</div>
+<div class="mt-4 flex justify-end gap-3 border-t border-outline-variant pt-3">
+<button class="text-on-surface-variant font-label-caps text-[10px] hover:text-on-surface transition-colors">
+                            View Error
+                        </button>
+<button class="px-3 py-1 cyber-border cyber-hover text-primary font-label-caps text-[10px] transition-all">
+                            Retry
+                        </button>
+</div>
+</div>
+<!-- Row 4: Failed -->
+<div class="cyber-border p-4 hover:bg-surface-container-low transition-colors group">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 bg-error shadow-[0_0_8px_rgba(255,180,171,0.6)]"></div>
+<span class="px-2 py-0.5 cyber-border text-secondary font-code-md text-[11px]">job.failed</span>
+</div>
+<div class="text-right">
+<span class="font-code-md text-code-md text-error">404 NOT FOUND</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between text-on-surface-variant font-code-md text-[12px]">
+<span>Oct 24, 12:30:00</span>
+<span>201ms</span>
+</div>
+<div class="mt-3 hidden group-hover:flex justify-end gap-3 border-t border-outline-variant pt-2">
+<button class="text-on-surface-variant font-label-caps text-[10px] hover:text-on-surface transition-colors">
+                            View Error
+                        </button>
+<button class="text-primary font-label-caps text-[10px] hover:underline">
+                            Retry
+                        </button>
+</div>
+</div>
+<!-- Row 5: Success -->
+<div class="cyber-border p-4 hover:bg-surface-container-low transition-colors group">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 bg-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.6)]"></div>
+<span class="px-2 py-0.5 cyber-border text-secondary font-code-md text-[11px]">bug.created</span>
+</div>
+<div class="text-right">
+<span class="font-code-md text-code-md text-[#00E5FF]">200 OK</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between text-on-surface-variant font-code-md text-[12px]">
+<span>Oct 24, 11:00:45</span>
+<span>95ms</span>
+</div>
+<div class="mt-3 hidden group-hover:flex justify-end border-t border-outline-variant pt-2">
+<button class="text-primary font-label-caps text-[10px] hover:underline flex items-center gap-1">
+                            View Payload <span class="material-symbols-outlined text-[12px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Panel Footer -->
+<div class="px-6 py-4 border-t border-outline-variant shrink-0 flex items-center justify-between bg-surface-container-lowest">
+<span class="font-code-md text-[11px] text-on-surface-variant">Showing 5 of 142 deliveries</span>
+<button class="text-primary font-label-caps text-label-caps hover:text-primary-container transition-colors">
+                    Load more
+                </button>
+</div>
+</div>
+</main>
+</body></html>

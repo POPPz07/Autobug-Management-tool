@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manager Oversight Dashboard - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=DM+Sans:wght@400;500;700&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#c3f5ff",
+                        "tertiary-container": "#cdd0dc",
+                        "surface-dim": "#121315",
+                        "error-container": "#93000a",
+                        "on-secondary": "#2500a2",
+                        "surface-container-low": "#1b1c1e",
+                        "on-primary-container": "#00626e",
+                        "error": "#ffb4ab",
+                        "tertiary": "#e9ecf9",
+                        "surface-variant": "#343537",
+                        "outline": "#849396",
+                        "tertiary-fixed": "#dfe2ee",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "inverse-surface": "#e3e2e5",
+                        "on-tertiary": "#2c303a",
+                        "primary-fixed": "#9cf0ff",
+                        "on-surface-variant": "#bac9cc",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#00daf3",
+                        "outline-variant": "#3b494c",
+                        "surface-container-highest": "#343537",
+                        "on-background": "#e3e2e5",
+                        "on-surface": "#e3e2e5",
+                        "on-tertiary-fixed": "#181c24",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-tertiary-container": "#555963",
+                        "inverse-on-surface": "#303033",
+                        "surface-bright": "#38393b",
+                        "on-secondary-container": "#b2acff",
+                        "secondary-container": "#3c28bf",
+                        "primary-container": "#00e5ff",
+                        "secondary-fixed": "#e3dfff",
+                        "surface": "#121315",
+                        "background": "#121315",
+                        "on-secondary-fixed": "#140067",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "secondary": "#c5c0ff",
+                        "surface-tint": "#00daf3",
+                        "on-primary-fixed-variant": "#004f58",
+                        "on-primary": "#00363d",
+                        "surface-container-high": "#292a2c",
+                        "surface-container-lowest": "#0d0e10",
+                        "on-primary-fixed": "#001f24",
+                        "surface-container": "#1f2022",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "on-error": "#690005",
+                        "inverse-primary": "#006875"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-md": "24px",
+                        "container-max": "1440px",
+                        "margin-sm": "12px",
+                        "gutter": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "body-md": ["DM Sans"],
+                        "headline-lg": ["Syne"],
+                        "headline-sm": ["Syne"],
+                        "display-metrics": ["Syne"],
+                        "code-md": ["JetBrains Mono"],
+                        "body-sm": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0A0B0D; color: #e3e2e5; margin: 0; padding: 0; overflow-x: hidden; }
+        .glass-panel { background: rgba(17, 19, 24, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.07); }
+        .cyber-border { border: 1px solid #22262F; }
+        .cyber-border-focus { border: 1px solid #00E5FF; box-shadow: 0 0 8px rgba(0, 229, 255, 0.2); }
+        .glow-text { text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+        .status-dot { width: 6px; height: 6px; display: inline-block; }
+        
+        /* Custom Scrollbar for data density */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #343537; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00E5FF; }
+
+        /* Typography utility classes mapped to config */
+        .font-headline-lg { font-family: 'Syne', sans-serif; font-size: 32px; line-height: 1.2; letter-spacing: 0.02em; font-weight: 700; }
+        .font-headline-sm { font-family: 'Syne', sans-serif; font-size: 20px; line-height: 1.2; letter-spacing: 0.02em; font-weight: 700; }
+        .font-display-metrics { font-family: 'Syne', sans-serif; font-size: 48px; line-height: 1.1; letter-spacing: 0.05em; font-weight: 700; }
+        .font-body-md { font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.4; letter-spacing: -0.01em; font-weight: 400; }
+        .font-body-sm { font-family: 'DM Sans', sans-serif; font-size: 12px; line-height: 1.4; letter-spacing: -0.01em; font-weight: 400; }
+        .font-label-caps { font-family: 'JetBrains Mono', monospace; font-size: 10px; line-height: 1; letter-spacing: 0.1em; font-weight: 700; text-transform: uppercase; }
+        .font-code-md { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; letter-spacing: 0em; font-weight: 400; }
+    </style>
+</head>
+<body class="flex h-screen w-full antialiased font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar & Sidebar Layout Container -->
+<div class="flex w-full h-full">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full py-margin-md bg-surface-container-lowest dark:bg-surface-container-lowest text-primary dark:text-primary docked left-0 h-screen w-64 border-r border-outline-variant flex-shrink-0 z-20">
+<!-- Header -->
+<div class="px-margin-md mb-8">
+<div class="flex items-center gap-3 mb-2">
+<img alt="AutoRepro Logo" class="w-8 h-8 rounded-DEFAULT border border-outline-variant" data-alt="A stylized, glowing geometric logo representing a tech platform, rendered in deep blacks and bright cyan accents. The design is sleek, modern, and minimalist, typical of high-end developer tools. Lit with a cool, clinical light to emphasize precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcogC5pLBeZyG6R65SyHxfITPh5IW5_r2_kAIpJIEHiif4yCKtBy-D-fdG0fGbLWGUhFvj1p6kWxwqA2Gdj7TBHsNROdlqUPsz3pv6UfX5cek-cKXcWeQ5Dehl1mQFbhS3ufqRtYmF1IO-xnD17PmzfiLY4y5hc5BHdprE7WXBrc9d4q1pw6VGiPfoLHi5EB-U7N_zelN9LfZea0nEjBGThoaaVDySCFt2t75F5YAU9DtsHVvhjw-9Xof0IpmKitCB2KjY-01SEko"/>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-primary m-0">AutoRepro</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant m-0">v4.2.0-stable</p>
+</div>
+</div>
+<button class="w-full mt-4 py-2 px-4 border border-outline-variant hover:border-primary-container rounded text-primary transition-all duration-200 font-label-caps text-label-caps flex items-center justify-center gap-2 group relative overflow-hidden">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                    New Report
+                    <div class="absolute inset-0 bg-primary-container/10 translate-y-full group-hover:translate-y-0 transition-transform duration-200"></div>
+</button>
+</div>
+<!-- Main Nav Links -->
+<div class="flex-1 overflow-y-auto px-margin-sm space-y-1">
+<!-- Active: Command Center -> Mapping to Dashboard -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT border-l-2 border-primary bg-primary/10 text-primary font-bold font-body-sm text-body-sm transition-all duration-150 translate-x-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                    Command Center
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">bug_report</span>
+                    Bug Matrix
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+                    Trace Logs
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">insights</span>
+                    Systems Performance
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined">hub</span>
+                    Network Map
+                </a>
+</div>
+<!-- Footer Nav -->
+<div class="px-margin-sm mt-auto pt-4 border-t border-outline-variant/30 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-DEFAULT text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-DEFAULT text-on-surface-variant border-l-2 border-transparent hover:bg-surface-container-high hover:text-primary transition-all duration-150 font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+                    Logout
+                </a>
+</div>
+<!-- Supervisor Profile Bottom -->
+<div class="px-margin-md mt-6 pb-2">
+<div class="flex items-center gap-3 p-3 rounded bg-surface-container-high/50 border border-outline-variant/50">
+<img alt="Sarah Connor" class="w-10 h-10 rounded-full border border-primary/30" data-alt="A professional headshot of a female tech supervisor, looking confidently at the camera. The lighting is modern and dramatic, with a subtle cyan rim light emphasizing a high-tech, cyber-minimalist environment. The background is deep, dark gray." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKvLlh8CfOFNzDcHWVePj5Jb8jXXtAl7rT5K0Tf6XyNroMwlQJ0LsBh0Mr34C3PvirFwgHaiKgj-abWY3OPbSG3omc-HyhuakAlSG-x-Lj12r-aE0KzvrVjT_eGv6br0v60GW_tgtUfUw2-8I98vV41D8YHQu8Ec_TQGE4nYmDRXXKdsW3j6beW4bUDHqeZugccFJ0OTqqhnU1FKcz5FoMSHkv8BF4Ec2wa63wGouqQ_ISqhrrrwgxSVYbhQOimIEBBUWtzs4b-lw"/>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md text-on-surface m-0 truncate">Sarah Connor</p>
+<span class="inline-block mt-1 px-1.5 py-0.5 rounded bg-[#3c28bf]/20 border border-[#3c28bf]/50 text-[#b2acff] font-label-caps text-[8px]">SUPERVISOR</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden bg-background relative z-10">
+<!-- TopAppBar -->
+<header class="bg-surface-container-low dark:bg-surface-container-low flex justify-between items-center w-full px-margin-md h-16 border-b border-outline-variant flex-shrink-0">
+<!-- Left: Title & Context -->
+<div class="flex flex-col">
+<div class="flex items-center gap-3">
+<button class="md:hidden text-on-surface-variant hover:text-primary p-1">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary tracking-tight m-0">Team Overview</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant m-0 hidden md:block">Good morning, Sarah.</p>
+</div>
+<!-- Right: Actions & Date Picker -->
+<div class="flex items-center gap-4">
+<!-- Date Picker Mock -->
+<div class="hidden sm:flex items-center bg-surface-container p-1 rounded border border-outline-variant/50">
+<button class="px-3 py-1 text-on-surface-variant hover:text-primary font-body-sm text-body-sm rounded transition-colors">Today</button>
+<button class="px-3 py-1 bg-surface-container-high text-primary font-bold font-body-sm text-body-sm rounded border border-outline-variant/30 shadow-sm">This Week</button>
+<button class="px-3 py-1 text-on-surface-variant hover:text-primary font-body-sm text-body-sm rounded transition-colors">Month</button>
+</div>
+<div class="h-6 w-px bg-outline-variant mx-2 hidden sm:block"></div>
+<!-- Actions -->
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 relative group">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-primary-container rounded-full group-hover:shadow-[0_0_8px_rgba(0,229,255,0.8)]"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 hidden sm:block">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+<img alt="Engineer Profile" class="w-8 h-8 rounded-full border border-outline-variant sm:hidden" data-alt="A professional headshot of a female tech supervisor, looking confidently at the camera. The lighting is modern and dramatic, with a subtle cyan rim light emphasizing a high-tech, cyber-minimalist environment. The background is deep, dark gray." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxU8vhSRVG3tShh8-6z0mkq36BlAAMe438gqOzVSvaibc1D_AGL_P3XQGSnAnUqVVWdcrsGZqBdq8rRQRKa1aUqzvVaeSeOj4xpT8dbubUGF3JtURIElhidqLr7iskL2IAP33vIqwHqXavGgTgqCCjp-V7P_YMlEKE-5O-lqT2aI2skyUeSBjqouVPNTQdzPieUzLCrFox4YC6X9HJIwAhsstEi4-WPSO5hQ1mS4yNV8HKgsRpMV4ao5lCyS07uTIBhGIHuvckdts"/>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto p-4 md:p-margin-md">
+<div class="max-w-container-max mx-auto space-y-gutter">
+<!-- Row 1: Metrics (Bento Grid Style) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Metric 1 -->
+<div class="glass-panel rounded-DEFAULT p-4 relative overflow-hidden group hover:border-outline transition-colors">
+<div class="absolute top-0 left-0 w-full h-[2px] bg-[#FFB347]"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-on-surface-variant">Team Bugs Open</span>
+<span class="material-symbols-outlined text-[#FFB347] text-[18px]">bug_report</span>
+</div>
+<div class="font-display-metrics text-on-surface mt-2">34</div>
+</div>
+<!-- Metric 2 -->
+<div class="glass-panel rounded-DEFAULT p-4 relative overflow-hidden group hover:border-outline transition-colors">
+<div class="absolute top-0 left-0 w-full h-[2px] bg-primary-container"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-on-surface-variant">Avg Resolution Time</span>
+<span class="material-symbols-outlined text-primary-container text-[18px]">timer</span>
+</div>
+<div class="font-display-metrics text-on-surface mt-2">6.2 <span class="text-headline-sm text-on-surface-variant">hrs</span></div>
+<div class="mt-3 font-body-sm text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+                                1.4hrs slower than last week
+                            </div>
+</div>
+<!-- Metric 3 -->
+<div class="glass-panel rounded-DEFAULT p-4 relative overflow-hidden group hover:border-outline transition-colors">
+<div class="absolute top-0 left-0 w-full h-[2px] bg-[#4CAF50]"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-on-surface-variant">AutoRepro Success</span>
+<span class="material-symbols-outlined text-[#4CAF50] text-[18px]">check_circle</span>
+</div>
+<div class="font-display-metrics text-on-surface mt-2">91<span class="text-headline-sm text-on-surface-variant">%</span></div>
+<div class="mt-3 font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-[#4CAF50] rounded-sm inline-block"></span>
+                                Stable trend
+                            </div>
+</div>
+<!-- Metric 4 -->
+<div class="glass-panel rounded-DEFAULT p-4 relative overflow-hidden group hover:border-error-container transition-colors">
+<div class="absolute top-0 left-0 w-full h-[2px] bg-error"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-on-surface-variant">Blocked Bugs</span>
+<span class="material-symbols-outlined text-error text-[18px]">block</span>
+</div>
+<div class="font-display-metrics text-error mt-2">7</div>
+<div class="mt-3 inline-flex items-center gap-1 px-2 py-0.5 rounded bg-error-container/20 border border-error/30 text-error font-label-caps text-[9px]">
+                                Needs attention
+                            </div>
+</div>
+</div>
+<!-- Row 2: Team Workload Table -->
+<div class="glass-panel rounded-DEFAULT overflow-hidden">
+<div class="p-4 border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-headline-sm text-on-surface m-0">Team Workload</h3>
+<button class="text-primary hover:text-primary-container font-label-caps transition-colors flex items-center gap-1">
+                                View Full Roster <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/30 bg-surface-container-low/50">
+<th class="p-3 font-label-caps text-on-surface-variant font-normal">Member</th>
+<th class="p-3 font-label-caps text-on-surface-variant font-normal hidden sm:table-cell">Role</th>
+<th class="p-3 font-label-caps text-on-surface-variant font-normal text-right">Assigned</th>
+<th class="p-3 font-label-caps text-on-surface-variant font-normal text-right">In Progress</th>
+<th class="p-3 font-label-caps text-on-surface-variant font-normal text-right hidden md:table-cell">Resolved (Wk)</th>
+<th class="p-3 font-label-caps text-on-surface-variant font-normal w-1/4">Capacity Load</th>
+</tr>
+</thead>
+<tbody class="font-body-sm">
+<!-- Member 1 (High Load) -->
+<tr class="border-b border-outline-variant/20 hover:bg-[#1A1D24] transition-colors group">
+<td class="p-3">
+<div class="flex items-center gap-3">
+<img alt="Alex Chen" class="w-8 h-8 rounded-full border border-error/50 grayscale group-hover:grayscale-0 transition-all" data-alt="A small, circular avatar portrait of a male software engineer with short dark hair, looking focused. High-contrast cyber aesthetic, dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYZxXtVfKgHGJoY9Cf5FWsaD0lxS4HW9t0Ng7g-PWaZ0lBs8xgaqC3apH4Pz9SuxtZ0_m8YS_2HiiVHqjJglYuGxTrfU1R1gyw9kZY4CltmzL8gKn1wBnQiRnQY7ripBZuc3-5XxTJowcVy1IFN6VYVioNnoXGMxzxd9JFHeABZl_lbJxNv-0Y7w8DVe56RUyQa3BD0dprmvReD_XTR0Jd6ud2VnTxpHApqfSBfgDKzDd9hKG0LK062tUt1RV5Ouoaf1oAr23e8as"/>
+<span class="text-on-surface font-code-md">Alex Chen</span>
+</div>
+</td>
+<td class="p-3 hidden sm:table-cell"><span class="px-2 py-0.5 rounded border border-[#849396]/30 text-outline font-label-caps text-[9px]">L3 ENG</span></td>
+<td class="p-3 text-right font-code-md">14</td>
+<td class="p-3 text-right font-code-md text-error">8</td>
+<td class="p-3 text-right font-code-md hidden md:table-cell">3</td>
+<td class="p-3">
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden border border-outline-variant/20">
+<div class="bg-error h-full shadow-[0_0_8px_rgba(255,180,171,0.5)]" style="width: 85%"></div>
+</div>
+<div class="text-[10px] text-error mt-1 text-right font-code-md">85%</div>
+</td>
+</tr>
+<!-- Member 2 (Med Load) -->
+<tr class="border-b border-outline-variant/20 hover:bg-[#1A1D24] transition-colors group">
+<td class="p-3">
+<div class="flex items-center gap-3">
+<img alt="Maria Rossi" class="w-8 h-8 rounded-full border border-[#FFB347]/50 grayscale group-hover:grayscale-0 transition-all" data-alt="A small, circular avatar portrait of a female quality assurance tester. Bright, confident expression. High-contrast cyber aesthetic, dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjEu6idDwANJ6TF5nv_FrepK8sbRanXlkYTG7L_CBFWobw6L_GKc8cVx-dQUat3HTj1Jomnlip5H6xgS2L7JXUeJTyn3uZjlZo9PQLaP8dcew_BiUFhmcRWjv8svy7yHe4_DObLaTj3ILBM7j3-zlhs6T7HkuQwyfXUbXWU5PiU6jI1-KMXFyOoUAvvivS0Pjbd_Wrr_XS5KhR-PzpqpGa_FcrXv4mZU9b8btqdYLN5pKw7ul04v2StD61lHGu9kV6ZNjMV77e0uk"/>
+<span class="text-on-surface font-code-md">Maria Rossi</span>
+</div>
+</td>
+<td class="p-3 hidden sm:table-cell"><span class="px-2 py-0.5 rounded border border-[#849396]/30 text-outline font-label-caps text-[9px]">QA LEAD</span></td>
+<td class="p-3 text-right font-code-md">9</td>
+<td class="p-3 text-right font-code-md text-[#FFB347]">4</td>
+<td class="p-3 text-right font-code-md hidden md:table-cell">12</td>
+<td class="p-3">
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden border border-outline-variant/20">
+<div class="bg-[#FFB347] h-full" style="width: 65%"></div>
+</div>
+<div class="text-[10px] text-[#FFB347] mt-1 text-right font-code-md">65%</div>
+</td>
+</tr>
+<!-- Member 3 (Low Load) -->
+<tr class="border-b border-outline-variant/20 hover:bg-[#1A1D24] transition-colors group">
+<td class="p-3">
+<div class="flex items-center gap-3">
+<img alt="John Doe" class="w-8 h-8 rounded-full border border-[#4CAF50]/50 grayscale group-hover:grayscale-0 transition-all" data-alt="A small, circular avatar portrait of a male devops engineer. Serious expression. High-contrast cyber aesthetic, dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfH4yUrOAq7exYawfVy4JW8PcaZ-ZOupnGd2mdzaK8gyuOUNbaAn7OyfZx_VgTN5GkIBmBR9GkHBvN0WP9u88FPeZTbArVc30eFGxj7U8TkggtP_sZAbkXCumA4qh5RM96NEkpk1n8ePo_wLtcD2AdS-pTlgTQO113xMR2rPJvlpYa4d6P--xDODFOeDgkP3QoYxNmfYb3ug8wj1MwF_iXVgWQqdzJ-8tAL_ViVHJnl1JuiIvnZBiiEEyQB5LmqayDVRNM9QPYDzc"/>
+<span class="text-on-surface font-code-md">David Kim</span>
+</div>
+</td>
+<td class="p-3 hidden sm:table-cell"><span class="px-2 py-0.5 rounded border border-[#849396]/30 text-outline font-label-caps text-[9px]">L2 ENG</span></td>
+<td class="p-3 text-right font-code-md">4</td>
+<td class="p-3 text-right font-code-md text-[#4CAF50]">2</td>
+<td class="p-3 text-right font-code-md hidden md:table-cell">18</td>
+<td class="p-3">
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden border border-outline-variant/20">
+<div class="bg-[#4CAF50] h-full" style="width: 30%"></div>
+</div>
+<div class="text-[10px] text-[#4CAF50] mt-1 text-right font-code-md">30%</div>
+</td>
+</tr>
+<!-- Member 4 (Optimal Load) -->
+<tr class="hover:bg-[#1A1D24] transition-colors group">
+<td class="p-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full border border-primary/50 bg-primary/10 flex items-center justify-center text-primary font-code-md">
+                                                    EK
+                                                </div>
+<span class="text-on-surface font-code-md">Elena K.</span>
+</div>
+</td>
+<td class="p-3 hidden sm:table-cell"><span class="px-2 py-0.5 rounded border border-[#3c28bf]/30 text-[#b2acff] font-label-caps text-[9px]">ARCHITECT</span></td>
+<td class="p-3 text-right font-code-md">6</td>
+<td class="p-3 text-right font-code-md text-primary">3</td>
+<td class="p-3 text-right font-code-md hidden md:table-cell">5</td>
+<td class="p-3">
+<div class="w-full bg-surface-container rounded-full h-1.5 overflow-hidden border border-outline-variant/20">
+<div class="bg-primary h-full" style="width: 45%"></div>
+</div>
+<div class="text-[10px] text-primary mt-1 text-right font-code-md">45%</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Row 3: Split Panels -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter pb-8">
+<!-- Left Panel: Blocked Bugs -->
+<div class="glass-panel rounded-DEFAULT flex flex-col h-full">
+<div class="p-4 border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-headline-sm text-on-surface m-0 flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]">warning</span>
+                                    Blocked Bugs
+                                </h3>
+<span class="bg-error-container/30 text-error font-code-md px-2 py-0.5 rounded border border-error/20 text-xs">7 Total</span>
+</div>
+<div class="flex-1 p-4 space-y-3">
+<!-- Blocked Item 1 -->
+<div class="bg-surface-container-low p-3 rounded border border-outline-variant border-l-2 border-l-error hover:bg-surface-container-high transition-colors">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-body-md text-on-surface font-bold m-0">Auth Gateway Timeout</h4>
+<span class="font-code-md text-on-surface-variant text-[11px]">2h ago</span>
+</div>
+<p class="font-code-md text-on-surface-variant text-[12px] mb-3">Blocked by <span class="text-primary hover:underline cursor-pointer">#AR-8832</span></p>
+<div class="flex justify-between items-center mt-2 pt-2 border-t border-outline-variant/30">
+<div class="flex items-center gap-2">
+<img alt="Alex" class="w-5 h-5 rounded-full grayscale opacity-70" data-alt="A very small avatar of a male engineer. Dark theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGgOGwJxRqKXOQNaNYZP_9U9iC_DKlUwGsKoaZbjdhSUMc7RzuoMU90Tf78mh8PsbYmmEzGDHoW9pgD12bzZYbrOfmlco_Qkod3repS7THo4ISJya9aTBS7EDxxyimgiSEBCqzLfNxvULJha23dRkegg5h82hh7KQEj-XA3pCPNLLBv16c2scfCKipsRmW9KjPGPY20u2ruAFcjT7U3dmd_Uhe7U0rGK3QYQ8nmkdRA658edfbCdXH98Hxgq3-FB2q4zzdw6lsSnw"/>
+<span class="font-body-sm text-on-surface-variant text-[11px]">Assigned to Alex</span>
+</div>
+<a class="font-label-caps text-error hover:text-error/80 flex items-center gap-1 transition-colors" href="#">Resolve Blocker <span class="material-symbols-outlined text-[12px]">arrow_forward</span></a>
+</div>
+</div>
+<!-- Blocked Item 2 -->
+<div class="bg-surface-container-low p-3 rounded border border-outline-variant border-l-2 border-l-error hover:bg-surface-container-high transition-colors">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-body-md text-on-surface font-bold m-0">Payment API Null Reference</h4>
+<span class="font-code-md text-on-surface-variant text-[11px]">5h ago</span>
+</div>
+<p class="font-code-md text-on-surface-variant text-[12px] mb-3">Blocked by <span class="text-primary hover:underline cursor-pointer">#AR-9104</span></p>
+<div class="flex justify-between items-center mt-2 pt-2 border-t border-outline-variant/30">
+<div class="flex items-center gap-2">
+<img alt="Maria" class="w-5 h-5 rounded-full grayscale opacity-70" data-alt="A very small avatar of a female QA lead. Dark theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN1oLyAMKEWZLgbsZLWRzqEzKxDpVz6O_9MvYbf6vreilMVTUM6FmEQoXIZKnn7x_nDDyhTdrJ-BiM9gYMQAefe8m4M88n89jkdhWtXjOtC8P3EuIsL5izKkvY2L5AZ9_hwz82AHiPMEsqxr0eTGCfs_6B1bIh1hwCwNd3KIHHkmQBRsZWKHAZdtw-17Nt84BgEaMQ8HNSQM1if0gGNl016hmerNoqB3CffMU7qnnKgQnLDP_lETBTkLYaCHeClWvecGO5C776q9c"/>
+<span class="font-body-sm text-on-surface-variant text-[11px]">Assigned to Maria</span>
+</div>
+<a class="font-label-caps text-error hover:text-error/80 flex items-center gap-1 transition-colors" href="#">Resolve Blocker <span class="material-symbols-outlined text-[12px]">arrow_forward</span></a>
+</div>
+</div>
+<!-- Blocked Item 3 -->
+<div class="bg-surface-container-low p-3 rounded border border-outline-variant border-l-2 border-l-error hover:bg-surface-container-high transition-colors">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-body-md text-on-surface font-bold m-0">Redis Cache Sync Failure</h4>
+<span class="font-code-md text-on-surface-variant text-[11px]">1d ago</span>
+</div>
+<p class="font-code-md text-on-surface-variant text-[12px] mb-3">Blocked by <span class="text-primary hover:underline cursor-pointer">INFRA-44</span></p>
+<div class="flex justify-between items-center mt-2 pt-2 border-t border-outline-variant/30">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded-full bg-surface-variant flex items-center justify-center text-[8px] font-code-md">DK</div>
+<span class="font-body-sm text-on-surface-variant text-[11px]">Assigned to David</span>
+</div>
+<a class="font-label-caps text-error hover:text-error/80 flex items-center gap-1 transition-colors" href="#">Resolve Blocker <span class="material-symbols-outlined text-[12px]">arrow_forward</span></a>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Recent Activity Timeline -->
+<div class="glass-panel rounded-DEFAULT flex flex-col h-full">
+<div class="p-4 border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-headline-sm text-on-surface m-0 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">history</span>
+                                    Recent Team Activity
+                                </h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+</button>
+</div>
+<div class="flex-1 p-4 overflow-y-auto relative">
+<!-- Timeline Line -->
+<div class="absolute top-4 bottom-4 left-[31px] w-px bg-outline-variant/50"></div>
+<div class="space-y-6 relative z-10">
+<!-- Activity 1 -->
+<div class="flex gap-4 group">
+<div class="relative mt-1">
+<img alt="Alex" class="w-8 h-8 rounded-full border border-primary z-10 relative bg-background" data-alt="A small headshot of male engineer for timeline." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEei8KjFM8duS53Dk3S4bmc_dU0Z8vxdXG_Mv3C3zZepntSAQuJ9CKCNIy4wGf5whcXagQNVGswF-7v4DesIxBA1yp49saqT4bWzrkXKn5iliMCtNfI2DNlGZgTO-oFEBolIRye-JwgHrUDyc-ERS11pcvM7HOP1wrt_ahp6zocJMwMzRqNPzQLvwxtIu3KYyKepHLkiPZLvE9cOZ3uPK0Ah6eDvRQEb-14JnT_dr1E5NsjF-8guTwhN7OY6Ue-QVqdsuEt0Hq3-0"/>
+</div>
+<div class="flex-1 bg-surface-container-low/50 p-3 rounded border border-transparent group-hover:border-outline-variant/50 transition-colors">
+<p class="font-body-sm text-on-surface m-0"><span class="font-bold text-primary">Alex Chen</span> triggered AutoRepro on <span class="font-code-md">#AR-9142</span></p>
+<span class="font-code-md text-on-surface-variant text-[11px] mt-1 block">10 mins ago</span>
+</div>
+</div>
+<!-- Activity 2 (Failed - Red Tint) -->
+<div class="flex gap-4 group">
+<div class="relative mt-1">
+<div class="w-8 h-8 rounded-full border border-error bg-error-container/20 flex items-center justify-center z-10 relative text-error">
+<span class="material-symbols-outlined text-[16px]">robot</span>
+</div>
+</div>
+<div class="flex-1 bg-error-container/10 p-3 rounded border border-error/20 group-hover:border-error/40 transition-colors">
+<p class="font-body-sm text-on-surface m-0"><span class="font-bold text-error">AutoRepro Failed</span> to reproduce <span class="font-code-md">#AR-9104</span></p>
+<p class="font-code-md text-error/80 text-[11px] mt-1">Reason: Environment mismatch</p>
+<span class="font-code-md text-on-surface-variant text-[11px] mt-2 block">45 mins ago</span>
+</div>
+</div>
+<!-- Activity 3 -->
+<div class="flex gap-4 group">
+<div class="relative mt-1">
+<img alt="David" class="w-8 h-8 rounded-full border border-outline-variant z-10 relative bg-background" data-alt="Small headshot of male devops engineer for timeline." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4GEgvvWsFTrsBNJG0SVx-NNWHL78bHGeZJ_RB_DC9Ap9qyljtndzNQjG2eXQEGAMdAIQPHAs8Qcg-atOAL9fHEQ7LyUq7600RbsV9LsGUAdKvvrXvgrZpe2T2sNwJbPq9cHDsZdljHSaQYb3WU8fER9PRG-nx4SgO_dFUOdjtiqtcpkuwVC7YqHZoP9F0ZBO-1ik2HkkyxlJC-snTbRZSqbnQNZgM0jtiA-cc59nGsaJ2DUibaSUvg1ABU7vSQcfxc1p0Xuk-Nt0"/>
+</div>
+<div class="flex-1 bg-surface-container-low/50 p-3 rounded border border-transparent group-hover:border-outline-variant/50 transition-colors">
+<p class="font-body-sm text-on-surface m-0"><span class="font-bold">David Kim</span> resolved bug <span class="font-code-md text-[#4CAF50]">#AR-8991</span></p>
+<span class="font-code-md text-on-surface-variant text-[11px] mt-1 block">2 hours ago</span>
+</div>
+</div>
+<!-- Activity 4 -->
+<div class="flex gap-4 group">
+<div class="relative mt-1">
+<img alt="Maria" class="w-8 h-8 rounded-full border border-outline-variant z-10 relative bg-background" data-alt="Small headshot of female QA lead for timeline." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Q6KmB0wrqGwheeInl3VLvZou5WBnwCjp3ibl9Tv8o0AbzkeqFISygyV0-b8X08B5XDDHMoHXkA6_i4qqMzZP0mT4bKzIO_HgHg80S-hLbEtrj85FpHZwHyq9AKU_t7vp8vgRuDCNlDVTWen5f5aobGRqDqY1Vs3lsCm6l_IGDXHytNtBCQ0T-fQoYRA0KGlMzHzD3bZEyHkaefMQ-JOlktRYfzVM0Uy2nlEHr3LTrRMCjyEg4LJFknLknPbVO8WLEfDDSVARkco"/>
+</div>
+<div class="flex-1 bg-surface-container-low/50 p-3 rounded border border-transparent group-hover:border-outline-variant/50 transition-colors">
+<p class="font-body-sm text-on-surface m-0"><span class="font-bold">Maria Rossi</span> reassigned <span class="font-code-md">#AR-8832</span> to Alex</p>
+<span class="font-code-md text-on-surface-variant text-[11px] mt-1 block">3 hours ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

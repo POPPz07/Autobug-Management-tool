@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Toast &amp; Status System | AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#001f24",
+                        "secondary": "#c5c0ff",
+                        "outline": "#849396",
+                        "on-error": "#690005",
+                        "surface-variant": "#343537",
+                        "surface-container-high": "#292a2c",
+                        "on-surface": "#e3e2e5",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#004f58",
+                        "tertiary-fixed": "#dfe2ee",
+                        "surface-tint": "#00daf3",
+                        "tertiary-container": "#cdd0dc",
+                        "primary-fixed": "#9cf0ff",
+                        "on-secondary-fixed": "#140067",
+                        "on-surface-variant": "#bac9cc",
+                        "on-secondary-container": "#b2acff",
+                        "surface-bright": "#38393b",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "surface-container": "#1f2022",
+                        "secondary-container": "#3c28bf",
+                        "primary-container": "#00e5ff",
+                        "tertiary": "#e9ecf9",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "secondary-fixed": "#e3dfff",
+                        "on-error-container": "#ffdad6",
+                        "primary": "#c3f5ff",
+                        "outline-variant": "#3b494c",
+                        "on-primary": "#00363d",
+                        "surface-dim": "#121315",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "surface-container-low": "#1b1c1e",
+                        "inverse-on-surface": "#303033",
+                        "surface-container-highest": "#343537",
+                        "on-secondary": "#2500a2",
+                        "surface": "#121315",
+                        "on-tertiary-container": "#555963",
+                        "inverse-surface": "#e3e2e5",
+                        "surface-container-lowest": "#0d0e10",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-tertiary": "#2c303a",
+                        "on-primary-container": "#00626e",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#181c24",
+                        "inverse-primary": "#006875",
+                        "on-background": "#e3e2e5",
+                        "background": "#121315",
+                        "primary-fixed-dim": "#00daf3",
+                        
+                        // Custom UI Status Colors mimicking requested design language
+                        "status-success": "#00FF66",
+                        "status-warning": "#FFB800",
+                        "status-error": "#FF3333",
+                        "status-info": "#00E5FF",
+                        
+                        "ui-bg": "#0A0B0D",
+                        "ui-panel": "#111318",
+                        "ui-border": "#22262F",
+                        "ui-hover": "#1A1D24",
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-md": "24px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-sm": "12px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Syne"],
+                        "display-metrics": ["Syne"],
+                        "body-sm": ["DM Sans"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Syne"],
+                        "code-md": ["JetBrains Mono"],
+                        "body-md": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #0A0B0D; }
+        .cyber-border { border: 1px solid #22262F; }
+        .cyber-focus-border:hover, .cyber-focus-border:focus-within { border-color: #00e5ff; }
+        .glow-active { box-shadow: 0 0 12px rgba(0, 229, 255, 0.15); background-color: rgba(0, 229, 255, 0.05); }
+        .glass-panel { background: rgba(17, 19, 24, 0.7); backdrop-filter: blur(12px); border: 1px solid #22262F; }
+        
+        /* Toast Animation Base */
+        .toast-progress { width: 100%; height: 2px; background-color: rgba(255,255,255,0.1); margin-top: 8px; border-radius: 1px; overflow: hidden; }
+        .toast-progress-bar { height: 100%; width: 60%; }
+        
+        .toast-success .toast-progress-bar { background-color: #00FF66; }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(255, 184, 0, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 4px rgba(255, 184, 0, 0); }
+            100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(255, 184, 0, 0); }
+        }
+        .status-pulse { animation: pulse-ring 2s infinite; }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loader-spin { animation: spin 1s linear infinite; }
+    </style>
+</head>
+<body class="text-on-surface flex h-screen overflow-hidden antialiased">
+<!-- SIDE NAVIGATION (From Shared Components JSON) -->
+<nav class="docked h-screen w-64 left-0 top-0 border-r border-ui-border flex flex-col h-full py-4 space-y-6 bg-ui-bg z-50 flex-shrink-0 hidden md:flex">
+<!-- Brand/Header -->
+<div class="px-6 flex items-center gap-3 mb-4">
+<div class="w-8 h-8 rounded bg-ui-panel border border-ui-border flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container text-sm">terminal</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary tracking-wider uppercase">AutoRepro</h1>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[9px]">V2.04.1</span>
+</div>
+</div>
+<!-- Main Nav Links -->
+<div class="flex-1 px-3 space-y-1">
+<!-- Inactive -->
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">terminal</span>
+<span class="font-body-md text-body-md">Terminals</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">memory</span>
+<span class="font-body-md text-body-md">Hardware</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">history</span>
+<span class="font-body-md text-body-md">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">security_update_good</span>
+<span class="font-body-md text-body-md">Security</span>
+</a>
+</div>
+<!-- Footer Actions -->
+<div class="px-3 space-y-1 border-t border-ui-border pt-4">
+<button class="w-full flex items-center justify-center gap-2 py-2 mb-4 border border-primary-container text-primary-container hover:bg-primary-container/10 transition-colors font-label-caps text-label-caps rounded-sm">
+<span class="material-symbols-outlined text-sm">add</span>
+                NEW INSTANCE
+            </button>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded-sm" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 0;">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</div>
+</nav>
+<!-- MAIN CANVAS -->
+<main class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto relative">
+<!-- TOP APP BAR -->
+<header class="h-14 border-b border-ui-border bg-ui-bg/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">UI Reference / Components</h2>
+</div>
+<div class="flex items-center gap-6">
+<!-- Navigation Links from JSON -->
+<nav class="hidden lg:flex items-center gap-6 font-body-sm text-body-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer" href="#">Settings</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer" href="#">Users</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer" href="#">Sarah Connor</a>
+</nav>
+<div class="h-4 w-[1px] bg-ui-border hidden lg:block"></div>
+<div class="flex items-center gap-3">
+<button class="text-on-surface-variant hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</button>
+<button class="px-4 py-1.5 border border-primary-container text-primary-container hover:bg-primary-container/10 transition-colors font-label-caps text-[10px] tracking-wider rounded-sm ml-2">
+                        DEPLOY
+                    </button>
+<div class="w-8 h-8 rounded-sm bg-ui-hover border border-ui-border overflow-hidden ml-2">
+<img alt="User Avatar" class="w-full h-full object-cover opacity-80 mix-blend-luminosity hover:mix-blend-normal transition-all" data-alt="A small square profile picture of a female user, styled in grayscale for a cyber-minimalist dark mode UI, switching to full color on hover. The lighting is neutral and stark." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBm_GI3UY2KW7J5KmOVGJ5rZ2qVd9IVPM0SdSxBwJRSURr7BjhDyX-_gmjQkMpQrkbpQK7CEPet1NF2BRF6VpwGrcvLHfYtxX661BPSTbisUMGOHtDOf3sQ6Otusq0_koo67u4mN_h0sSrXI0drHZh_-SEb5WFxzGRuEr4iswSWoXGV8fKLrzgbqZuk5xAqyuDKwZL6WG2Yf-HdpWaH0O8L0oj9Jf-PEmXGzc-3MnwAtjZ_JslQfGPL2QNQ2rS4d3KL6ROJomev8ao"/>
+</div>
+</div>
+</div>
+</header>
+<!-- CONTENT AREA -->
+<div class="p-8 max-w-[1200px] w-full mx-auto space-y-12 pb-24">
+<!-- SECTION HEADER -->
+<div class="space-y-2 border-b border-ui-border pb-6">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">System Feedback Components</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Reference sheet for mission-critical status indicators, toast notifications, and inline banners. Designed for high-density environments prioritizing information velocity.</p>
+</div>
+<!-- 1. TOP SECTION: CONNECTION STATUS BAR -->
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 bg-on-surface-variant"></div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Connection Status Bars (Global)</h3>
+</div>
+<div class="bg-ui-panel border border-ui-border p-8 rounded-sm space-y-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]">wifi</span>
+</div>
+<!-- Connected -->
+<div class="space-y-2 relative z-10">
+<span class="font-label-caps text-[10px] text-on-surface-variant">STATE: CONNECTED</span>
+<div class="w-full h-[40px] bg-ui-bg border border-ui-border relative overflow-hidden flex items-center justify-center">
+<!-- The actual 3px bar -->
+<div class="absolute top-0 left-0 w-full h-[3px] bg-status-success"></div>
+<div class="flex items-center gap-2 text-status-success">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-code-md text-[11px] tracking-wide">SYSTEM NOMINAL. STREAMING ACTIVE.</span>
+</div>
+</div>
+</div>
+<!-- Reconnecting -->
+<div class="space-y-2 relative z-10">
+<span class="font-label-caps text-[10px] text-on-surface-variant">STATE: RECONNECTING</span>
+<div class="w-full h-[40px] bg-ui-bg border border-ui-border relative overflow-hidden flex items-center justify-center">
+<!-- The actual 3px bar -->
+<div class="absolute top-0 left-0 w-full h-[3px] bg-status-warning opacity-80"></div>
+<div class="flex items-center gap-2 text-status-warning">
+<div class="w-2 h-2 rounded-full bg-status-warning status-pulse"></div>
+<span class="font-code-md text-[11px] tracking-wide">ATTEMPTING RECONNECTION... [TRY 2/5]</span>
+</div>
+</div>
+</div>
+<!-- Disconnected -->
+<div class="space-y-2 relative z-10">
+<span class="font-label-caps text-[10px] text-on-surface-variant">STATE: DISCONNECTED</span>
+<div class="w-full h-[40px] bg-[#1a0a0a] border border-[#331111] relative overflow-hidden flex items-center justify-between px-4">
+<!-- The actual 3px bar -->
+<div class="absolute top-0 left-0 w-full h-[3px] bg-status-error"></div>
+<div class="flex items-center gap-2 text-status-error">
+<span class="material-symbols-outlined text-[14px]">wifi_off</span>
+<span class="font-code-md text-[11px] tracking-wide text-status-error">CONNECTION LOST. SOCKET TIMEOUT.</span>
+</div>
+<button class="flex items-center gap-1 text-status-error hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[14px]">refresh</span>
+<span class="font-label-caps text-[10px]">RETRY NOW</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. MIDDLE SECTION: TOAST NOTIFICATIONS -->
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 bg-on-surface-variant"></div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Toast Notifications (Bottom-Right Stack)</h3>
+</div>
+<div class="bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiMzMzMiLz48L3N2Zz4=')] bg-ui-bg border border-ui-border p-12 rounded-sm relative min-h-[500px] flex justify-end items-end">
+<!-- Placeholder UI background element -->
+<div class="absolute top-8 left-8 opacity-20 pointer-events-none">
+<div class="font-code-md text-on-surface-variant text-sm whitespace-pre">
+&gt; WATCHING LOGS...
+&gt; SYS.DAEMON [OK]
+&gt; WAITING FOR EVENTS...
+                        </div>
+</div>
+<!-- Toast Stack Container -->
+<div class="w-[320px] flex flex-col gap-3 relative z-10">
+<!-- Toast 1: SUCCESS -->
+<div class="bg-[#1A1D24] border-l-[3px] border-l-status-success border-y border-r border-y-ui-border border-r-ui-border p-3 shadow-lg relative overflow-hidden toast-success">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-status-success text-[18px] mt-0.5" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div class="space-y-1">
+<h4 class="font-code-md text-[12px] text-on-surface font-bold">Bug #AR-1284 Resolved</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant">AutoRepro run successful. Confidence score: 0.94</p>
+<div class="pt-1">
+<a class="font-label-caps text-[9px] text-status-success hover:text-white transition-colors" href="#">VIEW BUG →</a>
+</div>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-white">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<div class="toast-progress">
+<div class="toast-progress-bar"></div>
+</div>
+</div>
+<!-- Toast 2: ERROR -->
+<div class="bg-[#1A1D24] border-l-[3px] border-l-status-error border-y border-r border-y-ui-border border-r-ui-border p-3 shadow-lg">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-status-error text-[18px] mt-0.5" style="font-variation-settings: 'FILL' 1;">error</span>
+<div class="space-y-1">
+<h4 class="font-code-md text-[12px] text-on-surface font-bold">Job Failed</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant">AutoRepro timeout during environment setup phase.</p>
+<div class="pt-1">
+<a class="font-label-caps text-[9px] text-status-error hover:text-white transition-colors" href="#">VIEW LOGS →</a>
+</div>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-white">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- Toast 3: WARNING -->
+<div class="bg-[#1A1D24] border-l-[3px] border-l-status-warning border-y border-r border-y-ui-border border-r-ui-border p-3 shadow-lg">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-status-warning text-[18px] mt-0.5" style="font-variation-settings: 'FILL' 1;">warning</span>
+<div class="space-y-1">
+<h4 class="font-code-md text-[12px] text-on-surface font-bold">Usage Limit Approaching</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant">847/1000 monthly AutoRepro jobs consumed.</p>
+<div class="pt-1">
+<a class="font-label-caps text-[9px] text-status-warning hover:text-white transition-colors" href="#">UPGRADE PLAN →</a>
+</div>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-white">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- Toast 4: INFO -->
+<div class="bg-[#1A1D24] border-l-[3px] border-l-status-info border-y border-r border-y-ui-border border-r-ui-border p-3 shadow-lg">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-status-info text-[18px] mt-0.5" style="font-variation-settings: 'FILL' 1;">info</span>
+<div class="space-y-1">
+<h4 class="font-code-md text-[12px] text-on-surface font-bold">Bug #AR-1290 Assigned</h4>
+<p class="font-body-sm text-[11px] text-on-surface-variant">Assigned to you by Sarah Connor.</p>
+<div class="pt-1">
+<a class="font-label-caps text-[9px] text-status-info hover:text-white transition-colors" href="#">VIEW BUG →</a>
+</div>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-white">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<!-- Toast 5: LOADING -->
+<div class="bg-[#1A1D24] border-l-[3px] border-l-on-surface-variant border-y border-r border-y-ui-border border-r-ui-border p-3 shadow-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px] loader-spin">progress_activity</span>
+<div class="space-y-0.5">
+<h4 class="font-code-md text-[12px] text-on-surface">Triggering AutoRepro...</h4>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. BOTTOM SECTION: INLINE BANNERS -->
+<section class="space-y-6">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 bg-on-surface-variant"></div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Inline Banners (Full Width)</h3>
+</div>
+<div class="space-y-4">
+<!-- Banner 1: Amber Warning -->
+<div class="w-full bg-[#1A1810] border border-[#332A10] flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-status-warning/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-status-warning text-[18px]">mark_email_unread</span>
+</div>
+<div>
+<h4 class="font-body-md text-status-warning font-medium">Verify your email address</h4>
+<p class="font-body-sm text-on-surface-variant">Please verify your email to ensure uninterrupted access to the terminal.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 pl-4 border-l border-[#332A10]">
+<button class="font-label-caps text-[10px] text-status-warning hover:text-white transition-colors">RESEND EMAIL</button>
+<button class="text-on-surface-variant hover:text-white transition-colors p-1">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Banner 2: Cyan Info/Update -->
+<div class="w-full bg-[#0A1A1C] border border-[#103338] flex items-center justify-between px-4 py-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[18px]">update</span>
+</div>
+<div>
+<h4 class="font-body-md text-primary-container font-medium">System Update Available (v2.5.0)</h4>
+<p class="font-body-sm text-on-surface-variant">New hardware profiling tools and improved log parsing engine.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 pl-4 border-l border-[#103338]">
+<button class="font-label-caps text-[10px] text-primary-container hover:text-white transition-colors">VIEW CHANGELOG</button>
+<button class="font-label-caps text-[10px] text-on-surface-variant hover:text-white transition-colors">DISMISS</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

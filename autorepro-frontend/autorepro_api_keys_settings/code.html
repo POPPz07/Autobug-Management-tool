@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - API Keys</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&amp;family=JetBrains+Mono:wght@400;600&amp;family=Syne:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#594400",
+                        "inverse-primary": "#6750a4",
+                        "tertiary-container": "#c9a74d",
+                        "secondary-fixed-dim": "#cdc0e9",
+                        "primary-fixed": "#e9ddff",
+                        "on-secondary-fixed": "#1f1635",
+                        "on-surface": "#e6e0e9",
+                        "tertiary-fixed-dim": "#e7c365",
+                        "inverse-surface": "#e6e0e9",
+                        "primary": "#cfbcff",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#3e2e00",
+                        "surface-container-high": "#2b292f",
+                        "secondary-fixed": "#e9ddff",
+                        "inverse-on-surface": "#322f35",
+                        "on-primary-fixed": "#22005d",
+                        "primary-container": "#6750a4",
+                        "on-secondary": "#342b4b",
+                        "outline": "#948e9c",
+                        "on-primary-container": "#e0d2ff",
+                        "surface-container-lowest": "#0f0d13",
+                        "surface": "#141218",
+                        "surface-dim": "#141218",
+                        "secondary-container": "#4d4465",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-error": "#690005",
+                        "outline-variant": "#494551",
+                        "surface-container-low": "#1d1b20",
+                        "on-primary": "#381e72",
+                        "on-tertiary-container": "#503d00",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#36343a",
+                        "surface-container": "#211f24",
+                        "on-background": "#e6e0e9",
+                        "surface-tint": "#cfbcff",
+                        "surface-variant": "#36343a",
+                        "primary-fixed-dim": "#cfbcff",
+                        "on-primary-fixed-variant": "#4f378a",
+                        "secondary": "#cdc0e9",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffdf93",
+                        "tertiary": "#e7c365",
+                        "on-surface-variant": "#cbc4d2",
+                        "on-secondary-fixed-variant": "#4b4263",
+                        "surface-bright": "#3b383e",
+                        "background": "#141218",
+                        "on-secondary-container": "#bfb2da",
+                        "cyan-accent": "#00E5FF",
+                        "cyan-accent-glow": "rgba(0, 229, 255, 0.2)",
+                        "violet-border": "#7B6FFF",
+                        "coral-destructive": "#FF4757",
+                        "bg-canvas": "#0A0B0D",
+                        "bg-card": "#111318",
+                        "bg-modal": "#161920",
+                        "border-card": "#1F222C",
+                        "border-modal": "#2A2E3A"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "48px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "label-caps": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "h3": ["Syne"],
+                        "h1": ["Syne"],
+                        "code-md": ["JetBrains Mono"],
+                        "h2": ["Syne"],
+                        "body-lg": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-sm": ["12px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "code-sm": ["11px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "h3": ["18px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "code-md": ["13px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0A0B0D; }
+        .glow-cyan { box-shadow: 0 0 8px rgba(0, 229, 255, 0.2); }
+        .table-row-hover:hover { background-color: rgba(255, 255, 255, 0.03); }
+        /* Scrollbar styles for table if needed */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0B0D; }
+        ::-webkit-scrollbar-thumb { background: #1F222C; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2A2E3A; }
+    </style>
+</head>
+<body class="text-on-surface flex min-h-screen">
+<!-- SideNavBar -->
+<nav class="docked fixed left-0 top-0 h-screen w-[240px] bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant flex flex-col h-full py-lg z-20">
+<div class="px-lg mb-xl">
+<h2 class="font-h2 text-h2 font-bold text-primary tracking-tight">AutoRepro</h2>
+<div class="text-on-surface-variant font-body-sm text-body-sm mt-xs">v2.4.0-stable</div>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full bg-cyan-accent text-bg-canvas font-body-md text-body-md py-sm px-md rounded flex items-center justify-center gap-sm hover:glow-cyan transition-shadow">
+<span class="material-symbols-outlined" style="font-size: 20px;">add</span>
+                New Incident
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto">
+<ul class="flex flex-col space-y-1">
+<li>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">dashboard</span>
+                        Dashboard
+                    </a>
+</li>
+<li>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">bug_report</span>
+                        Incidents
+                    </a>
+</li>
+<li>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">robot_2</span>
+                        Automation
+                    </a>
+</li>
+<li>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">account_tree</span>
+                        Workflows
+                    </a>
+</li>
+<li>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">analytics</span>
+                        Analytics
+                    </a>
+</li>
+<li>
+<a class="text-on-surface border-l-2 border-primary bg-surface-container-highest flex items-center gap-md px-md py-sm duration-200 transition-all font-body-md text-body-md" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+                        Settings
+                    </a>
+</li>
+</ul>
+</div>
+<div class="px-md mt-auto pt-lg border-t border-outline-variant">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate">
+                    System Administrator
+                </div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<div class="flex-1 ml-[240px] flex flex-col min-h-screen">
+<!-- TopAppBar Contextual Header -->
+<header class="h-16 flex justify-between items-center px-lg border-b border-border-card bg-bg-canvas/80 backdrop-blur sticky top-0 z-10">
+<h1 class="font-h3 text-h3 font-semibold text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant">key</span>
+                API Keys
+            </h1>
+<div class="flex items-center gap-md">
+<button class="bg-cyan-accent text-bg-canvas font-body-sm text-body-sm px-md py-sm rounded hover:glow-cyan transition-shadow flex items-center gap-xs">
+<span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                    Create API Key
+                </button>
+</div>
+</header>
+<!-- Main Fluid Content -->
+<main class="flex-1 p-lg max-w-[1440px] w-full mx-auto space-y-lg">
+<!-- One-time Reveal Panel (Alert Card) -->
+<div class="bg-[#1A1D24] border-l-2 border-cyan-accent border border-border-card rounded-lg p-lg relative shadow-lg">
+<div class="flex items-start justify-between mb-md">
+<h2 class="font-h3 text-h3 text-on-surface">Your new API key</h2>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="bg-bg-canvas border border-border-card rounded p-md flex items-center justify-between mb-md">
+<code class="font-code-md text-code-md text-primary break-all">ark_live_xK9mP2R7vL4nQ8wX1zJ5bA6sT9uY0</code>
+<button class="text-on-surface-variant hover:text-cyan-accent transition-colors ml-md shrink-0 flex items-center gap-xs font-body-sm text-body-sm">
+<span class="material-symbols-outlined" style="font-size: 18px;">content_copy</span>
+                        Copy
+                    </button>
+</div>
+<div class="bg-surface-container-high border border-[#4B3C2A] rounded p-sm flex items-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-tertiary">warning</span>
+<span class="font-body-sm text-body-sm text-tertiary">This key will not be shown again. Copy it now and store it securely.</span>
+</div>
+<div class="flex justify-end">
+<button class="bg-surface-container-highest text-on-surface font-body-md text-body-md px-lg py-sm border border-border-card rounded hover:bg-surface-bright transition-colors">
+                        Done
+                    </button>
+</div>
+</div>
+<!-- API Keys Table Card -->
+<div class="bg-bg-card border border-border-card rounded-lg overflow-hidden">
+<div class="p-lg border-b border-border-card">
+<h3 class="font-h3 text-h3 text-on-surface">Active Keys</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-card bg-surface-container-low font-label-caps text-label-caps text-on-surface-variant">
+<th class="p-md font-semibold">Name</th>
+<th class="p-md font-semibold">Key Preview</th>
+<th class="p-md font-semibold">Created</th>
+<th class="p-md font-semibold">Expires</th>
+<th class="p-md font-semibold">Status</th>
+<th class="p-md font-semibold text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<!-- Row 1 -->
+<tr class="border-b border-border-card table-row-hover transition-colors">
+<td class="p-md font-medium">Production Read-Only</td>
+<td class="p-md font-code-sm text-code-sm text-on-surface-variant">ark_••••••••••••3f2a</td>
+<td class="p-md text-on-surface-variant">Oct 12, 2023</td>
+<td class="p-md text-on-surface-variant">-</td>
+<td class="p-md">
+<div class="flex items-center gap-xs text-[#2ECC71]">
+<div class="w-2 h-2 rounded-full bg-[#2ECC71]"></div>
+<span class="font-body-sm text-body-sm">Active</span>
+</div>
+</td>
+<td class="p-md text-right">
+<button class="text-on-surface-variant hover:text-coral-destructive transition-colors font-body-sm text-body-sm border border-transparent hover:border-coral-destructive px-sm py-xs rounded">
+                                        Revoke
+                                    </button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="border-b border-border-card table-row-hover transition-colors">
+<td class="p-md font-medium">CI/CD Deployment</td>
+<td class="p-md font-code-sm text-code-sm text-on-surface-variant">ark_••••••••••••9e1b</td>
+<td class="p-md text-on-surface-variant">Jan 5, 2024</td>
+<td class="p-md text-tertiary">Expires in 3 days</td>
+<td class="p-md">
+<div class="flex items-center gap-xs text-[#2ECC71]">
+<div class="w-2 h-2 rounded-full bg-[#2ECC71]"></div>
+<span class="font-body-sm text-body-sm">Active</span>
+</div>
+</td>
+<td class="p-md text-right">
+<button class="text-on-surface-variant hover:text-coral-destructive transition-colors font-body-sm text-body-sm border border-transparent hover:border-coral-destructive px-sm py-xs rounded">
+                                        Revoke
+                                    </button>
+</td>
+</tr>
+<!-- Row 3 (Revoked) -->
+<tr class="table-row-hover transition-colors opacity-50 bg-bg-canvas/50">
+<td class="p-md line-through text-on-surface-variant">Legacy Integration</td>
+<td class="p-md font-code-sm text-code-sm text-on-surface-variant">ark_••••••••••••0c4d</td>
+<td class="p-md text-on-surface-variant">Jun 20, 2023</td>
+<td class="p-md text-on-surface-variant">-</td>
+<td class="p-md">
+<div class="flex items-center gap-xs text-on-surface-variant">
+<div class="w-2 h-2 rounded-full bg-on-surface-variant"></div>
+<span class="font-body-sm text-body-sm">Revoked</span>
+</div>
+</td>
+<td class="p-md text-right">
+<button class="text-on-surface-variant opacity-50 cursor-not-allowed font-body-sm text-body-sm px-sm py-xs" disabled="">
+                                        Revoked
+                                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>

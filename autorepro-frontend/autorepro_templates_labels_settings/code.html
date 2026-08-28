@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - Templates &amp; Labels</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;family=Syne:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#1d1b20",
+                    "on-primary-fixed-variant": "#4f378a",
+                    "on-primary-fixed": "#22005d",
+                    "primary-fixed": "#e9ddff",
+                    "surface": "#141218",
+                    "on-tertiary-fixed-variant": "#594400",
+                    "on-tertiary-container": "#503d00",
+                    "surface-container-highest": "#36343a",
+                    "tertiary-fixed-dim": "#e7c365",
+                    "tertiary-container": "#c9a74d",
+                    "surface-variant": "#36343a",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary": "#342b4b",
+                    "surface-tint": "#cfbcff",
+                    "secondary-container": "#4d4465",
+                    "primary": "#cfbcff",
+                    "primary-fixed-dim": "#cfbcff",
+                    "on-primary": "#381e72",
+                    "surface-container-high": "#2b292f",
+                    "surface-bright": "#3b383e",
+                    "outline-variant": "#494551",
+                    "on-surface": "#e6e0e9",
+                    "surface-dim": "#141218",
+                    "error": "#ffb4ab",
+                    "tertiary": "#e7c365",
+                    "secondary": "#cdc0e9",
+                    "on-secondary-container": "#bfb2da",
+                    "inverse-primary": "#6750a4",
+                    "secondary-fixed-dim": "#cdc0e9",
+                    "on-primary-container": "#e0d2ff",
+                    "on-error": "#690005",
+                    "on-background": "#e6e0e9",
+                    "secondary-fixed": "#e9ddff",
+                    "outline": "#948e9c",
+                    "on-surface-variant": "#cbc4d2",
+                    "tertiary-fixed": "#ffdf93",
+                    "primary-container": "#6750a4",
+                    "surface-container": "#211f24",
+                    "on-secondary-fixed": "#1f1635",
+                    "on-tertiary": "#3e2e00",
+                    "on-secondary-fixed-variant": "#4b4263",
+                    "background": "#141218",
+                    "surface-container-lowest": "#0f0d13",
+                    "inverse-on-surface": "#322f35",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed": "#241a00",
+                    "inverse-surface": "#e6e0e9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "48px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "xs": "4px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "h2": ["Syne"],
+                    "body-lg": ["DM Sans"],
+                    "body-md": ["DM Sans"],
+                    "h3": ["Syne"],
+                    "body-sm": ["DM Sans"],
+                    "code-sm": ["JetBrains Mono"],
+                    "code-md": ["JetBrains Mono"],
+                    "label-caps": ["JetBrains Mono"],
+                    "h1": ["Syne"]
+            },
+            "fontSize": {
+                    "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                    "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "500" }],
+                    "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                    "h3": ["18px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+                    "body-sm": ["12px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                    "code-sm": ["11px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                    "code-md": ["13px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                    "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Custom Utilities for Glow Effects */
+        .primary-glow:hover {
+            box-shadow: 0 0 8px rgba(207, 188, 255, 0.4);
+        }
+        
+        /* Thin 1px borders mapped to config outline variant */
+        .tech-border {
+            border: 1px solid theme('colors.outline-variant');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md h-screen overflow-hidden flex antialiased">
+<!-- Shared Component: SideNavBar -->
+<nav class="docked fixed left-0 top-0 h-screen w-[240px] bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant flex flex-col h-full py-lg z-50">
+<!-- Header -->
+<div class="px-md mb-xl flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden tech-border flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<h1 class="font-h2 text-h2 font-bold text-primary tracking-tight">AutoRepro</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant">v2.4.0-stable</p>
+</div>
+</div>
+<!-- CTA -->
+<div class="px-md mb-lg">
+<button class="w-full bg-primary text-on-primary font-body-md text-body-md font-medium py-sm px-md rounded flex items-center justify-center gap-sm primary-glow transition-all duration-200">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Incident
+            </button>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto flex flex-col gap-xs">
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">bug_report</span>
+<span class="font-body-md text-body-md">Incidents</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">robot_2</span>
+<span class="font-body-md text-body-md">Automation</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-body-md text-body-md">Workflows</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-md px-md py-sm hover:bg-surface-container-high hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</a>
+<!-- Active State -->
+<a class="text-on-surface border-l-2 border-primary bg-surface-container-highest flex items-center gap-md px-md py-sm duration-200 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-body-md text-body-md font-medium">Settings</span>
+</a>
+</div>
+<!-- User Avatar / Bottom fixed element -->
+<div class="px-md mt-auto pt-lg border-t border-outline-variant">
+<div class="flex items-center gap-md hover:bg-surface-container-high p-sm -mx-sm rounded cursor-pointer transition-colors">
+<div class="w-8 h-8 rounded bg-secondary-container flex items-center justify-center tech-border">
+<span class="material-symbols-outlined text-on-secondary-container text-[16px]">person</span>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface">System Administrator</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-[240px] flex-1 overflow-y-auto bg-background">
+<div class="max-w-[1440px] mx-auto p-xl">
+<!-- Page Header -->
+<header class="mb-xl border-b border-outline-variant pb-lg">
+<h1 class="font-h1 text-h1 text-on-surface tracking-tight">Templates &amp; Labels</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-sm">Configure global bug parameters and categorization tags.</p>
+</header>
+<!-- SECTION 1: Bug Templates -->
+<section class="mb-xl">
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-h2 text-h2 text-on-surface">Bug Templates</h2>
+<button class="bg-primary text-on-primary font-body-md text-body-md px-md py-sm rounded flex items-center gap-sm primary-glow transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        Create Template
+                    </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Card 1 -->
+<div class="bg-surface tech-border rounded p-lg flex flex-col h-full hover:border-primary transition-colors duration-300">
+<div class="flex justify-between items-start mb-md">
+<h3 class="font-h3 text-h3 text-on-surface font-bold">Standard Bug</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">description</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-1">
+                            Default template for generic application bugs. Includes sections for reproduction steps, expected behavior, and actual results.
+                        </p>
+<div class="flex flex-wrap gap-sm mb-lg">
+<div class="bg-surface-container-high px-sm py-xs rounded flex items-center gap-sm tech-border">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="font-label-caps text-label-caps text-on-surface">MED PRIORITY</span>
+</div>
+<div class="bg-surface-container-high px-sm py-xs rounded flex items-center gap-sm tech-border">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="font-label-caps text-label-caps text-on-surface">MED SEVERITY</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant flex items-center justify-between">
+<button class="text-primary font-body-md text-body-md hover:bg-surface-container-highest px-sm py-sm rounded transition-colors font-medium">Use Template</button>
+<div class="flex gap-sm">
+<button class="text-on-surface-variant hover:text-primary p-sm rounded hover:bg-surface-container-highest transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="text-on-surface-variant hover:text-error p-sm rounded hover:bg-surface-container-highest transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface tech-border rounded p-lg flex flex-col h-full hover:border-primary transition-colors duration-300">
+<div class="flex justify-between items-start mb-md">
+<h3 class="font-h3 text-h3 text-on-surface font-bold">Security Vulnerability</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">security</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-1">
+                            Strict template for reporting potential security flaws. Enforces immediate assignment to the SecOps team.
+                        </p>
+<div class="flex flex-wrap gap-sm mb-lg">
+<div class="bg-surface-container-high px-sm py-xs rounded flex items-center gap-sm tech-border">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="font-label-caps text-label-caps text-on-surface">CRIT PRIORITY</span>
+</div>
+<div class="bg-surface-container-high px-sm py-xs rounded flex items-center gap-sm tech-border">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span class="font-label-caps text-label-caps text-on-surface">CRIT SEVERITY</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant flex items-center justify-between">
+<button class="text-primary font-body-md text-body-md hover:bg-surface-container-highest px-sm py-sm rounded transition-colors font-medium">Use Template</button>
+<div class="flex gap-sm">
+<button class="text-on-surface-variant hover:text-primary p-sm rounded hover:bg-surface-container-highest transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="text-on-surface-variant hover:text-error p-sm rounded hover:bg-surface-container-highest transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface tech-border rounded p-lg flex flex-col h-full hover:border-primary transition-colors duration-300">
+<div class="flex justify-between items-start mb-md">
+<h3 class="font-h3 text-h3 text-on-surface font-bold">Performance Regression</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">speed</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-1">
+                            Template requiring benchmark data, trace logs, and comparative analysis against baseline metrics.
+                        </p>
+<div class="flex flex-wrap gap-sm mb-lg">
+<div class="bg-surface-container-high px-sm py-xs rounded flex items-center gap-sm tech-border">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="font-label-caps text-label-caps text-on-surface">HIGH PRIORITY</span>
+</div>
+<div class="bg-surface-container-high px-sm py-xs rounded flex items-center gap-sm tech-border">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="font-label-caps text-label-caps text-on-surface">MED SEVERITY</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant flex items-center justify-between">
+<button class="text-primary font-body-md text-body-md hover:bg-surface-container-highest px-sm py-sm rounded transition-colors font-medium">Use Template</button>
+<div class="flex gap-sm">
+<button class="text-on-surface-variant hover:text-primary p-sm rounded hover:bg-surface-container-highest transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="text-on-surface-variant hover:text-error p-sm rounded hover:bg-surface-container-highest transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: Labels -->
+<section>
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-h2 text-h2 text-on-surface">Labels</h2>
+</div>
+<!-- Label Chips Row -->
+<div class="flex flex-wrap gap-md mb-xl p-md bg-surface tech-border rounded">
+<div class="flex items-center gap-sm px-md py-sm rounded-full border border-error/30 bg-error/10 text-error font-code-sm text-code-sm group cursor-default">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                        Bug
+                        <button class="ml-xs text-error/70 hover:text-error flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<div class="flex items-center gap-sm px-md py-sm rounded-full border border-tertiary/30 bg-tertiary/10 text-tertiary font-code-sm text-code-sm group cursor-default">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                        Performance
+                        <button class="ml-xs text-tertiary/70 hover:text-tertiary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<div class="flex items-center gap-sm px-md py-sm rounded-full border border-primary/30 bg-primary/10 text-primary font-code-sm text-code-sm group cursor-default">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                        Security
+                        <button class="ml-xs text-primary/70 hover:text-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<div class="flex items-center gap-sm px-md py-sm rounded-full border border-secondary/30 bg-secondary/10 text-secondary font-code-sm text-code-sm group cursor-default">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                        UI
+                        <button class="ml-xs text-secondary/70 hover:text-secondary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<div class="flex items-center gap-sm px-md py-sm rounded-full border border-[#00E5FF]/30 bg-[#00E5FF]/10 text-[#00E5FF] font-code-sm text-code-sm group cursor-default">
+<span class="w-2 h-2 rounded-full bg-[#00E5FF]"></span>
+                        Backend
+                        <button class="ml-xs text-[#00E5FF]/70 hover:text-[#00E5FF] flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+<div class="flex items-center gap-sm px-md py-sm rounded-full border border-error/30 bg-error/10 text-error font-code-sm text-code-sm group cursor-default">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                        Critical-Path
+                        <button class="ml-xs text-error/70 hover:text-error flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[14px]">close</span>
+</button>
+</div>
+</div>
+<!-- Create Label Inline Form -->
+<div class="bg-surface-container-low tech-border p-md rounded flex flex-col md:flex-row items-start md:items-center gap-lg">
+<div class="flex items-center gap-sm">
+<p class="font-label-caps text-label-caps text-on-surface-variant mr-sm">COLOR:</p>
+<button class="w-6 h-6 rounded-full bg-error border border-outline-variant ring-2 ring-transparent focus:ring-primary hover:scale-110 transition-transform"></button>
+<button class="w-6 h-6 rounded-full bg-tertiary border border-outline-variant ring-2 ring-transparent focus:ring-primary hover:scale-110 transition-transform"></button>
+<button class="w-6 h-6 rounded-full bg-primary border-outline-variant ring-2 ring-primary border-2 border-background hover:scale-110 transition-transform"></button>
+<button class="w-6 h-6 rounded-full bg-secondary border border-outline-variant ring-2 ring-transparent focus:ring-primary hover:scale-110 transition-transform"></button>
+<button class="w-6 h-6 rounded-full bg-[#00E5FF] border border-outline-variant ring-2 ring-transparent focus:ring-primary hover:scale-110 transition-transform"></button>
+<button class="w-6 h-6 rounded-full bg-surface-variant border border-outline-variant ring-2 ring-transparent focus:ring-primary hover:scale-110 transition-transform"></button>
+</div>
+<div class="flex-1 w-full md:w-auto flex items-center gap-md">
+<input class="w-full bg-surface-container-highest border border-outline-variant rounded px-md py-sm text-on-surface font-code-md text-code-md focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all placeholder:text-outline" placeholder="Label Name..." type="text"/>
+<button class="bg-primary text-on-primary font-body-md text-body-md font-medium px-lg py-sm rounded whitespace-nowrap primary-glow transition-all">
+                            Add Label
+                        </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sidebar Variants - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&amp;family=DM+Sans:wght@400;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e3e2e5",
+                        "on-secondary-fixed": "#140067",
+                        "on-tertiary": "#2c303a",
+                        "primary": "#c3f5ff",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "inverse-surface": "#e3e2e5",
+                        "inverse-on-surface": "#303033",
+                        "surface-container-high": "#292a2c",
+                        "secondary-fixed": "#e3dfff",
+                        "primary-container": "#00e5ff",
+                        "on-secondary": "#2500a2",
+                        "on-primary-fixed": "#001f24",
+                        "inverse-primary": "#006875",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "tertiary-container": "#cdd0dc",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "primary-fixed": "#9cf0ff",
+                        "surface-variant": "#343537",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-primary-fixed-variant": "#004f58",
+                        "secondary": "#c5c0ff",
+                        "tertiary-fixed": "#dfe2ee",
+                        "tertiary": "#e9ecf9",
+                        "on-surface-variant": "#bac9cc",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#b2acff",
+                        "surface-bright": "#38393b",
+                        "background": "#121315",
+                        "surface-container-lowest": "#0d0e10",
+                        "surface": "#121315",
+                        "on-primary-container": "#00626e",
+                        "outline": "#849396",
+                        "on-tertiary-fixed": "#181c24",
+                        "on-error": "#690005",
+                        "surface-dim": "#121315",
+                        "secondary-container": "#3c28bf",
+                        "on-tertiary-container": "#555963",
+                        "error": "#ffb4ab",
+                        "surface-container-low": "#1b1c1e",
+                        "on-primary": "#00363d",
+                        "outline-variant": "#3b494c",
+                        "surface-tint": "#00daf3",
+                        "surface-container": "#1f2022",
+                        "on-background": "#e3e2e5",
+                        "surface-container-highest": "#343537"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-md": "24px",
+                        "margin-sm": "12px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Syne"],
+                        "display-metrics": ["Syne"],
+                        "body-md": ["DM Sans"],
+                        "body-sm": ["DM Sans"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-sm": ["Syne"],
+                        "code-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #0A0B0D; } /* Force specific dark background as requested */
+        .sidebar-container { border-right: 1px solid #22262F; }
+        .nav-divider { border-top: 1px solid #22262F; opacity: 0.5; }
+        .amber-chip { border: 1px solid #F59E0B; color: #F59E0B; background-color: rgba(245, 158, 11, 0.1); }
+        .violet-chip { border: 1px solid #8B5CF6; color: #8B5CF6; background-color: rgba(139, 92, 246, 0.1); }
+        .cyan-chip { border: 1px solid #00daf3; color: #00daf3; background-color: rgba(0, 218, 243, 0.1); }
+    </style>
+</head>
+<body class="text-on-surface font-body-md min-h-screen flex items-center justify-center p-gutter">
+<div class="flex flex-row gap-8 max-w-container-max w-full overflow-x-auto justify-center items-start h-[921px]">
+<!-- SIDEBAR 1: DEVELOPER / TESTER VIEW -->
+<div class="w-[240px] h-full flex flex-col bg-surface-container-low sidebar-container shrink-0 relative">
+<!-- View Label -->
+<div class="absolute -top-10 left-0 w-full flex justify-center">
+<div class="px-2 py-1 rounded font-label-caps text-label-caps amber-chip">
+                    DEVELOPER / TESTER VIEW
+                </div>
+</div>
+<div class="flex flex-col h-full py-margin-md">
+<!-- Header -->
+<div class="px-gutter mb-6">
+<h1 class="font-headline-sm text-headline-sm text-primary-fixed-dim">ENGINEERING</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">COMMAND CENTER</p>
+</div>
+<div class="px-gutter mb-6">
+<button class="w-full py-2 border border-primary-fixed-dim text-primary-fixed-dim font-label-caps text-label-caps rounded hover:shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-all duration-300">
+                        NEW REPORT
+                    </button>
+</div>
+<!-- Main Nav -->
+<nav class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-secondary-container/20 text-primary-fixed-dim border-l-2 border-primary-fixed-dim hover:bg-surface-container-highest transition-all duration-150 ring-1 ring-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">bug_report</span>
+<span class="font-body-sm text-body-sm">Active Bugs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 justify-between" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px]">assignment</span>
+<span class="font-body-sm text-body-sm">My Assignments</span>
+</div>
+<span class="bg-surface-variant text-on-surface font-label-caps text-[8px] px-1.5 py-0.5 rounded border border-outline-variant">NEW</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 justify-between opacity-70" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+<span class="font-body-sm text-body-sm">Automation</span>
+</div>
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 justify-between" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+<span class="font-body-sm text-body-sm">Notifications</span>
+</div>
+<div class="w-2 h-2 bg-primary-container rounded-full shadow-[0_0_4px_rgba(0,229,255,0.8)]"></div>
+</a>
+<div class="nav-divider my-4 mx-3"></div>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">person_outline</span>
+<span class="font-body-sm text-body-sm">Account</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">support</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span class="font-body-sm text-body-sm">Documentation</span>
+</a>
+</nav>
+<!-- User Profile Bottom -->
+<div class="mt-auto px-gutter pt-4 nav-divider">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-variant border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="John Doe" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1MgBxJncdjhZhuw8Ysax4HHI0j6R17gJ9IWB1zShXlIveba2szYgdfx9ou11crHpzJuTWROYiRnttssQVsra_POqiThxdRmIpPbHj8lTDFzhBEG4ZfA5Ahan7PTZRfWfkMFy92hH9CkzPLvqtm5k5MH2x5BnjLSDe2rz0Y-T1cZIIw2fQMkkbnAOpvS-eZFS7g0n_gefDz1keDnLDrR7SYX6fNxC665UsT8KnMenmG2uSqCQnh7aoTNe2baSr-YRTMzh3E9EINAE"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface">John Doe</span>
+<span class="font-label-caps text-[8px] text-on-surface-variant border border-outline-variant px-1 mt-0.5 rounded w-fit">DEVELOPER</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SIDEBAR 2: SUPERVISOR / MANAGER VIEW -->
+<div class="w-[240px] h-full flex flex-col bg-surface-container-low sidebar-container shrink-0 relative">
+<!-- View Label -->
+<div class="absolute -top-10 left-0 w-full flex justify-center">
+<div class="px-2 py-1 rounded font-label-caps text-label-caps violet-chip">
+                    SUPERVISOR / MANAGER VIEW
+                </div>
+</div>
+<div class="flex flex-col h-full py-margin-md">
+<!-- Header -->
+<div class="px-gutter mb-6">
+<h1 class="font-headline-sm text-headline-sm text-primary-fixed-dim">ENGINEERING</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">COMMAND CENTER</p>
+</div>
+<div class="px-gutter mb-6">
+<button class="w-full py-2 border border-primary-fixed-dim text-primary-fixed-dim font-label-caps text-label-caps rounded hover:shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-all duration-300">
+                        NEW REPORT
+                    </button>
+</div>
+<!-- Main Nav -->
+<nav class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-secondary-container/20 text-primary-fixed-dim border-l-2 border-primary-fixed-dim hover:bg-surface-container-highest transition-all duration-150 ring-1 ring-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">bug_report</span>
+<span class="font-body-sm text-body-sm">Active Bugs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+<span class="font-body-sm text-body-sm">Automation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+<span class="font-body-sm text-body-sm">Teams</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">bar_chart</span>
+<span class="font-body-sm text-body-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+<span class="font-body-sm text-body-sm">Notifications</span>
+</a>
+<div class="nav-divider my-4 mx-3"></div>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 justify-between" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span class="font-body-sm text-body-sm">Settings</span>
+</div>
+<span class="material-symbols-outlined text-[14px] opacity-70">admin_panel_settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">person_outline</span>
+<span class="font-body-sm text-body-sm">Account</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">support</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+</nav>
+<!-- User Profile Bottom -->
+<div class="mt-auto px-gutter pt-4 nav-divider">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-variant border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Sarah Connor" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaeG-kf6czUxtRWe0a8OiF38BqOcx6XdfMOdvAY5Fb016p1m80IW-Z4GIRLuYVueUd3FKhy2kRCKLp6lIbmyPDCKj5chudEuN93aftX_E0CuLqoAmc6gN_lxlfFd-dm8zCqGEam-u3gyZURP4SPp6oS8A8C7QaDl6bR0K3ZaYmXEN8vCrtqWLuynWHjEIpMlVHABJuy9uIF23Vn7dndCrRPlfYHYSXx2rUszBqGUJNTDW-v7jys6ItY2ciLf4npgFfUQvmhCyRWVc"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface">Sarah Connor</span>
+<span class="font-label-caps text-[8px] text-on-surface-variant border border-outline-variant px-1 mt-0.5 rounded w-fit">SUPERVISOR</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SIDEBAR 3: ORG_ADMIN VIEW -->
+<div class="w-[240px] h-full flex flex-col bg-surface-container-low sidebar-container shrink-0 relative">
+<!-- View Label -->
+<div class="absolute -top-10 left-0 w-full flex justify-center">
+<div class="px-2 py-1 rounded font-label-caps text-label-caps cyan-chip shadow-[0_0_8px_rgba(0,218,243,0.3)]">
+                    ORG_ADMIN VIEW
+                </div>
+</div>
+<div class="flex flex-col h-full py-margin-md">
+<!-- Header -->
+<div class="px-gutter mb-6">
+<h1 class="font-headline-sm text-headline-sm text-primary-fixed-dim">ENGINEERING</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">COMMAND CENTER</p>
+</div>
+<div class="px-gutter mb-6">
+<button class="w-full py-2 border border-primary-fixed-dim text-primary-fixed-dim font-label-caps text-label-caps rounded hover:shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-all duration-300">
+                        NEW REPORT
+                    </button>
+</div>
+<!-- Main Nav -->
+<nav class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-secondary-container/20 text-primary-fixed-dim border-l-2 border-primary-fixed-dim hover:bg-surface-container-highest transition-all duration-150 ring-1 ring-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">bug_report</span>
+<span class="font-body-sm text-body-sm">Active Bugs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">smart_toy</span>
+<span class="font-body-sm text-body-sm">Automation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+<span class="font-body-sm text-body-sm">Teams</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">bar_chart</span>
+<span class="font-body-sm text-body-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+<span class="font-body-sm text-body-sm">Notifications</span>
+</a>
+<!-- Admin Settings Group -->
+<div class="mt-4 mb-2 px-3">
+<span class="font-label-caps text-[10px] text-on-surface-variant opacity-70">ADMINISTRATION</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 ml-2 border-l border-outline-variant/30 pl-4" href="#">
+<span class="material-symbols-outlined text-[16px]">manage_accounts</span>
+<span class="font-body-sm text-body-sm">Users</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 ml-2 border-l border-outline-variant/30 pl-4" href="#">
+<span class="material-symbols-outlined text-[16px]">credit_card</span>
+<span class="font-body-sm text-body-sm">Billing</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 ml-2 border-l border-outline-variant/30 pl-4" href="#">
+<span class="material-symbols-outlined text-[16px]">webhook</span>
+<span class="font-body-sm text-body-sm">Webhooks</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 ml-2 border-l border-outline-variant/30 pl-4" href="#">
+<span class="material-symbols-outlined text-[16px]">key</span>
+<span class="font-body-sm text-body-sm">API Keys</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 ml-2 border-l border-outline-variant/30 pl-4" href="#">
+<span class="material-symbols-outlined text-[16px]">view_quilt</span>
+<span class="font-body-sm text-body-sm">Templates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 ml-2 border-l border-outline-variant/30 pl-4" href="#">
+<span class="material-symbols-outlined text-[16px]">domain</span>
+<span class="font-body-sm text-body-sm">Company Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-1.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 ml-2 border-l border-outline-variant/30 pl-4" href="#">
+<span class="material-symbols-outlined text-[16px]">history</span>
+<span class="font-body-sm text-body-sm">Audit Log</span>
+</a>
+<div class="nav-divider my-4 mx-3"></div>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">person_outline</span>
+<span class="font-body-sm text-body-sm">Account</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined text-[18px]">support</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+</nav>
+<!-- User Profile Bottom -->
+<div class="mt-auto px-gutter pt-4 nav-divider">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-variant border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Alex R" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI2b_hmFzM3vGS9Y2IBjr66ngI5E2fvN91refFgNgzTejtXFFqo9zsbqAD2pRZlLhRcdwZiUUsddef5mN9V2mI9nS_yDie3M1MkydBQdV6GFWmAExqX7lrUbIHhx_9_jNi_dngsfFCPjYRiYa7yuQe8JpmyGOYgMvRvwHUT_mccusHgKK9I79TFEPg_oJJF5JehM_lkXiebhNJzEH4T-BgiuD4UczVAQuDabyBMw14sXhts8K1JXGq1XgvF9Ka8oxkIz2lf76WFfI"/>
+</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface">Alex R.</span>
+<span class="font-label-caps text-[8px] text-primary-fixed-dim border border-primary-fixed-dim px-1 mt-0.5 rounded w-fit bg-primary-fixed-dim/10">ORG_ADMIN</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audit Log - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "surface-container": "#1f2022",
+                            "secondary-fixed": "#e3dfff",
+                            "secondary": "#c5c0ff",
+                            "primary": "#c3f5ff",
+                            "outline": "#849396",
+                            "on-tertiary-fixed-variant": "#434751",
+                            "on-secondary-fixed-variant": "#3c28bf",
+                            "tertiary-fixed": "#dfe2ee",
+                            "on-secondary-fixed": "#140067",
+                            "secondary-container": "#3c28bf",
+                            "on-tertiary-fixed": "#181c24",
+                            "on-tertiary": "#2c303a",
+                            "secondary-fixed-dim": "#c5c0ff",
+                            "surface-tint": "#00daf3",
+                            "tertiary-fixed-dim": "#c3c6d2",
+                            "primary-fixed": "#9cf0ff",
+                            "on-error-container": "#ffdad6",
+                            "surface-container-low": "#1b1c1e",
+                            "primary-fixed-dim": "#00daf3",
+                            "inverse-primary": "#006875",
+                            "surface": "#121315",
+                            "error-container": "#93000a",
+                            "surface-variant": "#343537",
+                            "surface-container-highest": "#343537",
+                            "inverse-surface": "#e3e2e5",
+                            "on-background": "#e3e2e5",
+                            "on-surface-variant": "#bac9cc",
+                            "on-tertiary-container": "#555963",
+                            "on-surface": "#e3e2e5",
+                            "on-primary-fixed-variant": "#004f58",
+                            "on-error": "#690005",
+                            "primary-container": "#00e5ff",
+                            "inverse-on-surface": "#303033",
+                            "outline-variant": "#3b494c",
+                            "on-primary-fixed": "#001f24",
+                            "tertiary-container": "#cdd0dc",
+                            "tertiary": "#e9ecf9",
+                            "surface-bright": "#38393b",
+                            "surface-container-lowest": "#0d0e10",
+                            "on-primary": "#00363d",
+                            "error": "#ffb4ab",
+                            "surface-container-high": "#292a2c",
+                            "on-secondary-container": "#b2acff",
+                            "background": "#121315",
+                            "on-secondary": "#2500a2",
+                            "on-primary-container": "#00626e",
+                            "surface-dim": "#121315"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "margin-sm": "12px",
+                            "unit": "4px",
+                            "gutter": "16px",
+                            "margin-md": "24px",
+                            "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                            "label-caps": [
+                                    "JetBrains Mono"
+                            ],
+                            "body-md": [
+                                    "DM Sans"
+                            ],
+                            "code-md": [
+                                    "JetBrains Mono"
+                            ],
+                            "display-metrics": [
+                                    "Syne"
+                            ],
+                            "headline-lg": [
+                                    "Syne"
+                            ],
+                            "body-sm": [
+                                    "DM Sans"
+                            ],
+                            "headline-sm": [
+                                    "Syne"
+                            ]
+                    },
+                    "fontSize": {
+                            "label-caps": [
+                                    "10px",
+                                    {
+                                            "lineHeight": "1",
+                                            "letterSpacing": "0.1em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "body-md": [
+                                    "14px",
+                                    {
+                                            "lineHeight": "1.4",
+                                            "letterSpacing": "-0.01em",
+                                            "fontWeight": "400"
+                                    }
+                            ],
+                            "code-md": [
+                                    "13px",
+                                    {
+                                            "lineHeight": "1.5",
+                                            "letterSpacing": "0em",
+                                            "fontWeight": "400"
+                                    }
+                            ],
+                            "display-metrics": [
+                                    "48px",
+                                    {
+                                            "lineHeight": "1.1",
+                                            "letterSpacing": "0.05em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "headline-lg": [
+                                    "32px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "letterSpacing": "0.02em",
+                                            "fontWeight": "700"
+                                    }
+                            ],
+                            "body-sm": [
+                                    "12px",
+                                    {
+                                            "lineHeight": "1.4",
+                                            "letterSpacing": "-0.01em",
+                                            "fontWeight": "400"
+                                    }
+                            ],
+                            "headline-sm": [
+                                    "20px",
+                                    {
+                                            "lineHeight": "1.2",
+                                            "letterSpacing": "0.02em",
+                                            "fontWeight": "700"
+                                    }
+                            ]
+                    }
+            },
+                },
+            }
+    </script>
+<style>
+        /* Base styles and custom scrollbar */
+        body {
+            background-color: #0A0B0D; /* As requested, though using config variable for general areas */
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121315;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #343537;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555963;
+        }
+        
+        /* 1px Rules & Luminous Layering */
+        .glass-panel {
+            background: rgba(17, 19, 24, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid #22262F;
+        }
+        
+        .dense-table-row {
+            border-bottom: 1px solid #22262F;
+            transition: background-color 0.15s ease;
+        }
+        .dense-table-row:hover {
+            background-color: #1A1D24;
+        }
+        
+        /* Outline Buttons */
+        .btn-outline {
+            border: 1px solid #22262F;
+            transition: all 0.2s ease;
+        }
+        .btn-outline:hover {
+            border-color: var(--color-primary-fixed-dim, #00daf3);
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+            background: rgba(0, 229, 255, 0.05);
+        }
+        
+        /* Input Fields */
+        .cyber-input {
+            background: transparent;
+            border: 1px solid #22262F;
+            transition: all 0.2s ease;
+        }
+        .cyber-input:focus {
+            outline: none;
+            border-color: var(--color-primary-fixed-dim, #00daf3);
+            box-shadow: 0 0 0 1px var(--color-primary-fixed-dim, #00daf3) inset;
+        }
+        
+        /* Status Indicators */
+        .status-square {
+            width: 6px;
+            height: 6px;
+            display: inline-block;
+        }
+        
+        /* Custom row background for impersonation */
+        .impersonate-row {
+            background-color: rgba(255, 71, 87, 0.06);
+            border-bottom: 1px solid rgba(255, 71, 87, 0.2);
+        }
+        .impersonate-row:hover {
+            background-color: rgba(255, 71, 87, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface flex h-screen overflow-hidden antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low border-r border-outline-variant flex flex-col h-full py-margin-md docked h-screen left-0 w-64 hidden md:flex z-20 flex-shrink-0">
+<div class="px-margin-md mb-8">
+<div class="font-headline-sm text-headline-sm text-primary-fixed-dim font-bold tracking-tighter mb-2">AutoRepro</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase">ENGINEERING</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant uppercase opacity-70">COMMAND CENTER</div>
+</div>
+<div class="px-margin-md mb-6">
+<button class="w-full py-2 px-4 btn-outline flex items-center justify-center gap-2 rounded text-primary-fixed-dim font-label-caps text-label-caps uppercase">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                NEW REPORT
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bug_report</span>
+                Active Bugs
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">replay</span>
+                Reproductions
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">groups</span>
+                Teams
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">extension</span>
+                Integrations
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-secondary-container/20 text-primary-fixed-dim border-l-2 border-primary-fixed-dim font-label-caps text-label-caps ring-1 ring-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+                Audit Logs
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps mt-6" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">person_outline</span>
+                Account
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shield</span>
+                Security
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+                System
+            </a>
+</div>
+<div class="px-3 mt-auto pt-6 border-t border-outline-variant/30 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">support</span>
+                Support
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">sensors</span>
+                Status
+            </a>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-[#0A0B0D]">
+<!-- TopAppBar (Mobile version fallback structurally, but we focus on the requested layout) -->
+<header class="h-16 border-b border-outline-variant flex items-center justify-between px-gutter lg:px-margin-md flex-shrink-0 bg-background/80 backdrop-blur-md z-10">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-caps text-label-caps uppercase opacity-60">
+<span>Settings</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-primary-fixed-dim">Audit Log</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 overflow-y-auto p-gutter lg:p-margin-md">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-1">Audit Log</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ORG_ADMIN visibility: System-wide activity tracking.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex bg-surface-container-highest border border-[#22262F] rounded p-0.5">
+<button class="px-3 py-1 text-xs font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors">Last 24h</button>
+<button class="px-3 py-1 text-xs font-label-caps text-label-caps bg-[#22262F] text-primary-fixed-dim rounded shadow-sm">7 days</button>
+<button class="px-3 py-1 text-xs font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors">30 days</button>
+</div>
+<button class="btn-outline flex items-center gap-2 px-3 py-1.5 rounded text-primary-fixed-dim font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                        Export CSV
+                    </button>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="glass-panel p-3 mb-4 rounded flex flex-wrap gap-3 items-center justify-between">
+<div class="flex flex-wrap gap-3 items-center">
+<div class="relative">
+<select class="cyber-input appearance-none bg-surface pl-3 pr-8 py-1.5 rounded text-sm font-body-sm text-on-surface border-[#22262F] focus:border-primary-fixed-dim focus:ring-0 min-w-[140px]">
+<option>All Actors</option>
+<option>System</option>
+<option>Users</option>
+<option>API Keys</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px] pointer-events-none">expand_more</span>
+</div>
+<div class="relative">
+<select class="cyber-input appearance-none bg-surface pl-3 pr-8 py-1.5 rounded text-sm font-body-sm text-on-surface border-[#22262F] focus:border-primary-fixed-dim focus:ring-0 min-w-[140px]">
+<option>All Action Types</option>
+<option>Authentication</option>
+<option>Bug Status</option>
+<option>User Management</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px] pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="relative w-full md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">search</span>
+<input class="cyber-input w-full bg-surface pl-9 pr-3 py-1.5 rounded text-sm font-body-sm text-on-surface border-[#22262F] focus:border-primary-fixed-dim focus:ring-0" placeholder="Search logs, IPs, IDs..." type="text"/>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="bg-[#111318] border border-[#22262F] rounded overflow-hidden flex flex-col">
+<!-- Table Header -->
+<div class="grid grid-cols-[40px_1fr_2fr_1fr] md:grid-cols-[40px_1.5fr_3fr_1.5fr] gap-4 p-3 border-b border-[#22262F] bg-surface-container-low font-label-caps text-label-caps text-on-surface-variant uppercase">
+<div class="text-center">Type</div>
+<div>Actor</div>
+<div>Action Details</div>
+<div class="text-right">Timestamp / Origin</div>
+</div>
+<!-- Table Body -->
+<div class="flex flex-col">
+<!-- Row 1: Bug Action -->
+<div class="grid grid-cols-[40px_1fr_2fr_1fr] md:grid-cols-[40px_1.5fr_3fr_1.5fr] gap-4 p-3 dense-table-row items-center">
+<div class="flex justify-center">
+<div class="w-6 h-6 rounded-full flex items-center justify-center border border-[#00E5FF]/30 bg-[#00E5FF]/10 text-[#00E5FF]">
+<span class="material-symbols-outlined text-[14px]">bug_report</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<img alt="Actor Avatar" class="w-6 h-6 rounded-sm border border-[#22262F]" data-alt="A small, professional digital avatar portrait showing simple initials 'MK' on a dark minimalist background, fitting a sleek engineering dashboard context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ1pBG-HS2MdoT8n0s2wIke57Mb2-71cURc2kz43dKC6E7JmKCNIznwk0fJebHKEhPdfo1vCkrQyKBZmBRWDFeorouIfrci4Q_EsOPP7mp-90_A-mpkU_c9wDlu2nL4ABLLYrwmVbwGI7X47_OGrkeBMsPBEQCnxeH-HT-l0DeMXwHWmuyftEq0FhZ3_USd3eJjflQRbA6zVsPoZ5SxxNMhZqc51nKP8yg39jngogXVGi6Wh7Xju-HuByNOjjBSZsCMlYBUpAXaIU"/>
+<span class="font-code-md text-code-md text-on-surface">m.kovac</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface">
+                            Changed status of <span class="text-primary-fixed-dim font-code-md text-code-md">#AR-1284</span> from <span class="px-1 border border-[#22262F] rounded text-xs">IN_PROGRESS</span> to <span class="px-1 border border-[#00daf3]/30 text-[#00daf3] rounded text-xs bg-[#00daf3]/10">RESOLVED</span>
+</div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-code-md text-code-md text-on-surface text-xs">2024-10-24 14:32:01</span>
+<span class="font-code-md text-code-md text-on-surface-variant text-[10px] opacity-70">192.168.1.44</span>
+</div>
+</div>
+<!-- Row 2: Bug Action -->
+<div class="grid grid-cols-[40px_1fr_2fr_1fr] md:grid-cols-[40px_1.5fr_3fr_1.5fr] gap-4 p-3 dense-table-row items-center">
+<div class="flex justify-center">
+<div class="w-6 h-6 rounded-full flex items-center justify-center border border-[#00E5FF]/30 bg-[#00E5FF]/10 text-[#00E5FF]">
+<span class="material-symbols-outlined text-[14px]">assignment_ind</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<img alt="Actor Avatar" class="w-6 h-6 rounded-sm border border-[#22262F]" data-alt="A small, professional digital avatar portrait showing simple initials 'JD' on a dark minimalist background, designed for a modern cyber-dashboard interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVhgGpmn397zkTILdz97d5J5xhknpZ12UD0PKBAtMj9X6hwYQ5O3Hzui56h1WWr6w2cetcrKyQw0JVZ4pvxPderN8irUTZxv_YKL9UvN6DktF3ExQaObpZ-veH3Yn4u0PseTr8VP-8OOJt_RH3h8U5eQx6x8F6kb6gBAimC7YrILX1CQnhep7TrHCWiabt0DZgzntkR4gLT5_-P_wFzCefmBuqHsC2HtTCsuDruS_rIUvCCt9OcvQN0brnbwS-dlm9UuuIPsV2aSU"/>
+<span class="font-code-md text-code-md text-on-surface">j.doe</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface">
+                            Assigned <span class="text-primary-fixed-dim font-code-md text-code-md">#AR-9921</span> to Sarah Connor
+                        </div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-code-md text-code-md text-on-surface text-xs">2024-10-24 14:15:22</span>
+<span class="font-code-md text-code-md text-on-surface-variant text-[10px] opacity-70">10.0.4.15</span>
+</div>
+</div>
+<!-- Row 3: Destructive Action -->
+<div class="grid grid-cols-[40px_1fr_2fr_1fr] md:grid-cols-[40px_1.5fr_3fr_1.5fr] gap-4 p-3 dense-table-row items-center">
+<div class="flex justify-center">
+<div class="w-6 h-6 rounded-full flex items-center justify-center border border-[#FF4757]/30 bg-[#FF4757]/10 text-[#FF4757]">
+<span class="material-symbols-outlined text-[14px]">delete</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<img alt="Actor Avatar" class="w-6 h-6 rounded-sm border border-[#22262F]" data-alt="A small digital avatar graphic depicting initials 'SA' on a dark background, reflecting a sleek, high-density engineering tool aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjXqQMoRuu4n8VxpELlkCNzVSdBSpbjv4Df4yZmdEXS4vyiZRmyrDoOp4_vTAaYNShEH8HGn6J6e-jdDlhe2U_jYoe7NFe6XYzUDIf-pCwBrp-ODnE-uLHW6QqUeo2Ok8uhqh_RApXYm6FRE1x-3lJE5Iak126EdMxXnpLepFEnO-benHz1V8OkFG2REf--Kjt6WcXV565l8occGdK_BjqM8aA9JTyil4NeyCsz4Vyvxc6OaWdfXbx6Gz_Vz5nUPJ9zf-v8WJpucM"/>
+<span class="font-code-md text-code-md text-on-surface">sys.admin</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface">
+                            Deleted bug <span class="text-error font-code-md text-code-md line-through">#AR-0042</span>
+</div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-code-md text-code-md text-on-surface text-xs">2024-10-24 13:50:09</span>
+<span class="font-code-md text-code-md text-on-surface-variant text-[10px] opacity-70">172.16.0.2</span>
+</div>
+</div>
+<!-- Row 4: User Action -->
+<div class="grid grid-cols-[40px_1fr_2fr_1fr] md:grid-cols-[40px_1.5fr_3fr_1.5fr] gap-4 p-3 dense-table-row items-center">
+<div class="flex justify-center">
+<div class="w-6 h-6 rounded-full flex items-center justify-center border border-[#7B6FFF]/30 bg-[#7B6FFF]/10 text-[#7B6FFF]">
+<span class="material-symbols-outlined text-[14px]">manage_accounts</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<img alt="Actor Avatar" class="w-6 h-6 rounded-sm border border-[#22262F]" data-alt="A tiny, high-tech looking user avatar featuring initials 'AR' set against a stark, dark grey minimalist canvas, illuminated by subtle soft lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJPGjuKeBLEjn2N-K4euhdkOIq5EoAVz0Nek1cUwK0-eOMJJy9l4ZYLJ9L-9PwMWdY8xWI9QLd6LApKlUd3oZPgDB_0no5kS5GMyMjGqDuRF8wqam_PbsmxqS8ek7BhmmnNck6cGzj4pUsXihleaof-5BCCxAnzeRmjqAcwlkZUJe0N4bFmePFPoNCHDmsPUtE6a8mlWqLKFg6X8QeRJQ_Qzv9J8zvHbBwKLdctK3417MOMaVGmwSlzl8nVvseQBF1iPEZWE3FjNQ"/>
+<span class="font-code-md text-code-md text-on-surface">alex.r</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface">
+                            Updated role of <span class="font-code-md text-code-md text-on-surface-variant">j.doe</span> to <span class="px-1 border border-[#7B6FFF]/30 text-[#7B6FFF] rounded text-xs bg-[#7B6FFF]/10">MANAGER</span>
+</div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-code-md text-code-md text-on-surface text-xs">2024-10-24 11:22:45</span>
+<span class="font-code-md text-code-md text-on-surface-variant text-[10px] opacity-70">192.168.1.105</span>
+</div>
+</div>
+<!-- Row 5: System Action -->
+<div class="grid grid-cols-[40px_1fr_2fr_1fr] md:grid-cols-[40px_1.5fr_3fr_1.5fr] gap-4 p-3 dense-table-row items-center">
+<div class="flex justify-center">
+<div class="w-6 h-6 rounded-full flex items-center justify-center border border-outline-variant bg-surface-variant text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-sm border border-[#22262F] bg-surface flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+</div>
+<span class="font-code-md text-code-md text-on-surface-variant opacity-80">system_worker</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface">
+                            Triggered AutoRepro job for <span class="text-primary-fixed-dim font-code-md text-code-md">#AR-1288</span>
+</div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-code-md text-code-md text-on-surface text-xs">2024-10-24 10:05:11</span>
+<span class="font-code-md text-code-md text-on-surface-variant text-[10px] opacity-70">internal_net</span>
+</div>
+</div>
+<!-- Row 6: Impersonation Action (Special Row) -->
+<div class="grid grid-cols-[40px_1fr_2fr_1fr] md:grid-cols-[40px_1.5fr_3fr_1.5fr] gap-4 p-3 dense-table-row items-center impersonate-row">
+<div class="flex justify-center">
+<div class="w-6 h-6 rounded-full flex items-center justify-center border border-[#FF4757] bg-[#FF4757]/20 text-[#FF4757]">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<img alt="Actor Avatar" class="w-6 h-6 rounded-sm border border-[#FF4757]/50" data-alt="A small square avatar with initials 'SA' over a muted red background, signaling an alert or elevated privilege action in a dark technical UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSo6VAfXu-ueBIlW6KE-H5F6CIJjtKCI5YeFX25lmvKUouOMIMnaOFXwwoZbQVoX7wxUoKU-vdpzCv7zkdUPowAsbrbndXvfdHMVJWENZyyZkT0U4LY8GzWeB8z5af7JFQfys_MeY1wSAR-IoOeC4jw3E1rlYfNss5bFjWI0rMCLINk0I6mHkiN5_LnL7Rsp6_oxl3EVEQz2jDfwkVXleqCj5XvWae1AhyBrc_N9OH1EgmfGrOl_i_gy0J2lEx8RyEJcSFtvoMrR0"/>
+<span class="font-code-md text-code-md text-[#FF4757]">sys.admin</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface">
+                            Impersonated user <span class="font-code-md text-code-md bg-surface border border-[#22262F] px-1 rounded">alex.r@autorepro.dev</span>
+</div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-code-md text-code-md text-on-surface text-xs">2024-10-24 09:12:00</span>
+<span class="font-code-md text-code-md text-on-surface-variant text-[10px] opacity-70">172.16.0.2</span>
+</div>
+</div>
+<!-- Row 7: System Action -->
+<div class="grid grid-cols-[40px_1fr_2fr_1fr] md:grid-cols-[40px_1.5fr_3fr_1.5fr] gap-4 p-3 dense-table-row items-center border-b-0">
+<div class="flex justify-center">
+<div class="w-6 h-6 rounded-full flex items-center justify-center border border-outline-variant bg-surface-variant text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">webhook</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-sm border border-[#22262F] bg-surface flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">api</span>
+</div>
+<span class="font-code-md text-code-md text-on-surface-variant opacity-80">api_service</span>
+</div>
+<div class="font-body-md text-body-md text-on-surface">
+                            Updated Webhook <span class="font-code-md text-code-md text-on-surface-variant">'Production-Alerts'</span>
+</div>
+<div class="text-right flex flex-col justify-center">
+<span class="font-code-md text-code-md text-on-surface text-xs">2024-10-24 08:30:15</span>
+<span class="font-code-md text-code-md text-on-surface-variant text-[10px] opacity-70">10.0.1.55</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex justify-between items-center mt-4 px-2">
+<div class="font-label-caps text-label-caps text-on-surface-variant">
+                    Showing 1-7 of 1,248
+                </div>
+<div class="flex gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-[#22262F] text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-[#22262F] text-primary-fixed-dim border border-primary-fixed-dim/30 font-code-md text-xs">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-[#22262F] text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-colors font-code-md text-xs">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-[#22262F] text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-colors font-code-md text-xs">3</button>
+<div class="w-8 h-8 flex items-center justify-center text-on-surface-variant">...</div>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-[#22262F] text-on-surface-variant hover:text-on-surface hover:border-outline-variant transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

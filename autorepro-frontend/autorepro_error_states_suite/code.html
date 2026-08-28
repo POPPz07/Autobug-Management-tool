@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - Error States</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#cdd0dc",
+                        "surface-dim": "#121315",
+                        "on-error": "#690005",
+                        "inverse-primary": "#006875",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0d0e10",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1b1c1e",
+                        "on-primary-fixed": "#001f24",
+                        "surface-container": "#1f2022",
+                        "on-tertiary": "#2c303a",
+                        "surface-container-high": "#292a2c",
+                        "background": "#121315",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-tertiary-fixed": "#181c24",
+                        "surface-tint": "#00daf3",
+                        "surface-container-highest": "#343537",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-secondary-fixed": "#140067",
+                        "on-secondary": "#2500a2",
+                        "tertiary": "#e9ecf9",
+                        "on-tertiary-container": "#555963",
+                        "on-primary-fixed-variant": "#004f58",
+                        "on-background": "#e3e2e5",
+                        "inverse-surface": "#e3e2e5",
+                        "on-primary-container": "#00626e",
+                        "primary-fixed": "#9cf0ff",
+                        "primary": "#c3f5ff",
+                        "outline-variant": "#3b494c",
+                        "on-secondary-container": "#b2acff",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "outline": "#849396",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#00e5ff",
+                        "surface-variant": "#343537",
+                        "secondary": "#c5c0ff",
+                        "secondary-container": "#3c28bf",
+                        "inverse-on-surface": "#303033",
+                        "on-primary": "#00363d",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "secondary-fixed": "#e3dfff",
+                        "surface-bright": "#38393b",
+                        "on-surface": "#e3e2e5",
+                        "tertiary-fixed": "#dfe2ee",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "on-surface-variant": "#bac9cc",
+                        "surface": "#121315"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-md": "24px",
+                        "margin-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["DM Sans"],
+                        "code-md": ["JetBrains Mono"],
+                        "display-metrics": ["Syne"],
+                        "body-md": ["DM Sans"],
+                        "headline-sm": ["Syne"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Cyber-Minimalist Custom Styles */
+        body {
+            background-color: #0A0B0D; /* Deep matte black requested */
+        }
+
+        /* Dot Grid Background */
+        .bg-dot-grid {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Glowing accents */
+        .glow-cyan {
+            text-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+        }
+        .glow-red {
+            text-shadow: 0 0 16px rgba(255, 180, 171, 0.4); /* using error color */
+        }
+        
+        .btn-outline-cyan {
+            border: 1px solid theme('colors.primary-container');
+            color: theme('colors.primary-container');
+            transition: all 0.2s ease;
+        }
+        .btn-outline-cyan:hover {
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        .input-cyber {
+            border: 1px solid #22262F;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+        .input-cyber:focus {
+            border-color: theme('colors.primary-container');
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+            outline: none;
+        }
+        
+        /* 1px Container Borders */
+        .panel-border {
+            border: 1px solid #22262F;
+        }
+
+        .floating-label {
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            background-color: #0A0B0D;
+            padding: 0 4px;
+            color: theme('colors.primary-container');
+            font-size: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+        }
+        
+        /* Error code 96px custom size */
+        .text-error-code {
+            font-size: 96px;
+            line-height: 1;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-on-surface font-body-md bg-dot-grid relative overflow-x-hidden antialiased">
+<!-- Ambient Glowing Dots -->
+<div class="fixed top-[20%] left-[10%] w-2 h-2 rounded-full bg-primary-container shadow-[0_0_20px_rgba(0,229,255,0.8)] opacity-50 z-0 pointer-events-none"></div>
+<div class="fixed bottom-[30%] right-[15%] w-2 h-2 rounded-full bg-primary-container shadow-[0_0_20px_rgba(0,229,255,0.8)] opacity-30 z-0 pointer-events-none"></div>
+<div class="fixed top-[60%] left-[45%] w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_15px_rgba(0,229,255,0.6)] opacity-40 z-0 pointer-events-none"></div>
+<!-- Logo -->
+<div class="absolute top-margin-md left-margin-md z-10 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-headline-sm text-headline-sm text-primary tracking-tighter">AutoRepro</span>
+</div>
+<!-- Main Content Canvas -->
+<main class="relative z-10 flex h-screen items-center justify-center p-gutter">
+<div class="w-full max-w-container-max grid grid-cols-1 md:grid-cols-3 gap-gutter h-[600px]">
+<!-- PANEL 1: 403 Forbidden -->
+<div class="panel-border bg-surface-dim/80 backdrop-blur-md rounded flex flex-col p-8 relative group hover:border-outline-variant transition-colors">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-container/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex-grow flex flex-col justify-center">
+<!-- Role Chip -->
+<div class="self-start mb-6 border border-[#22262F] rounded px-2 py-1 flex items-center gap-1.5">
+<div class="w-[6px] h-[6px] bg-secondary-container"></div>
+<span class="font-label-caps text-label-caps text-secondary">DEVELOPER</span>
+</div>
+<div class="text-error-code text-on-surface mb-2 glow-cyan">403</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Access Restricted</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 max-w-[80%]">
+                        You don't have permission to view this page. Contact your administrator to request access.
+                    </p>
+</div>
+<div class="flex items-center gap-4 mt-auto">
+<button class="btn-outline-cyan font-label-caps text-label-caps px-6 py-3 rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                        Go back
+                    </button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors px-4 py-3">
+                        Request Access
+                    </button>
+</div>
+</div>
+<!-- PANEL 2: 404 Not Found -->
+<div class="panel-border bg-surface-dim/80 backdrop-blur-md rounded flex flex-col p-8 relative group hover:border-outline-variant transition-colors">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary-container/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex-grow flex flex-col justify-center">
+<div class="text-error-code text-on-surface mb-2">404</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Page Not Found</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 max-w-[85%]">
+                        The bug, job or page you're looking for doesn't exist or has been deleted.
+                    </p>
+<!-- Search Input -->
+<div class="relative mb-8 w-full">
+<span class="floating-label hidden group-focus-within:block z-10">Search</span>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant">search</span>
+<input class="input-cyber w-full py-3 pl-10 pr-4 rounded text-on-surface font-body-md placeholder:text-on-surface-variant/50" placeholder="Search for something else..." type="text"/>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<button class="btn-outline-cyan font-label-caps text-label-caps px-6 py-3 rounded flex items-center gap-2 w-full justify-center">
+                        Go to Dashboard
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- PANEL 3: 500 Server Error -->
+<div class="panel-border bg-surface-dim/80 backdrop-blur-md rounded flex flex-col p-8 relative group hover:border-outline-variant transition-colors">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-error/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex-grow flex flex-col justify-center">
+<div class="text-error-code text-on-surface mb-2 glow-red">500</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Something went wrong</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-[85%]">
+                        An unexpected error occurred on our end. Our team has been notified automatically.
+                    </p>
+<!-- Technical Detail -->
+<div class="border border-[#22262F] bg-[#111318] rounded p-3 flex flex-col gap-2 mb-8">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ERROR REF</span>
+<div class="flex items-center justify-between">
+<span class="font-code-md text-code-md text-error">ERR-a4f2c9d1</span>
+<button class="text-on-surface-variant hover:text-primary-container transition-colors" title="Copy to clipboard">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4 mt-auto">
+<button class="btn-outline-cyan font-label-caps text-label-caps px-6 py-3 rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+                        Try again
+                    </button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-on-surface transition-colors px-4 py-3">
+                        Check system status
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interaction for input floating label
+        const inputs = document.querySelectorAll('.input-cyber');
+        inputs.forEach(input => {
+            const container = input.closest('.relative');
+            const label = container.previousElementSibling;
+            
+            input.addEventListener('focus', () => {
+                if(label && label.classList.contains('floating-label')) {
+                    label.classList.remove('hidden');
+                }
+            });
+            
+            input.addEventListener('blur', () => {
+                if(label && label.classList.contains('floating-label') && !input.value) {
+                    label.classList.add('hidden');
+                }
+            });
+            
+            // init state
+            if(input.value && label && label.classList.contains('floating-label')) {
+                 label.classList.remove('hidden');
+            }
+        });
+    </script>
+</body></html>

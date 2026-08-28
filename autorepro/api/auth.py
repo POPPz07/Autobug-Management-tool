@@ -424,6 +424,46 @@ class TokenResponse(_BM):
 class RoleUpdateRequest(_BM):
     role: UserRole
 
+class RegisterOrgRequest(_BM):
+    company_name: str
+    full_name: str
+    email: str
+    password: str
+
+@auth_router.post("/register-org", response_model=TokenResponse, status_code=201)
+def register_org(org_in: RegisterOrgRequest, session: SessionDep):
+    """
+    Register a new company and its first ORG_ADMIN user.
+    Returns a JWT token to log the user in immediately.
+    """
+    # Check if email exists
+    existing_user = session.exec(select(User).where(User.email == org_in.email)).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    # Create Company
+    company = Company(name=org_in.company_name, slug=org_in.company_name.lower().replace(" ", "-"))
+    session.add(company)
+    session.commit()
+    session.refresh(company)
+
+    # Create User
+    user = User(
+        full_name=org_in.full_name,
+        email=org_in.email,
+        password_hash=hash_password(org_in.password),
+        role=UserRole.ORG_ADMIN,
+        company_id=company.id
+    )
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    # Generate token
+    token = create_access_token(user)
+    log.info("org_registered", company_id=str(company.id), user_id=str(user.id))
+    return TokenResponse(access_token=token)
+
 
 @auth_router.post("/login", response_model=TokenResponse)
 def login(

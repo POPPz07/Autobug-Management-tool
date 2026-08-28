@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - Command Palette</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container": "#1f2022",
+                      "on-tertiary-container": "#555963",
+                      "surface-container-highest": "#343537",
+                      "surface": "#121315",
+                      "on-background": "#e3e2e5",
+                      "on-surface": "#e3e2e5",
+                      "surface-container-low": "#1b1c1e",
+                      "error-container": "#93000a",
+                      "surface-bright": "#38393b",
+                      "secondary-fixed": "#e3dfff",
+                      "primary-fixed-dim": "#00daf3",
+                      "on-error": "#690005",
+                      "on-secondary-fixed": "#140067",
+                      "secondary-fixed-dim": "#c5c0ff",
+                      "outline": "#849396",
+                      "inverse-on-surface": "#303033",
+                      "surface-container-lowest": "#0d0e10",
+                      "on-tertiary-fixed-variant": "#434751",
+                      "secondary-container": "#3c28bf",
+                      "surface-tint": "#00daf3",
+                      "primary-fixed": "#9cf0ff",
+                      "on-primary": "#00363d",
+                      "tertiary-fixed-dim": "#c3c6d2",
+                      "on-secondary-fixed-variant": "#3c28bf",
+                      "surface-variant": "#343537",
+                      "surface-dim": "#121315",
+                      "on-primary-container": "#00626e",
+                      "on-tertiary-fixed": "#181c24",
+                      "background": "#121315",
+                      "surface-container-high": "#292a2c",
+                      "on-tertiary": "#2c303a",
+                      "on-secondary-container": "#b2acff",
+                      "secondary": "#c5c0ff",
+                      "primary": "#c3f5ff",
+                      "on-error-container": "#ffdad6",
+                      "inverse-surface": "#e3e2e5",
+                      "on-surface-variant": "#bac9cc",
+                      "on-secondary": "#2500a2",
+                      "tertiary": "#e9ecf9",
+                      "outline-variant": "#3b494c",
+                      "primary-container": "#00e5ff",
+                      "inverse-primary": "#006875",
+                      "on-primary-fixed": "#001f24",
+                      "error": "#ffb4ab",
+                      "tertiary-container": "#cdd0dc",
+                      "on-primary-fixed-variant": "#004f58",
+                      "tertiary-fixed": "#dfe2ee",
+                      
+                      "custom-cyan": "#00E5FF",
+                      "custom-bg": "#111318",
+                      "custom-hover": "#1A1D24",
+                      "custom-border": "#22262F"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "margin-sm": "12px",
+                      "margin-md": "24px"
+              },
+              "fontFamily": {
+                      "headline-sm": [
+                              "Syne"
+                      ],
+                      "body-sm": [
+                              "DM Sans"
+                      ],
+                      "body-md": [
+                              "DM Sans"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "Syne"
+                      ],
+                      "display-metrics": [
+                              "Syne"
+                      ],
+                      "code-md": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "10px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-metrics": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-md": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+        .glowing-border {
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+            display: inline-block;
+            width: 2px;
+            height: 18px;
+            background-color: #00E5FF;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        .bg-custom-bg { background-color: #111318; }
+        .bg-custom-hover { background-color: #1A1D24; }
+        .border-custom-border { border-color: #22262F; }
+      </style>
+</head>
+<body class="bg-background text-on-surface h-screen w-screen overflow-hidden font-body-md antialiased selection:bg-primary-container/30 selection:text-primary-container">
+<!-- Background Layer: Incidents List Mock (Darkened & Blurred) -->
+<div class="absolute inset-0 z-0 overflow-hidden">
+<div class="w-full h-full bg-surface-container opacity-50 flex flex-col pointer-events-none" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDTLXJbZMI2Orb9GvQOzDG7Sp206P-dCwVlhJxo4GB5ar48SWnH6qAIYP0Laa6SGWD_W4SZH8Kx9BhVogRrDdWMEhT3_elXxDjF51MHxsgUEzh-MSz92mE_09vluAd-r0qxUHKIiRjb5LEVY4tEMJrIUTX39LkGmZ1H98KT1u_OG11nSsTvp4tba_bLc7WkPeiDj1S1qeWjyu1_f-Iht2mcB-mBQLdZxuJX-w3B7tQ_jiAOtiBjNeYSwfJ4cnT5EWSHLoLiQUKEhbg'); background-size: cover; background-position: center; filter: blur(4px) brightness(0.4);">
+</div>
+<!-- Overlay -->
+<div class="absolute inset-0 bg-black/70 backdrop-blur-sm z-10 pointer-events-none"></div>
+</div>
+<!-- Main Content Container (Command Palette Modal) -->
+<main class="relative z-50 flex items-start justify-center h-full w-full pt-24 sm:pt-[153px] px-4">
+<!-- Command Palette Modal -->
+<div class="w-full max-w-[620px] bg-custom-bg border border-custom-cyan rounded-xl glowing-border flex flex-col shadow-none overflow-hidden">
+<!-- Top Section: Search Input -->
+<div class="flex items-center px-4 h-16 border-b border-custom-border shrink-0">
+<span class="material-symbols-outlined text-outline text-xl mr-3" data-weight="fill" style="font-variation-settings: 'FILL' 0;">search</span>
+<div class="flex-grow relative flex items-center">
+<!-- Fake Input to show blinking cursor perfectly aligned -->
+<span class="text-[18px] text-on-surface font-body-md">Search bugs, run commands...<span class="cursor-blink"></span></span>
+</div>
+<div class="ml-4 shrink-0">
+<kbd class="font-code-md text-code-md text-outline bg-surface-container-highest px-2 py-1 rounded border border-custom-border uppercase shadow-sm">ESC</kbd>
+</div>
+</div>
+<!-- Results Section (Scrollable) -->
+<div class="overflow-y-auto max-h-[614px] py-2 custom-scrollbar">
+<!-- Group 1: RECENT BUGS -->
+<div class="mb-2">
+<div class="px-4 py-2 text-[10px] font-label-caps text-label-caps text-outline uppercase tracking-widest">
+                        RECENT BUGS
+                    </div>
+<ul class="flex flex-col">
+<!-- Row 1 (Highlighted) -->
+<li class="flex items-center px-4 py-3 bg-custom-hover cursor-pointer group">
+<div class="w-1.5 h-1.5 bg-error mr-3 shrink-0"></div>
+<div class="flex-grow min-w-0 pr-4">
+<span class="text-on-surface font-body-md truncate block group-hover:text-primary transition-colors">Payment Gateway Timeout on Checkout</span>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<span class="px-2 py-0.5 border border-error-container text-error text-[10px] font-label-caps text-label-caps rounded-sm uppercase bg-error-container/10">OPEN</span>
+<span class="font-code-md text-code-md text-outline">BUG-4092</span>
+</div>
+</li>
+<!-- Row 2 -->
+<li class="flex items-center px-4 py-3 cursor-pointer group hover:bg-surface-container-high transition-colors">
+<div class="w-1.5 h-1.5 bg-custom-cyan mr-3 shrink-0"></div>
+<div class="flex-grow min-w-0 pr-4">
+<span class="text-on-surface font-body-md truncate block group-hover:text-primary transition-colors">Dashboard Widget Rendering Offset</span>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<span class="px-2 py-0.5 border border-primary-container text-primary-container text-[10px] font-label-caps text-label-caps rounded-sm uppercase bg-primary-container/10">IN_PROGRESS</span>
+<span class="font-code-md text-code-md text-outline">BUG-4088</span>
+</div>
+</li>
+<!-- Row 3 -->
+<li class="flex items-center px-4 py-3 cursor-pointer group hover:bg-surface-container-high transition-colors">
+<div class="w-1.5 h-1.5 bg-secondary-container mr-3 shrink-0"></div>
+<div class="flex-grow min-w-0 pr-4">
+<span class="text-on-surface font-body-md truncate block group-hover:text-primary transition-colors">Session Expiry Token Mismatch</span>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<span class="px-2 py-0.5 border border-outline-variant text-outline text-[10px] font-label-caps text-label-caps rounded-sm uppercase bg-surface-container-high">INVESTIGATING</span>
+<span class="font-code-md text-code-md text-outline">BUG-4071</span>
+</div>
+</li>
+</ul>
+</div>
+<!-- Group 2: ACTIONS -->
+<div class="mb-2">
+<div class="px-4 py-2 text-[10px] font-label-caps text-label-caps text-outline uppercase tracking-widest">
+                        ACTIONS
+                    </div>
+<ul class="flex flex-col">
+<li class="flex items-center justify-between px-4 py-2.5 cursor-pointer group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-outline text-lg mr-3 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">bolt</span>
+<span class="text-on-surface-variant font-body-md group-hover:text-on-surface transition-colors">Trigger AutoRepro on selected</span>
+</div>
+<kbd class="font-code-md text-[11px] text-outline bg-surface-container px-1.5 py-0.5 rounded border border-custom-border shadow-sm">⌘R</kbd>
+</li>
+<li class="flex items-center justify-between px-4 py-2.5 cursor-pointer group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-outline text-lg mr-3 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">add</span>
+<span class="text-on-surface-variant font-body-md group-hover:text-on-surface transition-colors">Create new bug</span>
+</div>
+<kbd class="font-code-md text-[11px] text-outline bg-surface-container px-1.5 py-0.5 rounded border border-custom-border shadow-sm">⌘N</kbd>
+</li>
+<li class="flex items-center justify-between px-4 py-2.5 cursor-pointer group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-outline text-lg mr-3 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">search</span>
+<span class="text-on-surface-variant font-body-md group-hover:text-on-surface transition-colors">Search all bugs</span>
+</div>
+<kbd class="font-code-md text-[11px] text-outline bg-surface-container px-1.5 py-0.5 rounded border border-custom-border shadow-sm">/</kbd>
+</li>
+</ul>
+</div>
+<!-- Group 3: NAVIGATE -->
+<div class="mb-1">
+<div class="px-4 py-2 text-[10px] font-label-caps text-label-caps text-outline uppercase tracking-widest">
+                        NAVIGATE
+                    </div>
+<ul class="flex flex-col">
+<li class="flex items-center justify-between px-4 py-2.5 cursor-pointer group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-outline text-lg mr-3 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="text-on-surface-variant font-body-md group-hover:text-on-surface transition-colors">Go to Dashboard</span>
+</div>
+<kbd class="font-code-md text-[11px] text-outline bg-surface-container px-1.5 py-0.5 rounded border border-custom-border shadow-sm">G then D</kbd>
+</li>
+<li class="flex items-center justify-between px-4 py-2.5 cursor-pointer group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-outline text-lg mr-3 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="text-on-surface-variant font-body-md group-hover:text-on-surface transition-colors">Go to Analytics</span>
+</div>
+<kbd class="font-code-md text-[11px] text-outline bg-surface-container px-1.5 py-0.5 rounded border border-custom-border shadow-sm">G then A</kbd>
+</li>
+<li class="flex items-center justify-between px-4 py-2.5 cursor-pointer group hover:bg-surface-container-high transition-colors">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-outline text-lg mr-3 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">settings</span>
+<span class="text-on-surface-variant font-body-md group-hover:text-on-surface transition-colors">Open Settings</span>
+</div>
+<kbd class="font-code-md text-[11px] text-outline bg-surface-container px-1.5 py-0.5 rounded border border-custom-border shadow-sm">G then S</kbd>
+</li>
+</ul>
+</div>
+</div>
+<!-- Bottom Bar: Instructions -->
+<div class="flex items-center justify-between px-4 py-3 border-t border-custom-border bg-surface-container-lowest shrink-0">
+<div class="flex items-center gap-4 text-xs font-body-sm text-on-surface-variant">
+<span class="flex items-center gap-1.5"><kbd class="font-code-md text-[10px] bg-surface-container px-1 py-0.5 rounded border border-custom-border">↑↓</kbd> navigate</span>
+<span class="flex items-center gap-1.5"><kbd class="font-code-md text-[10px] bg-surface-container px-1 py-0.5 rounded border border-custom-border">↵</kbd> select</span>
+<span class="flex items-center gap-1.5"><kbd class="font-code-md text-[10px] bg-surface-container px-1 py-0.5 rounded border border-custom-border">ESC</kbd> close</span>
+</div>
+<div>
+<kbd class="font-code-md text-[11px] text-outline bg-surface-container px-1.5 py-0.5 rounded border border-custom-border shadow-sm">⌘K</kbd>
+</div>
+</div>
+</div>
+</main>
+<style>
+        /* Minimal custom scrollbar for palette */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #22262F;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3b494c;
+        }
+    </style>
+</body></html>

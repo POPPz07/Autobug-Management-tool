@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - Welcome</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1f2022",
+                        "outline": "#849396",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "primary-container": "#00e5ff",
+                        "on-background": "#e3e2e5",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-secondary-fixed": "#140067",
+                        "inverse-on-surface": "#303033",
+                        "primary-fixed": "#9cf0ff",
+                        "secondary": "#c5c0ff",
+                        "primary-fixed-dim": "#00daf3",
+                        "tertiary": "#e9ecf9",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#00626e",
+                        "surface-tint": "#00daf3",
+                        "on-tertiary-fixed": "#181c24",
+                        "on-secondary-container": "#b2acff",
+                        "on-primary-fixed-variant": "#004f58",
+                        "tertiary-container": "#cdd0dc",
+                        "surface-variant": "#343537",
+                        "surface-dim": "#121315",
+                        "on-surface": "#e3e2e5",
+                        "on-error": "#690005",
+                        "on-tertiary": "#2c303a",
+                        "secondary-container": "#3c28bf",
+                        "background": "#121315",
+                        "secondary-fixed": "#e3dfff",
+                        "on-primary-fixed": "#001f24",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1b1c1e",
+                        "on-secondary": "#2500a2",
+                        "surface-container-highest": "#343537",
+                        "surface-bright": "#38393b",
+                        "tertiary-fixed": "#dfe2ee",
+                        "surface": "#121315",
+                        "primary": "#c3f5ff",
+                        "on-primary": "#00363d",
+                        "inverse-primary": "#006875",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-container": "#555963",
+                        "inverse-surface": "#e3e2e5",
+                        "on-surface-variant": "#bac9cc",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "surface-container-lowest": "#0d0e10",
+                        "surface-container-high": "#292a2c",
+                        "outline-variant": "#3b494c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-sm": "12px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "container-max": "1440px",
+                        "margin-md": "24px"
+                    },
+                    "fontFamily": {
+                        "display-metrics": ["Syne"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-md": ["DM Sans"],
+                        "code-md": ["JetBrains Mono"],
+                        "headline-lg": ["Syne"],
+                        "headline-sm": ["Syne"],
+                        "body-sm": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glow-hover:hover {
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+        }
+        .pulse-indicator {
+            animation: pulse-cyan 2s infinite;
+        }
+        @keyframes pulse-cyan {
+            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(0, 229, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar Component -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 border-r border-outline-variant z-40 bg-surface-container-low dark:bg-surface-container-low w-64 docked">
+<!-- Header -->
+<div class="p-6 border-b border-outline-variant flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface border border-outline-variant flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed-dim tracking-tighter truncate">Engineering Command</h1>
+<div class="font-label-caps text-label-caps text-on-surface-variant">v4.2.0-stable</div>
+</div>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 overflow-y-auto py-4 flex flex-col gap-1 px-2 font-label-caps text-label-caps text-primary dark:text-primary-fixed-dim">
+<!-- Active Tab -->
+<a class="border-l-2 border-primary bg-primary/10 text-primary font-bold flex items-center gap-3 px-4 py-3 cursor-pointer relative" href="#">
+<div class="w-1.5 h-1.5 bg-primary-container pulse-indicator absolute left-2 top-1/2 -translate-y-1/2"></div>
+<span class="material-symbols-outlined pl-2">dashboard</span>
+<span class="mt-1">Dashboard</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-3 cursor-pointer border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined pl-2">bug_report</span>
+<span class="mt-1">Active Bugs</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-3 cursor-pointer border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined pl-2">replay</span>
+<span class="mt-1">Reproductions</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-3 cursor-pointer border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined pl-2">group</span>
+<span class="mt-1">Teams</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-3 cursor-pointer border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined pl-2">extension</span>
+<span class="mt-1">Integrations</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-3 cursor-pointer border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined pl-2">history</span>
+<span class="mt-1">Audit Logs</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-3 cursor-pointer border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined pl-2">manage_accounts</span>
+<span class="mt-1">Account</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-3 cursor-pointer border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined pl-2">security</span>
+<span class="mt-1">Security</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-3 cursor-pointer border-l-2 border-transparent" href="#">
+<span class="material-symbols-outlined pl-2">settings</span>
+<span class="mt-1">System</span>
+</a>
+</nav>
+<!-- Sidebar Metrics -->
+<div class="px-6 py-4 border-t border-outline-variant flex flex-col gap-3 font-code-md text-code-md text-on-surface-variant">
+<div class="flex justify-between items-center">
+<span>Bugs</span>
+<span class="text-primary-container">0</span>
+</div>
+<div class="flex justify-between items-center">
+<span>Jobs</span>
+<span class="text-primary-container">0</span>
+</div>
+<div class="flex justify-between items-center">
+<span>Success Rate</span>
+<span class="text-primary-container">0%</span>
+</div>
+<div class="flex justify-between items-center">
+<span>Team Members</span>
+<span class="text-primary-container">0</span>
+</div>
+</div>
+<!-- Footer Tabs -->
+<div class="p-4 border-t border-outline-variant flex flex-col gap-1 px-2 font-label-caps text-label-caps">
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-2 cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined pl-2">help</span>
+<span class="mt-1">Support</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-3 opacity-80 hover:bg-surface-variant/50 hover:text-primary transition-all duration-150 px-4 py-2 cursor-pointer rounded" href="#">
+<span class="material-symbols-outlined pl-2">description</span>
+<span class="mt-1">Documentation</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar Component -->
+<header class="flex justify-between items-center h-12 px-margin-md w-full sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant bg-surface dark:bg-surface text-primary dark:text-primary-fixed-dim font-body-md text-body-md">
+<div class="flex items-center gap-4 w-1/3">
+<span class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed-dim tracking-tighter cursor-pointer active:opacity-70 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200">AutoRepro</span>
+<!-- Search Bar (on_left) -->
+<div class="relative hidden lg:flex items-center w-64 h-8 border border-outline-variant rounded bg-surface-dim hover:border-primary-container focus-within:border-primary-container transition-colors">
+<span class="material-symbols-outlined absolute left-2 text-on-surface-variant text-sm">search</span>
+<input class="w-full h-full bg-transparent border-none focus:ring-0 text-sm pl-8 pr-2 font-code-md text-on-surface placeholder:text-on-surface-variant/50" placeholder="Search commands, bugs..." type="text"/>
+</div>
+</div>
+<div class="flex items-center justify-end gap-2 w-1/3">
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-variant/50 text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200 cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-variant/50 text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200 cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-variant/50 text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200 cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Canvas Area -->
+<main class="flex-1 flex flex-col items-center justify-center p-gutter md:p-margin-md relative overflow-hidden bg-background">
+<!-- Subtle background grid/glow effect -->
+<div class="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary-container/5 via-background/0 to-background/0"></div>
+<div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: linear-gradient(#22262F 1px, transparent 1px), linear-gradient(90deg, #22262F 1px, transparent 1px); background-size: 24px 24px;"></div>
+<!-- Empty State Card -->
+<div class="relative z-10 w-full max-w-5xl bg-surface border border-dashed border-primary-container/30 rounded-xl p-8 md:p-12 shadow-2xl flex flex-col items-center">
+<!-- Logo Mark -->
+<div class="w-20 h-20 mb-8 rounded-lg border border-primary-container/50 bg-primary-container/10 flex items-center justify-center shadow-[0_0_15px_rgba(0,229,255,0.1)] relative">
+<div class="absolute inset-0 rounded-lg border border-primary-container animate-pulse opacity-50"></div>
+<span class="material-symbols-outlined text-primary-container text-[40px]" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<!-- Header Content -->
+<div class="text-center mb-12">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-3 tracking-tight">Welcome to AutoRepro</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Your engineering command center is ready.</p>
+</div>
+<!-- Step Cards Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-10">
+<!-- Step 1 -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-6 relative group hover:border-primary-container transition-colors duration-300 flex flex-col h-full">
+<div class="absolute top-4 right-4 font-display-metrics text-[64px] font-bold text-primary-container/[0.04] select-none leading-none">01</div>
+<div class="w-10 h-10 rounded border border-outline-variant bg-surface flex items-center justify-center mb-6 group-hover:border-primary-container/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-container transition-colors">bug_report</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface mb-2 relative z-10">Report your first bug</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-1 relative z-10">Create a bug report with a target URL and reproduction steps.</p>
+<button class="w-full h-10 border border-primary-container text-primary-container font-code-md text-code-md rounded flex items-center justify-center gap-2 glow-hover transition-all bg-transparent relative z-10 group/btn">
+                            Create Bug 
+                            <span class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-6 relative group hover:border-primary-container transition-colors duration-300 flex flex-col h-full">
+<div class="absolute top-4 right-4 font-display-metrics text-[64px] font-bold text-primary-container/[0.04] select-none leading-none">02</div>
+<div class="w-10 h-10 rounded border border-outline-variant bg-surface flex items-center justify-center mb-6 group-hover:border-primary-container/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-container transition-colors">group</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface mb-2 relative z-10">Invite your team</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-1 relative z-10">Add developers, testers and supervisors to collaborate.</p>
+<button class="w-full h-10 border border-primary-container text-primary-container font-code-md text-code-md rounded flex items-center justify-center gap-2 glow-hover transition-all bg-transparent relative z-10 group/btn">
+                            Invite Members 
+                            <span class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-6 relative group hover:border-primary-container transition-colors duration-300 flex flex-col h-full">
+<div class="absolute top-4 right-4 font-display-metrics text-[64px] font-bold text-primary-container/[0.04] select-none leading-none">03</div>
+<div class="w-10 h-10 rounded border border-outline-variant bg-surface flex items-center justify-center mb-6 group-hover:border-primary-container/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-container transition-colors">bolt</span>
+</div>
+<h3 class="font-headline-sm text-[16px] text-on-surface mb-2 relative z-10">Trigger AutoRepro</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6 flex-1 relative z-10">Let AI automatically reproduce and analyze your bugs.</p>
+<button class="w-full h-10 border border-transparent hover:bg-primary-container/10 text-primary-container font-code-md text-code-md rounded flex items-center justify-center gap-2 transition-all relative z-10 group/btn">
+                            Learn More 
+                            <span class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Footer Links inside/below card context -->
+<div class="w-full flex flex-col items-center pt-8 border-t border-outline-variant/50">
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Need help getting started?</p>
+<div class="flex items-center gap-6">
+<a class="font-code-md text-code-md text-on-surface hover:text-primary-container transition-colors flex items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-[16px] opacity-70 group-hover:opacity-100">menu_book</span>
+                            View Documentation
+                        </a>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<a class="font-code-md text-code-md text-on-surface hover:text-primary-container transition-colors flex items-center gap-1 group" href="#">
+<span class="material-symbols-outlined text-[16px] opacity-70 group-hover:opacity-100">chat</span>
+                            Contact Support
+                        </a>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

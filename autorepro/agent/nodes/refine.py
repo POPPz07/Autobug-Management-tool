@@ -32,28 +32,35 @@ def _extract_text(content) -> str:
     return str(content).strip()
 
 
-def _get_llm():
-    """Return the configured LLM instance."""
-    if config.LLM_PROVIDER == "mock":
+def _instantiate_llm(provider: str, model: str, temperature: float = 0.0):
+    if provider == "mock":
         from utils.mock_llm import MockLLM
         return MockLLM()
-    if config.LLM_PROVIDER == "bedrock":
+    if provider == "bedrock":
         from langchain_aws import ChatBedrockConverse
-        return ChatBedrockConverse(model=config.LLM_MODEL, temperature=0.3)
-    if config.LLM_PROVIDER == "anthropic":
+        return ChatBedrockConverse(model=model, temperature=temperature)
+    if provider == "anthropic":
         from langchain_anthropic import ChatAnthropic
-        return ChatAnthropic(model=config.LLM_MODEL, temperature=0.3)
-    if config.LLM_PROVIDER == "google" or config.LLM_PROVIDER == "gemini":
+        return ChatAnthropic(model=model, temperature=temperature)
+    if provider in ("google", "gemini"):
         from langchain_google_genai import ChatGoogleGenerativeAI
-        return ChatGoogleGenerativeAI(model=config.LLM_MODEL, temperature=0.3)
-    if config.LLM_PROVIDER == "ollama":
+        return ChatGoogleGenerativeAI(model=model, temperature=temperature)
+    if provider == "ollama":
         from langchain_ollama import ChatOllama
-        return ChatOllama(model=config.LLM_MODEL, temperature=0.3)
-    if config.LLM_PROVIDER == "groq":
+        return ChatOllama(model=model, temperature=temperature)
+    if provider == "groq":
         from langchain_groq import ChatGroq
-        return ChatGroq(model=config.LLM_MODEL, temperature=0.3)
+        return ChatGroq(model=model, temperature=temperature)
     from langchain_openai import ChatOpenAI
-    return ChatOpenAI(model=config.LLM_MODEL, temperature=0.3)
+    return ChatOpenAI(model=model, temperature=temperature)
+
+def _get_llm():
+    """Return the configured LLM instance with an optional fallback."""
+    primary = _instantiate_llm(config.LLM_PROVIDER, config.LLM_MODEL, 0.3)
+    if getattr(config, "FALLBACK_LLM_PROVIDER", None):
+        backup = _instantiate_llm(config.FALLBACK_LLM_PROVIDER, config.FALLBACK_LLM_MODEL, 0.3)
+        return primary.with_fallbacks([backup])
+    return primary
 
 
 def _extract_script(content: str) -> tuple[str, str]:

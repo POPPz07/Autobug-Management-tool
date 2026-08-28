@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - User Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&amp;family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e6e0e9",
+                        "primary-fixed-dim": "#cfbcff",
+                        "secondary-container": "#4d4465",
+                        "on-secondary-fixed": "#1f1635",
+                        "inverse-on-surface": "#322f35",
+                        "secondary": "#cdc0e9",
+                        "outline-variant": "#494551",
+                        "primary-fixed": "#e9ddff",
+                        "background": "#141218",
+                        "on-surface-variant": "#cbc4d2",
+                        "on-primary": "#381e72",
+                        "outline": "#948e9c",
+                        "on-background": "#e6e0e9",
+                        "surface-container-low": "#1d1b20",
+                        "tertiary-fixed": "#ffdf93",
+                        "tertiary-container": "#c9a74d",
+                        "surface-variant": "#36343a",
+                        "primary-container": "#6750a4",
+                        "on-secondary": "#342b4b",
+                        "tertiary": "#e7c365",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "surface-container-lowest": "#0f0d13",
+                        "on-secondary-fixed-variant": "#4b4263",
+                        "inverse-surface": "#e6e0e9",
+                        "on-secondary-container": "#bfb2da",
+                        "on-primary-container": "#e0d2ff",
+                        "inverse-primary": "#6750a4",
+                        "secondary-fixed-dim": "#cdc0e9",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed": "#22005d",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#141218",
+                        "secondary-fixed": "#e9ddff",
+                        "on-tertiary-container": "#503d00",
+                        "surface": "#141218",
+                        "on-tertiary": "#3e2e00",
+                        "surface-container": "#211f24",
+                        "surface-container-high": "#2b292f",
+                        "surface-container-highest": "#36343a",
+                        "surface-bright": "#3b383e",
+                        "on-primary-fixed-variant": "#4f378a",
+                        "tertiary-fixed-dim": "#e7c365",
+                        "primary": "#cfbcff",
+                        "surface-tint": "#cfbcff",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Syne"],
+                        "body-md": ["DM Sans"],
+                        "label-caps": ["JetBrains Mono"],
+                        "h1": ["Syne"],
+                        "body-lg": ["DM Sans"],
+                        "h2": ["Syne"],
+                        "code-sm": ["JetBrains Mono"],
+                        "code-md": ["JetBrains Mono"],
+                        "body-sm": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "h3": ["18px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "500"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "code-sm": ["11px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "code-md": ["13px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-sm": ["12px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0A0B0D; color: #e6e0e9; }
+        .card-surface { background-color: #111318; border: 1px solid #1F222C; }
+        .cyan-glow:hover { box-shadow: 0 0 8px rgba(0, 229, 255, 0.2); border-color: #00E5FF; }
+        .cyan-bg { background-color: #00E5FF; color: #0A0B0D; }
+        .cyan-text { color: #00E5FF; }
+        .border-cyan { border-color: #00E5FF; }
+        
+        .role-dev { color: #cbc4d2; }
+        .role-test { color: #00E5FF; } /* Using cyan for teal proxy in this palette context */
+        .role-super { color: #cfbcff; }
+        .role-mgr { color: #e7c365; }
+        .role-admin { color: #00E5FF; }
+
+        .status-active { color: #4ade80; }
+        .status-inactive { color: #948e9c; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased font-body-md">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant dark:border-outline-variant flex flex-col py-lg z-50">
+<div class="px-md mb-xl flex items-center gap-sm">
+<span class="font-h2 text-h2 font-bold text-on-surface dark:text-on-surface">AutoRepro</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">v2.4.0-stable</span>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full flex justify-center items-center gap-sm py-sm cyan-bg rounded font-body-md font-bold cyan-glow transition-all">
+<span class="material-symbols-outlined" style="font-size: 18px;">add</span>
+                New Repro
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto px-xs">
+<ul class="space-y-xs">
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all rounded active:scale-[0.98] duration-100" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                        Dashboard
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all rounded active:scale-[0.98] duration-100" href="#">
+<span class="material-symbols-outlined">bug_report</span>
+                        Incidents
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all rounded active:scale-[0.98] duration-100" href="#">
+<span class="material-symbols-outlined">robot_2</span>
+                        Automation
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all rounded active:scale-[0.98] duration-100" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+                        Workflows
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all rounded active:scale-[0.98] duration-100" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                        Analytics
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md py-sm text-on-surface dark:text-on-surface border-l-2 border-cyan pl-[14px] bg-surface-container-highest rounded-r active:scale-[0.98] duration-100" href="#">
+<span class="material-symbols-outlined">settings</span>
+                        Settings
+                    </a>
+</li>
+</ul>
+</div>
+<div class="px-xs mt-auto pt-md border-t border-outline-variant mx-md">
+<ul class="space-y-xs">
+<li>
+<a class="flex items-center gap-md px-sm py-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">help</span>
+                        Support
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-md px-sm py-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">menu_book</span>
+                        Documentation
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-[240px] flex flex-col h-full bg-background overflow-hidden">
+<!-- TopNavBar (Simulated per context) -->
+<header class="flex justify-between items-center px-lg w-full h-16 border-b border-outline-variant shrink-0 bg-background">
+<div class="flex items-center gap-sm font-code-md text-code-md text-on-surface-variant">
+<span>Settings</span>
+<span class="material-symbols-outlined text-outline" style="font-size: 16px;">chevron_right</span>
+<span class="text-on-surface font-bold">Users</span>
+</div>
+<div class="flex items-center gap-md text-on-surface-variant">
+<span class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer">notifications</span>
+<span class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer">terminal</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional system administrator in a dark, moody tech environment. The lighting is cool and technical, reflecting off subtle cybernetic implants or high-tech glasses. The mood is serious and focused, adhering to the dark-mode aesthetic with deep blacks and subtle cyan rim lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1c8tkuPzI5szMSsrEhl6Q68zfqEzgjsqJL2WWqMaHW39hziMJX6YbjFA4RtJ-HqW-uuNa_ce_1RiP8G8RI78tw8_gW1HxEQXMgr7YL06gmNC31GoA3WjfBfIYCJ1WHbJbicb4TZMhmmL9dqcSohzn23Q2UAMaDrZEYGVjLZeqRmfH0unmmeiaNr-YvlWoN0i-Af82f8NK4ITZWw16xaoXWiVkrOThORSXj13-ud2KiB2cPgrECwDG-XOKJOJG03kc_56yM50Bdy0"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="flex-1 overflow-y-auto p-lg flex flex-col gap-lg">
+<!-- Page Header & Actions -->
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-h1 text-h1 text-on-surface mb-xs">Users</h1>
+<p class="font-body-md text-on-surface-variant">Manage organization access and roles.</p>
+</div>
+<div class="flex flex-col items-end gap-sm">
+<div class="flex items-center gap-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-size: 18px;">search</span>
+<input class="bg-surface-container-low border border-outline-variant text-on-surface font-body-sm rounded pl-xl pr-sm py-xs focus:outline-none focus:border-cyan focus:ring-1 focus:ring-cyan transition-colors w-64 placeholder-on-surface-variant" placeholder="Search users..." type="text"/>
+</div>
+<button class="flex items-center gap-xs px-md py-sm cyan-bg rounded font-body-md font-bold cyan-glow transition-all">
+<span class="material-symbols-outlined" style="font-size: 18px;">person_add</span>
+                            Invite User
+                        </button>
+</div>
+<div class="flex flex-col items-end gap-xs w-full max-w-[200px]">
+<span class="font-code-sm text-code-sm text-on-surface-variant">24 / 50 seats used</span>
+<div class="w-full h-[2px] bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-cyan-text" style="width: 48%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Filters -->
+<div class="flex items-center gap-sm border-b border-outline-variant pb-xs">
+<button class="px-md py-xs font-body-sm font-medium text-on-surface border-b-2 border-cyan mb-[-5px]">All</button>
+<button class="px-md py-xs font-body-sm text-on-surface-variant hover:text-on-surface transition-colors">Developer</button>
+<button class="px-md py-xs font-body-sm text-on-surface-variant hover:text-on-surface transition-colors">Tester</button>
+<button class="px-md py-xs font-body-sm text-on-surface-variant hover:text-on-surface transition-colors">Supervisor</button>
+<button class="px-md py-xs font-body-sm text-on-surface-variant hover:text-on-surface transition-colors">Manager</button>
+<button class="px-md py-xs font-body-sm text-on-surface-variant hover:text-on-surface transition-colors">Org Admin</button>
+</div>
+<!-- User Table Card -->
+<div class="card-surface rounded-lg overflow-hidden flex flex-col">
+<div class="grid grid-cols-12 gap-sm p-md border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant">
+<div class="col-span-4">User</div>
+<div class="col-span-2">Role</div>
+<div class="col-span-2">Team</div>
+<div class="col-span-1">Status</div>
+<div class="col-span-2">Joined</div>
+<div class="col-span-1 text-right">Actions</div>
+</div>
+<div class="flex flex-col">
+<!-- User Row 1 -->
+<div class="grid grid-cols-12 gap-sm p-md border-b border-outline-variant items-center hover:bg-surface-container-highest transition-colors">
+<div class="col-span-4 flex items-center gap-md">
+<img alt="Avatar" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A small circular avatar portrait of a young female developer with glasses, illuminated by cool monitor glow in a dark room. The aesthetic aligns with technical minimalism, focusing on sharp details and muted dark background tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjz4kjsBHjqppmnIKsD19Ydb5LForGbq-E3qgbFp6d3utVmOyP1gxQELs6FuJzsiq67yMo-byshcJe_UT1OeGZvtWxFLXs8VfAA0KE3ErND-5ABXQL492uE-_09w60mskj26p3nfjsT4fJm8bmKmMgM70VGxm99MQ0AKed_PukQtXF6U2sl3eRJmkw5MVEMsG8NG445YowSDlOUxb80Idd_1rIq2S5VaFGdkWZDXOrQTnXTX2p9616szX3KvKVPpWEEd5MKzaN6YE"/>
+<div class="flex flex-col">
+<span class="font-body-md font-bold text-on-surface">Sarah Connor</span>
+<span class="font-body-sm text-on-surface-variant">s.connor@autorepro.dev</span>
+</div>
+</div>
+<div class="col-span-2">
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded border border-outline-variant bg-surface-container-low font-label-caps text-label-caps role-admin">
+<span class="w-[4px] h-[4px] rounded-full bg-cyan-text"></span>
+                                ORG_ADMIN
+                            </span>
+</div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">Platform Ops</div>
+<div class="col-span-1 flex items-center gap-xs font-body-sm text-on-surface-variant">
+<span class="w-[6px] h-[6px] rounded-full bg-[#4ade80]"></span> Active
+                        </div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">2 years ago</div>
+<div class="col-span-1 flex justify-end gap-sm text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">block</span></button>
+</div>
+</div>
+<!-- User Row 2 -->
+<div class="grid grid-cols-12 gap-sm p-md border-b border-outline-variant items-center hover:bg-surface-container-highest transition-colors">
+<div class="col-span-4 flex items-center gap-md">
+<div class="w-8 h-8 rounded-full border border-outline-variant bg-surface-container flex items-center justify-center font-body-sm font-bold text-on-surface">JD</div>
+<div class="flex flex-col">
+<span class="font-body-md font-bold text-on-surface">John Doe</span>
+<span class="font-body-sm text-on-surface-variant">j.doe@autorepro.dev</span>
+</div>
+</div>
+<div class="col-span-2">
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded border border-outline-variant bg-surface-container-low font-label-caps text-label-caps role-dev">
+<span class="w-[4px] h-[4px] rounded-full bg-outline"></span>
+                                DEVELOPER
+                            </span>
+</div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">Frontend Pod A</div>
+<div class="col-span-1 flex items-center gap-xs font-body-sm text-on-surface-variant">
+<span class="w-[6px] h-[6px] rounded-full bg-[#4ade80]"></span> Active
+                        </div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">2 days ago</div>
+<div class="col-span-1 flex justify-end gap-sm text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">block</span></button>
+</div>
+</div>
+<!-- User Row 3 -->
+<div class="grid grid-cols-12 gap-sm p-md border-b border-outline-variant items-center hover:bg-surface-container-highest transition-colors">
+<div class="col-span-4 flex items-center gap-md">
+<img alt="Avatar" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A small circular avatar of a middle-aged male software tester, looking analytical. The lighting is low-key, emphasizing structural facial features with a subtle blue rim light, fitting the dark technical UI aesthetic perfectly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX5jYIjafWQptvcTgw2L7CePBNAHCtp3TypDVIVMcBX-Jfr1_k22apHkKA39VAjowGyT8kXtOI8VGpzNftUnCJTgvMXPe0CIIq3HnrkvTbGtKiWvZO1oXYa4cZbQWm_lTawqmGpl_gOo8KNVqVA6G_AojffO79bsxlunkRCanPUzOXDez9w83Tph8JGhgnlMbzk-oVmW2hY9H510-fjG2ZxkYYWeq_HH6ruIxGwXwhcmtoL8NVjBSiO8ZYkwR0mF5cBU8k7gl1018"/>
+<div class="flex flex-col">
+<span class="font-body-md font-bold text-on-surface">Michael Vance</span>
+<span class="font-body-sm text-on-surface-variant">m.vance@autorepro.dev</span>
+</div>
+</div>
+<div class="col-span-2">
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded border border-outline-variant bg-surface-container-low font-label-caps text-label-caps role-test">
+<span class="w-[4px] h-[4px] rounded-full bg-cyan-text"></span>
+                                TESTER
+                            </span>
+</div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">QA Automation</div>
+<div class="col-span-1 flex items-center gap-xs font-body-sm text-on-surface-variant">
+<span class="w-[6px] h-[6px] rounded-full bg-outline"></span> Inactive
+                        </div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">1 month ago</div>
+<div class="col-span-1 flex justify-end gap-sm text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">block</span></button>
+</div>
+</div>
+<!-- User Row 4 -->
+<div class="grid grid-cols-12 gap-sm p-md border-b border-outline-variant items-center hover:bg-surface-container-highest transition-colors">
+<div class="col-span-4 flex items-center gap-md">
+<div class="w-8 h-8 rounded-full border border-outline-variant bg-surface-container flex items-center justify-center font-body-sm font-bold text-on-surface">EL</div>
+<div class="flex flex-col">
+<span class="font-body-md font-bold text-on-surface">Elena Rostova</span>
+<span class="font-body-sm text-on-surface-variant">e.rostova@autorepro.dev</span>
+</div>
+</div>
+<div class="col-span-2">
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded border border-outline-variant bg-surface-container-low font-label-caps text-label-caps role-mgr">
+<span class="w-[4px] h-[4px] rounded-full bg-[#e7c365]"></span>
+                                MANAGER
+                            </span>
+</div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">Backend Core</div>
+<div class="col-span-1 flex items-center gap-xs font-body-sm text-on-surface-variant">
+<span class="w-[6px] h-[6px] rounded-full bg-[#4ade80]"></span> Active
+                        </div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">6 months ago</div>
+<div class="col-span-1 flex justify-end gap-sm text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">block</span></button>
+</div>
+</div>
+<!-- User Row 5 -->
+<div class="grid grid-cols-12 gap-sm p-md items-center hover:bg-surface-container-highest transition-colors">
+<div class="col-span-4 flex items-center gap-md">
+<img alt="Avatar" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A small circular avatar showing a sharp, tech-savvy supervisor in a dimly lit server room context. The image is high contrast with deep blacks and subtle violet hues highlighting their features, creating a cohesive look with the dark UI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3pzw6ncy2sHg6BnE_4oh84iJFCYKcxPIOUR1S-BlasbP36GiK7Yu-5K9AwwThPgfskdyVCCvd-d9n9_nAx-ZJFBvEBdpTTjoWx5p6OhykNWJtMn4i1ynoLjPP_n7_y24AbAx4Kzc0jbdIuq7puixp5vHZlx0v9XkTyiHqWDL4yPDvlfqFhb6Hpdh5wU5TUK3audNSy854-4KyT_h532DPXABzDQM5QoXdGYhR1RePgPdj4wGEZZ6VoY_jpgnr4QHQVeckCPxtOI4"/>
+<div class="flex flex-col">
+<span class="font-body-md font-bold text-on-surface">Marcus Chen</span>
+<span class="font-body-sm text-on-surface-variant">m.chen@autorepro.dev</span>
+</div>
+</div>
+<div class="col-span-2">
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded border border-outline-variant bg-surface-container-low font-label-caps text-label-caps role-super">
+<span class="w-[4px] h-[4px] rounded-full bg-[#cfbcff]"></span>
+                                SUPERVISOR
+                            </span>
+</div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">Infra Security</div>
+<div class="col-span-1 flex items-center gap-xs font-body-sm text-on-surface-variant">
+<span class="w-[6px] h-[6px] rounded-full bg-[#4ade80]"></span> Active
+                        </div>
+<div class="col-span-2 font-body-sm text-on-surface-variant">1 year ago</div>
+<div class="col-span-1 flex justify-end gap-sm text-on-surface-variant">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">edit</span></button>
+<button class="hover:text-error transition-colors"><span class="material-symbols-outlined" style="font-size: 18px;">block</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

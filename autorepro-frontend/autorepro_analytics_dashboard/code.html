@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analytics - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "inverse-surface": "#e3e2e5",
+                        "on-tertiary": "#2c303a",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#00daf3",
+                        "on-primary-fixed-variant": "#004f58",
+                        "on-primary-container": "#00626e",
+                        "outline": "#849396",
+                        "on-surface": "#e3e2e5",
+                        "tertiary-container": "#cdd0dc",
+                        "error": "#ffb4ab",
+                        "surface-bright": "#38393b",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-tertiary-fixed": "#181c24",
+                        "surface-container-high": "#292a2c",
+                        "on-primary-fixed": "#001f24",
+                        "on-primary": "#00363d",
+                        "inverse-primary": "#006875",
+                        "surface-tint": "#00daf3",
+                        "primary-container": "#00e5ff",
+                        "surface-dim": "#121315",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "surface-container": "#1f2022",
+                        "on-tertiary-container": "#555963",
+                        "outline-variant": "#3b494c",
+                        "on-background": "#e3e2e5",
+                        "primary": "#c3f5ff",
+                        "tertiary": "#e9ecf9",
+                        "secondary-fixed": "#e3dfff",
+                        "surface-container-highest": "#343537",
+                        "secondary-container": "#3c28bf",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#343537",
+                        "on-secondary-fixed": "#140067",
+                        "inverse-on-surface": "#303033",
+                        "surface-container-lowest": "#0d0e10",
+                        "tertiary-fixed": "#dfe2ee",
+                        "secondary": "#c5c0ff",
+                        "on-surface-variant": "#bac9cc",
+                        "on-secondary-container": "#b2acff",
+                        "surface-container-low": "#1b1c1e",
+                        "surface": "#121315",
+                        "background": "#121315",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "primary-fixed": "#9cf0ff",
+                        "on-secondary": "#2500a2",
+                        
+                        "accent-green": "#00D084",
+                        "accent-amber": "#FFB347",
+                        "accent-red": "#FF4757",
+                        "card-bg": "#111318",
+                        "border-dim": "#22262F"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin-sm": "12px",
+                        "margin-md": "24px",
+                        "container-max": "1440px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "display-metrics": ["Syne"],
+                        "body-md": ["DM Sans"],
+                        "code-md": ["JetBrains Mono"],
+                        "headline-sm": ["Syne"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-sm": ["DM Sans"],
+                        "headline-lg": ["Syne"]
+                    },
+                    "fontSize": {
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0A0B0D; color: #e3e2e5; }
+        .border-1px { border: 1px solid #22262F; }
+        .border-b-1px { border-bottom: 1px solid #22262F; }
+        .glass-panel { background: rgba(17, 19, 24, 0.8); backdrop-filter: blur(8px); }
+        .glow-hover:hover { box-shadow: 0 0 8px rgba(0, 229, 255, 0.4); border-color: #00daf3; }
+        
+        /* Interactive Pill Tabs */
+        .pill-tab { border: 1px solid #3b494c; color: #bac9cc; padding: 6px 12px; border-radius: 9999px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.2s; }
+        .pill-tab:hover { border-color: #00daf3; color: #e3e2e5; }
+        .pill-tab.active { border-color: #00daf3; color: #00daf3; background: rgba(0, 229, 255, 0.1); }
+        
+        /* Metric Card Top Borders */
+        .card-top-cyan { border-top: 2px solid #00daf3; }
+        .card-top-green { border-top: 2px solid #00D084; }
+        .card-top-amber { border-top: 2px solid #FFB347; }
+        .card-top-red { border-top: 2px solid #FF4757; }
+        
+        /* Sparkline simple CSS */
+        .sparkline-container { height: 40px; width: 100%; position: relative; overflow: hidden; margin-top: 16px; }
+        .sparkline-path { stroke: #00daf3; stroke-width: 2; fill: none; }
+        .sparkline-area { fill: url(#spark-gradient); opacity: 0.2; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Sidebar Component (Injected) -->
+<nav class="bg-background dark:bg-background flex flex-col h-full py-4 space-y-6 docked h-screen w-64 left-0 top-0 border-r border-outline-variant flex-shrink-0 z-50">
+<!-- Brand / Header -->
+<div class="px-6 mb-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary tracking-wider uppercase">AutoRepro</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant">V2.04.1</p>
+</div>
+</div>
+<!-- Main Navigation -->
+<div class="flex-1 overflow-y-auto space-y-1 px-2">
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+                Terminals
+            </a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">memory</span>
+                Hardware
+            </a>
+<a class="flex items-center gap-3 py-2 px-4 border-l-2 border-primary bg-primary-container/10 text-primary opacity-90 transition-all scale-[0.98] font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">history</span>
+                Audit Logs
+            </a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">security_update_good</span>
+                Security
+            </a>
+</div>
+<!-- CTA -->
+<div class="px-4 mt-auto">
+<button class="w-full border border-primary text-primary font-label-caps text-label-caps py-2 rounded glow-hover flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                New Instance
+            </button>
+</div>
+<!-- Footer Navigation -->
+<div class="px-2 mt-4 space-y-1">
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-3 py-2 px-4 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors duration-200 rounded font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-[18px]">help</span>
+                Support
+            </a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto p-8 lg:p-12 relative bg-[#0A0B0D]">
+<!-- Header Row -->
+<header class="flex justify-between items-end mb-10 w-full max-w-[1440px] mx-auto">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-wide">Analytics</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">System performance and defect metrics.</p>
+</div>
+<div class="flex gap-2 bg-[#111318] p-1 rounded-full border-1px items-center">
+<button class="pill-tab font-body-sm">Last 7 days</button>
+<button class="pill-tab font-body-sm active">30 days</button>
+<button class="pill-tab font-body-sm">90 days</button>
+<div class="w-px h-4 bg-outline-variant mx-1"></div>
+<button class="pill-tab font-body-sm flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_today</span> Custom</button>
+</div>
+</header>
+<div class="w-full max-w-[1440px] mx-auto space-y-6 flex-1 pb-12">
+<!-- ROW 1: Metric Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="bg-card-bg border-1px card-top-cyan rounded p-5 relative overflow-hidden flex flex-col justify-between h-36">
+<div class="flex justify-between items-start">
+<span class="font-code-md text-code-md text-on-surface-variant tracking-wider uppercase text-[11px]">Total Bugs Reported</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">bug_report</span>
+</div>
+<div>
+<div class="font-display-metrics text-display-metrics text-on-surface">1,248</div>
+<div class="font-body-sm text-body-sm text-accent-green flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12% vs last period
+                        </div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-card-bg border-1px card-top-green rounded p-5 relative overflow-hidden flex flex-col justify-between h-36">
+<div class="flex justify-between items-start">
+<span class="font-code-md text-code-md text-on-surface-variant tracking-wider uppercase text-[11px]">AutoRepro Success Rate</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">check_circle</span>
+</div>
+<div class="relative z-10">
+<div class="font-display-metrics text-display-metrics text-on-surface">94.2%</div>
+</div>
+<!-- Fake Sparkline -->
+<div class="absolute bottom-0 left-0 w-full h-16 pointer-events-none opacity-50">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 30">
+<defs>
+<lineargradient id="spark-gradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00daf3" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#00daf3" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,30 L0,20 L10,15 L20,25 L30,10 L40,18 L50,5 L60,12 L70,8 L80,15 L90,2 L100,5 L100,30 Z" fill="url(#spark-gradient)"></path>
+<path d="M0,20 L10,15 L20,25 L30,10 L40,18 L50,5 L60,12 L70,8 L80,15 L90,2 L100,5" fill="none" stroke="#00daf3" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-card-bg border-1px card-top-amber rounded p-5 relative overflow-hidden flex flex-col justify-between h-36">
+<div class="flex justify-between items-start">
+<span class="font-code-md text-code-md text-on-surface-variant tracking-wider uppercase text-[11px]">Avg Resolution Time</span>
+<span class="material-symbols-outlined text-outline-variant text-[18px]">timer</span>
+</div>
+<div>
+<div class="font-display-metrics text-display-metrics text-on-surface text-[40px]">4.2 <span class="text-[20px] text-on-surface-variant">hrs</span></div>
+<div class="font-body-sm text-body-sm text-accent-green flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">arrow_drop_down</span> 0.5h
+                        </div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-card-bg border-1px card-top-red rounded p-5 relative overflow-hidden flex flex-col justify-between h-36">
+<div class="flex justify-between items-start">
+<span class="font-code-md text-code-md text-on-surface-variant tracking-wider uppercase text-[11px]">Open Critical Bugs</span>
+<span class="material-symbols-outlined text-accent-red text-[18px]">warning</span>
+</div>
+<div class="flex items-end justify-between">
+<div class="font-display-metrics text-display-metrics text-on-surface">18</div>
+<div class="font-label-caps text-label-caps text-accent-red border border-accent-red/30 bg-accent-red/10 px-2 py-1 rounded mb-2">
+                            NEEDS ATTENTION
+                        </div>
+</div>
+</div>
+</div>
+<!-- ROW 2: Charts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-80">
+<!-- Left Chart: Bugs by Status -->
+<div class="bg-card-bg border-1px rounded p-6 flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6 border-b-1px pb-3">Bugs by Status</h3>
+<div class="flex-1 flex flex-col justify-center space-y-4">
+<!-- Bar 1 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-code-md text-code-md text-on-surface-variant text-[12px] uppercase">Resolved</div>
+<div class="flex-1 h-3 bg-surface rounded-sm overflow-hidden border border-[#22262F]">
+<div class="h-full bg-accent-green" style="width: 65%;"></div>
+</div>
+<div class="w-12 text-right font-code-md text-code-md text-on-surface">812</div>
+</div>
+<!-- Bar 2 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-code-md text-code-md text-on-surface-variant text-[12px] uppercase">In Progress</div>
+<div class="flex-1 h-3 bg-surface rounded-sm overflow-hidden border border-[#22262F]">
+<div class="h-full bg-accent-amber" style="width: 20%;"></div>
+</div>
+<div class="w-12 text-right font-code-md text-code-md text-on-surface">249</div>
+</div>
+<!-- Bar 3 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-code-md text-code-md text-on-surface-variant text-[12px] uppercase">Open</div>
+<div class="flex-1 h-3 bg-surface rounded-sm overflow-hidden border border-[#22262F]">
+<div class="h-full bg-primary-fixed-dim" style="width: 12%;"></div>
+</div>
+<div class="w-12 text-right font-code-md text-code-md text-on-surface">150</div>
+</div>
+<!-- Bar 4 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-code-md text-code-md text-on-surface-variant text-[12px] uppercase">Critical</div>
+<div class="flex-1 h-3 bg-surface rounded-sm overflow-hidden border border-[#22262F]">
+<div class="h-full bg-accent-red" style="width: 5%;"></div>
+</div>
+<div class="w-12 text-right font-code-md text-code-md text-on-surface">18</div>
+</div>
+<!-- Bar 5 -->
+<div class="flex items-center gap-4">
+<div class="w-24 font-code-md text-code-md text-on-surface-variant text-[12px] uppercase">Duplicate</div>
+<div class="flex-1 h-3 bg-surface rounded-sm overflow-hidden border border-[#22262F]">
+<div class="h-full bg-surface-variant" style="width: 2%;"></div>
+</div>
+<div class="w-12 text-right font-code-md text-code-md text-on-surface">19</div>
+</div>
+</div>
+</div>
+<!-- Right Chart: Jobs Over Time -->
+<div class="bg-card-bg border-1px rounded p-6 flex flex-col">
+<div class="flex justify-between items-center mb-6 border-b-1px pb-3">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">AutoRepro Jobs Over Time</h3>
+<div class="flex gap-4 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-2"><div class="w-2 h-2 rounded-sm bg-primary-fixed-dim"></div> Success</div>
+<div class="flex items-center gap-2"><div class="w-2 h-2 rounded-sm bg-accent-red"></div> Failed</div>
+</div>
+</div>
+<div class="flex-1 relative mt-2 border-b border-l border-outline-variant/30 flex items-end">
+<!-- Horizontal grid lines (simulated) -->
+<div class="absolute w-full border-t border-[rgba(255,255,255,0.05)] bottom-1/4"></div>
+<div class="absolute w-full border-t border-[rgba(255,255,255,0.05)] bottom-2/4"></div>
+<div class="absolute w-full border-t border-[rgba(255,255,255,0.05)] bottom-3/4"></div>
+<!-- Line Chart SVG -->
+<svg class="w-full h-full absolute inset-0 pt-2 pb-1" preserveaspectratio="none" viewbox="0 0 100 50">
+<!-- Failed Line (Red) -->
+<path d="M0,45 L15,40 L30,42 L45,35 L60,38 L75,30 L90,40 L100,38" fill="none" opacity="0.8" stroke="#FF4757" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+<!-- Success Line (Cyan) -->
+<path d="M0,30 L15,20 L30,15 L45,25 L60,10 L75,18 L90,5 L100,12" fill="none" stroke="#00daf3" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+<!-- Data Points Cyan -->
+<circle cx="15" cy="20" fill="#00daf3" r="1.5"></circle>
+<circle cx="30" cy="15" fill="#00daf3" r="1.5"></circle>
+<circle cx="45" cy="25" fill="#00daf3" r="1.5"></circle>
+<circle cx="60" cy="10" fill="#00daf3" r="1.5"></circle>
+<circle cx="75" cy="18" fill="#00daf3" r="1.5"></circle>
+<circle cx="90" cy="5" fill="#00daf3" r="1.5"></circle>
+</svg>
+</div>
+<!-- X Axis Labels -->
+<div class="flex justify-between mt-2 font-code-md text-code-md text-on-surface-variant text-[10px] uppercase">
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+<span>Sat</span>
+<span>Sun</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

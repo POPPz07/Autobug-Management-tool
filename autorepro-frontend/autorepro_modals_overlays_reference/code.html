@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - Modals &amp; Overlays</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#c3f5ff",
+                      "background": "#121315",
+                      "surface-container-lowest": "#0d0e10",
+                      "surface-container": "#1f2022",
+                      "secondary": "#c5c0ff",
+                      "error": "#ffb4ab",
+                      "primary-fixed": "#9cf0ff",
+                      "on-surface": "#e3e2e5",
+                      "on-secondary-fixed-variant": "#3c28bf",
+                      "surface-bright": "#38393b",
+                      "surface-container-low": "#1b1c1e",
+                      "on-secondary-container": "#b2acff",
+                      "inverse-primary": "#006875",
+                      "on-background": "#e3e2e5",
+                      "surface-tint": "#00daf3",
+                      "surface-dim": "#121315",
+                      "secondary-fixed": "#e3dfff",
+                      "error-container": "#93000a",
+                      "secondary-container": "#3c28bf",
+                      "inverse-surface": "#e3e2e5",
+                      "on-tertiary-fixed": "#181c24",
+                      "on-primary-fixed": "#001f24",
+                      "on-primary-fixed-variant": "#004f58",
+                      "tertiary": "#e9ecf9",
+                      "secondary-fixed-dim": "#c5c0ff",
+                      "surface-container-high": "#292a2c",
+                      "surface": "#121315",
+                      "tertiary-fixed": "#dfe2ee",
+                      "on-tertiary-fixed-variant": "#434751",
+                      "inverse-on-surface": "#303033",
+                      "primary-fixed-dim": "#00daf3",
+                      "outline-variant": "#3b494c",
+                      "tertiary-fixed-dim": "#c3c6d2",
+                      "on-error": "#690005",
+                      "on-error-container": "#ffdad6",
+                      "outline": "#849396",
+                      "tertiary-container": "#cdd0dc",
+                      "surface-container-highest": "#343537",
+                      "primary-container": "#00e5ff",
+                      "on-primary-container": "#00626e",
+                      "on-surface-variant": "#bac9cc",
+                      "on-secondary": "#2500a2",
+                      "on-tertiary": "#2c303a",
+                      "on-primary": "#00363d",
+                      "surface-variant": "#343537",
+                      "on-tertiary-container": "#555963",
+                      "on-secondary-fixed": "#140067"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "container-max": "1440px",
+                      "margin-sm": "12px",
+                      "margin-md": "24px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "code-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "DM Sans"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-sm": [
+                              "Syne"
+                      ],
+                      "headline-lg": [
+                              "Syne"
+                      ],
+                      "display-metrics": [
+                              "Syne"
+                      ],
+                      "body-sm": [
+                              "DM Sans"
+                      ]
+              },
+              "fontSize": {
+                      "code-md": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "10px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-metrics": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0B0D; /* Matte dark background requested */
+            color: #e3e2e5; /* on-surface */
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .glow-border {
+            border: 1px solid theme('colors.primary-fixed-dim');
+            box-shadow: inset 0 0 10px rgba(0, 218, 243, 0.1);
+        }
+
+        .btn-primary {
+            border: 1px solid theme('colors.primary-fixed-dim');
+            color: theme('colors.primary-fixed-dim');
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 8px rgba(0, 218, 243, 0.4);
+            background-color: rgba(0, 218, 243, 0.1);
+        }
+
+        .btn-ghost {
+            border: 1px solid theme('colors.outline-variant');
+            color: theme('colors.on-surface');
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-ghost:hover {
+            border-color: theme('colors.on-surface');
+            background-color: rgba(255,255,255,0.05);
+        }
+        
+        .btn-danger {
+            border: 1px solid theme('colors.error');
+            color: theme('colors.error');
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .input-field {
+            border: 1px solid #22262F;
+            background: transparent;
+            color: theme('colors.on-surface');
+            transition: all 0.2s ease;
+        }
+        .input-field:focus {
+            border-color: theme('colors.primary-fixed-dim');
+            outline: none;
+        }
+
+        /* Modals */
+        .modal-base {
+            background-color: #111318;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased font-body-md">
+<!-- SideNavBar (Shared Component) -->
+<nav class="bg-surface-container-low dark:bg-surface-container-low docked h-screen left-0 w-64 border-r border-outline-variant flat no shadows flex flex-col h-full py-margin-md hidden md:flex shrink-0 relative z-10">
+<!-- Header -->
+<div class="px-margin-md mb-margin-md">
+<h1 class="font-headline-sm text-headline-sm text-primary-fixed-dim font-bold tracking-tighter">AutoRepro</h1>
+<div class="mt-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ENGINEERING</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">COMMAND CENTER</p>
+</div>
+<button class="mt-4 w-full btn-primary font-label-caps text-label-caps py-2 flex items-center justify-center gap-2 rounded">
+<span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                NEW REPORT
+            </button>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex-1 overflow-y-auto px-margin-sm space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">dashboard</span>
+<span class="font-body-sm text-body-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-secondary-container/20 text-primary-fixed-dim border-l-2 border-primary-fixed-dim ring-1 ring-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">bug_report</span>
+<span class="font-body-sm text-body-sm">Active Bugs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">replay</span>
+<span class="font-body-sm text-body-sm">Reproductions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">groups</span>
+<span class="font-body-sm text-body-sm">Teams</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">extension</span>
+<span class="font-body-sm text-body-sm">Integrations</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">history</span>
+<span class="font-body-sm text-body-sm">Audit Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">person_outline</span>
+<span class="font-body-sm text-body-sm">Account</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">shield</span>
+<span class="font-body-sm text-body-sm">Security</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+<span class="font-body-sm text-body-sm">System</span>
+</a>
+</div>
+<!-- Footer Tabs -->
+<div class="px-margin-sm pt-4 border-t border-outline-variant mt-auto space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">support</span>
+<span class="font-body-sm text-body-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-size: 20px;">sensors</span>
+<span class="font-body-sm text-body-sm">Status</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 h-full overflow-y-auto relative p-8">
+<!-- Grid for Modals -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8 max-w-7xl mx-auto items-start justify-items-center relative z-20 pt-8 pb-16">
+<!-- MODAL 1: Bulk Action Confirmation -->
+<div class="modal-base w-full max-w-[480px] flex flex-col">
+<div class="p-6 border-b border-outline-variant/50">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-2">Assign 12 bugs</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">All selected bugs will be assigned to:</p>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<!-- User Selector -->
+<div class="flex items-center justify-between border border-outline-variant/50 p-3 rounded cursor-pointer hover:bg-surface-container-highest transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-size: 20px;">person</span>
+</div>
+<span class="font-code-md text-code-md text-on-surface">Sarah Connor</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="border border-[#c5c0ff] text-[#c5c0ff] px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider">SUPERVISOR</span>
+<span class="material-symbols-outlined text-on-surface-variant">arrow_drop_down</span>
+</div>
+</div>
+<!-- Warning -->
+<div class="flex gap-3 text-amber-400 bg-amber-400/10 p-3 rounded border border-amber-400/20">
+<span class="material-symbols-outlined" style="font-size: 18px;">warning</span>
+<p class="font-body-sm text-body-sm">This will override existing assignments.</p>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/50 flex justify-end gap-4 bg-[#0d0e10]/50">
+<button class="btn-ghost px-4 py-2 font-label-caps text-label-caps rounded">Cancel</button>
+<button class="btn-primary px-4 py-2 font-label-caps text-label-caps rounded">Confirm Assignment</button>
+</div>
+</div>
+<!-- MODAL 2: Status Transition -->
+<div class="modal-base w-full max-w-[480px] flex flex-col">
+<div class="p-6 border-b border-outline-variant/50 flex justify-between items-center">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Change Bug Status</h2>
+<button class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<div class="flex flex-col items-center gap-3">
+<span class="border border-blue-400 text-blue-400 px-3 py-1 rounded font-label-caps text-label-caps bg-blue-400/10">IN_PROGRESS</span>
+<span class="material-symbols-outlined text-on-surface-variant">arrow_downward</span>
+</div>
+<div class="flex flex-col gap-3">
+<!-- Option 1: Resolved -->
+<div class="border border-emerald-400 p-4 rounded bg-emerald-400/5 cursor-pointer flex items-start gap-4 shadow-[inset_0_0_10px_rgba(52,211,153,0.1)]">
+<div class="mt-0.5 w-5 h-5 rounded-full border-2 border-emerald-400 flex items-center justify-center bg-emerald-400/20 text-emerald-400">
+<span class="material-symbols-outlined" style="font-size: 14px; font-weight: bold;">check</span>
+</div>
+<div>
+<h3 class="font-code-md text-code-md text-emerald-400 mb-1">RESOLVED</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Mark as fixed and close the loop</p>
+</div>
+</div>
+<!-- Option 2: Closed -->
+<div class="border border-outline-variant p-4 rounded hover:bg-surface-container-highest cursor-pointer flex items-start gap-4 transition-colors">
+<div class="mt-0.5 w-5 h-5 rounded-full border-2 border-outline-variant flex items-center justify-center text-outline-variant">
+</div>
+<div>
+<h3 class="font-code-md text-code-md text-on-surface mb-1">CLOSED</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Close without resolution</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/50 flex justify-end gap-4 bg-[#0d0e10]/50">
+<button class="btn-ghost px-4 py-2 font-label-caps text-label-caps rounded">Cancel</button>
+<button class="btn-primary px-4 py-2 font-label-caps text-label-caps rounded">Confirm Transition</button>
+</div>
+</div>
+<!-- MODAL 3: Delete Confirmation -->
+<div class="modal-base w-full max-w-[440px] flex flex-col border-t-4 border-t-error">
+<div class="p-6 flex flex-col gap-4">
+<div class="w-12 h-12 rounded bg-error/10 flex items-center justify-center border border-error/20 mb-2">
+<span class="material-symbols-outlined text-error" style="font-size: 28px;">delete_forever</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-error">Delete Bug #AR-1284?</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        This action cannot be undone. The bug and all its history, comments and attachments will be permanently deleted.
+                    </p>
+<div class="mt-4">
+<label class="block font-code-md text-code-md text-on-surface-variant mb-2">Type "AR-1284" to confirm</label>
+<input class="input-field w-full px-3 py-2 rounded font-code-md text-code-md" placeholder="" type="text"/>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/50 flex justify-end gap-4 bg-[#0d0e10]/50">
+<button class="btn-ghost px-4 py-2 font-label-caps text-label-caps rounded">Cancel</button>
+<button class="btn-danger px-4 py-2 font-label-caps text-label-caps rounded" disabled="">Delete Permanently</button>
+</div>
+</div>
+<!-- MODAL 4: Quota Exceeded -->
+<div class="modal-base w-full max-w-[480px] flex flex-col border-t-4 border-t-amber-500">
+<div class="p-6 flex items-start gap-4">
+<span class="material-symbols-outlined text-amber-500 mt-1" style="font-size: 28px;">warning</span>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-4">AutoRepro limit reached</h2>
+<p class="font-body-md text-body-md text-on-surface mb-3">
+                            You've used <span class="font-code-md text-code-md">1000/1000</span> AutoRepro jobs this month.
+                        </p>
+<!-- Progress Bar -->
+<div class="w-full h-2 bg-surface-container-highest rounded overflow-hidden mb-4 border border-outline-variant/30">
+<div class="h-full bg-amber-500 w-full"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                            Upgrade your plan to continue triggering AutoRepro.
+                        </p>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/50 flex justify-end gap-4 bg-[#0d0e10]/50">
+<button class="btn-ghost px-4 py-2 font-label-caps text-label-caps rounded">Dismiss</button>
+<button class="btn-primary px-4 py-2 font-label-caps text-label-caps rounded">View Plans</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

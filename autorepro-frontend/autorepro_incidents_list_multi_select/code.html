@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - Incidents</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;600;700&amp;family=Syne:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#4f378a",
+                      "surface-container-high": "#2b292f",
+                      "on-tertiary": "#3e2e00",
+                      "inverse-surface": "#e6e0e9",
+                      "surface-container-highest": "#36343a",
+                      "secondary-fixed": "#e9ddff",
+                      "on-tertiary-fixed-variant": "#594400",
+                      "on-tertiary-fixed": "#241a00",
+                      "tertiary-fixed-dim": "#e7c365",
+                      "surface-tint": "#cfbcff",
+                      "primary-fixed": "#e9ddff",
+                      "on-tertiary-container": "#503d00",
+                      "on-secondary-fixed": "#1f1635",
+                      "tertiary": "#e7c365",
+                      "on-secondary-container": "#bfb2da",
+                      "surface-dim": "#141218",
+                      "on-primary-fixed": "#22005d",
+                      "on-primary": "#381e72",
+                      "inverse-on-surface": "#322f35",
+                      "surface-bright": "#3b383e",
+                      "surface-variant": "#36343a",
+                      "on-error": "#690005",
+                      "inverse-primary": "#6750a4",
+                      "secondary": "#cdc0e9",
+                      "primary": "#cfbcff",
+                      "surface": "#141218",
+                      "surface-container-low": "#1d1b20",
+                      "secondary-container": "#4d4465",
+                      "on-primary-container": "#e0d2ff",
+                      "surface-container-lowest": "#0f0d13",
+                      "error": "#ffb4ab",
+                      "primary-fixed-dim": "#cfbcff",
+                      "outline-variant": "#494551",
+                      "tertiary-fixed": "#ffdf93",
+                      "on-error-container": "#ffdad6",
+                      "background": "#141218",
+                      "tertiary-container": "#c9a74d",
+                      "on-surface-variant": "#cbc4d2",
+                      "on-secondary-fixed-variant": "#4b4263",
+                      "secondary-fixed-dim": "#cdc0e9",
+                      "outline": "#948e9c",
+                      "surface-container": "#211f24",
+                      "on-surface": "#e6e0e9",
+                      "on-secondary": "#342b4b",
+                      "on-background": "#e6e0e9",
+                      "primary-container": "#6750a4",
+                      "error-container": "#93000a",
+                      
+                      // Custom brand colors inferred from prompt
+                      "brand-cyan": "#00E5FF",
+                      "brand-violet": "#7B6FFF",
+                      "brand-coral": "#FF4757",
+                      "brand-green": "#2ECC71",
+                      "brand-orange": "#FFA502",
+                      "brand-surface": "#111318",
+                      "brand-background": "#0A0B0D",
+                      "brand-border": "#1F222C"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "xl": "48px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "h3": [
+                              "Syne"
+                      ],
+                      "h2": [
+                              "Syne"
+                      ],
+                      "body-sm": [
+                              "DM Sans"
+                      ],
+                      "body-md": [
+                              "DM Sans"
+                      ],
+                      "h1": [
+                              "Syne"
+                      ],
+                      "body-lg": [
+                              "DM Sans"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ],
+                      "code-md": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "code-sm": [
+                              "11px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h3": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "h2": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h1": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-caps": [
+                              "10px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "code-md": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .glow-hover:hover {
+            box-shadow: 0px 0px 8px rgba(0, 229, 255, 0.2);
+            border-color: #00E5FF;
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.7); }
+            70% { box-shadow: 0 0 0 4px rgba(0, 229, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0); }
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0B0D; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1F222C; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2A2E3A; 
+        }
+    </style>
+</head>
+<body class="bg-[#0A0B0D] text-on-surface h-screen overflow-hidden font-body-md">
+<!-- SideNavBar Component -->
+<nav class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant dark:border-outline-variant flex flex-col h-full py-lg z-50">
+<!-- Header -->
+<div class="px-lg mb-xl flex items-center gap-md">
+<div class="w-8 h-8 bg-brand-cyan rounded-DEFAULT flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(0,229,255,0.2)]">
+<span class="material-symbols-outlined text-black font-bold" data-icon="terminal" data-weight="fill" style="font-variation-settings: 'FILL' 1; font-size: 20px;">terminal</span>
+</div>
+<div>
+<h1 class="font-h2 text-h2 font-bold text-on-surface dark:text-on-surface">AutoRepro</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant">v2.4.0-stable</p>
+</div>
+</div>
+<!-- CTA Button -->
+<div class="px-lg mb-xl">
+<button class="w-full bg-brand-cyan text-black font-body-md text-body-md font-bold py-sm rounded-DEFAULT flex items-center justify-center gap-sm hover:shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-all active:scale-[0.98] duration-100">
+<span class="material-symbols-outlined" data-icon="add" style="font-size: 18px;">add</span>
+                New Repro
+            </button>
+</div>
+<!-- Main Navigation -->
+<div class="flex-1 px-sm space-y-xs overflow-y-auto">
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest py-sm px-md rounded-DEFAULT active:scale-[0.98] duration-100 font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="dashboard" style="font-size: 20px;">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md text-on-surface dark:text-on-surface border-l-2 border-[#00E5FF] pl-[-2px] py-sm px-md rounded-DEFAULT bg-surface-container-highest dark:bg-surface-container-highest active:scale-[0.98] duration-100 font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined shrink-0 text-[#00E5FF]" data-icon="bug_report" style="font-size: 20px;">bug_report</span>
+                Incidents
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest py-sm px-md rounded-DEFAULT active:scale-[0.98] duration-100 font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="robot_2" style="font-size: 20px;">robot_2</span>
+                Automation
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest py-sm px-md rounded-DEFAULT active:scale-[0.98] duration-100 font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="account_tree" style="font-size: 20px;">account_tree</span>
+                Workflows
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest py-sm px-md rounded-DEFAULT active:scale-[0.98] duration-100 font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="analytics" style="font-size: 20px;">analytics</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest py-sm px-md rounded-DEFAULT active:scale-[0.98] duration-100 font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="settings" style="font-size: 20px;">settings</span>
+                Settings
+            </a>
+</div>
+<!-- Footer Navigation -->
+<div class="px-sm mt-auto pt-lg space-y-xs border-t border-outline-variant dark:border-outline-variant mx-lg">
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest py-sm px-md rounded-DEFAULT active:scale-[0.98] duration-100 font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="help" style="font-size: 20px;">help</span>
+                Support
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors hover:bg-surface-container-highest dark:hover:bg-surface-container-highest py-sm px-md rounded-DEFAULT active:scale-[0.98] duration-100 font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="menu_book" style="font-size: 20px;">menu_book</span>
+                Documentation
+            </a>
+</div>
+</nav>
+<!-- TopNavBar Component -->
+<header class="fixed w-[calc(100%-240px)] ml-[240px] top-0 h-16 bg-background dark:bg-background border-b border-outline-variant dark:border-outline-variant flex justify-between items-center px-lg z-40">
+<!-- Search / Breadcrumb Area -->
+<div class="flex items-center gap-md font-code-md text-code-md">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search" style="font-size: 20px;">search</span>
+<div class="flex items-center gap-sm">
+<a class="text-on-surface font-bold hover:text-primary transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary rounded-xs px-xs" href="#">Incidents</a>
+<span class="text-outline-variant">/</span>
+<span class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary rounded-xs px-xs">#1284-repro</span>
+</div>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors focus:outline-none focus:ring-1 focus:ring-primary rounded-DEFAULT p-xs">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-size: 20px;">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors focus:outline-none focus:ring-1 focus:ring-primary rounded-DEFAULT p-xs">
+<span class="material-symbols-outlined" data-icon="terminal" style="font-size: 20px;">terminal</span>
+</button>
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors focus:outline-none focus:ring-1 focus:ring-primary rounded-DEFAULT p-xs">
+<span class="material-symbols-outlined" data-icon="search" style="font-size: 20px;">search</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-sm shrink-0">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A futuristic avatar placeholder depicting a stylized, high-tech abstract portrait. The image features a cool, dark color palette with subtle neon cyan accents, evoking a cyberpunk or aerospace command UI aesthetic. The mood is clinical and professional, fitting for a developer tools environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYskTRarMYmZJX1rnndjjs3f2M_I4CRIDRWMqT6f985jwtzyWzG-EBWMdYsY-KqG6wcIcM7F26HTAeLfydlom5yZbKSI6EJMiXv9gdXRKhQqlV0Jhw_g0hjPZndGK7K09pG7ISNk_s2Po9s2CN4kOeAnJuEiPAUHVSB0O5wCTaZqWZCtKF6XtP1TTlofzn9H25s9My1u4ETdViLsUp3ABah5dCSnSQeiEJj6I7ogJcvcLUarHWaeOA2eQonFfnwXgDBp0DAYGu2Lg"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[240px] mt-16 p-lg h-[calc(100vh-64px)] overflow-y-auto">
+<div class="max-w-[1440px] mx-auto">
+<!-- Page Header -->
+<div class="flex justify-between items-center mb-lg">
+<h1 class="font-h1 text-h1 font-bold text-on-surface">Incidents</h1>
+<button class="bg-brand-cyan text-black font-body-md text-body-md font-bold py-sm px-lg rounded-DEFAULT flex items-center justify-center gap-sm hover:shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-all active:scale-[0.98] duration-100">
+<span class="material-symbols-outlined" data-icon="add" style="font-size: 18px;">add</span>
+                    New Incident
+                </button>
+</div>
+<!-- Filter Bar -->
+<div class="flex items-center justify-between bg-surface-container-high border border-brand-cyan/30 rounded-DEFAULT p-sm mb-md animate-in fade-in slide-in-from-top-1 duration-200 shadow-[0_0_15px_rgba(0,229,255,0.05)]">
+<div class="flex items-center gap-md">
+<span class="font-code-md text-code-md text-brand-cyan px-md py-xs bg-brand-cyan/10 rounded-xs border border-brand-cyan/20">
+            2 incidents selected
+        </span>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-sm">
+<button class="flex items-center gap-xs px-md py-xs bg-[#1F222C] hover:bg-[#2A2E3A] border border-outline-variant text-on-surface font-body-sm text-body-sm rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">person_add</span>
+                Assign
+            </button>
+<button class="flex items-center gap-xs px-md py-xs bg-[#1F222C] hover:bg-[#2A2E3A] border border-outline-variant text-on-surface font-body-sm text-body-sm rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">rule</span>
+                Change Status
+            </button>
+</div>
+</div>
+<button class="flex items-center gap-xs px-md py-xs bg-[#FF4757]/10 hover:bg-[#FF4757]/20 border border-[#FF4757]/30 text-[#FF4757] font-body-sm text-body-sm rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+        Delete
+    </button>
+</div><div class="flex justify-between items-center bg-[#111318] p-sm rounded-DEFAULT border border-brand-border mb-md">
+<div class="flex gap-sm">
+<!-- Dropdown Pill: Status -->
+<button class="flex items-center gap-xs bg-[#1F222C] hover:bg-[#2A2E3A] border border-outline-variant text-on-surface font-code-md text-code-md px-md py-xs rounded-full transition-colors focus:outline-none focus:border-brand-cyan">
+                        Status <span class="material-symbols-outlined text-on-surface-variant" data-icon="expand_more" style="font-size: 16px;">expand_more</span>
+</button>
+<!-- Dropdown Pill: Severity -->
+<button class="flex items-center gap-xs bg-[#1F222C] hover:bg-[#2A2E3A] border border-outline-variant text-on-surface font-code-md text-code-md px-md py-xs rounded-full transition-colors focus:outline-none focus:border-brand-cyan">
+                        Severity <span class="material-symbols-outlined text-on-surface-variant" data-icon="expand_more" style="font-size: 16px;">expand_more</span>
+</button>
+<!-- Dropdown Pill: Priority -->
+<button class="flex items-center gap-xs bg-[#1F222C] hover:bg-[#2A2E3A] border border-outline-variant text-on-surface font-code-md text-code-md px-md py-xs rounded-full transition-colors focus:outline-none focus:border-brand-cyan">
+                        Priority <span class="material-symbols-outlined text-on-surface-variant" data-icon="expand_more" style="font-size: 16px;">expand_more</span>
+</button>
+<!-- Dropdown Pill: Assigned To -->
+<button class="flex items-center gap-xs bg-[#1F222C] hover:bg-[#2A2E3A] border border-outline-variant text-on-surface font-code-md text-code-md px-md py-xs rounded-full transition-colors focus:outline-none focus:border-brand-cyan">
+                        Assigned To <span class="material-symbols-outlined text-on-surface-variant" data-icon="expand_more" style="font-size: 16px;">expand_more</span>
+</button>
+</div>
+<!-- Search Input -->
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search" style="font-size: 18px;">search</span>
+<input class="w-full bg-[#1F222C] border border-outline-variant text-on-surface font-code-md text-code-md rounded-DEFAULT py-xs pl-[32px] pr-sm focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan placeholder:text-on-surface-variant transition-all" placeholder="Search incidents..." type="text"/>
+</div>
+</div>
+<!-- Data Table Card -->
+<div class="flex items-center justify-between bg-surface-container-high border border-brand-cyan/30 rounded-DEFAULT p-sm mb-md animate-in fade-in slide-in-from-top-1 duration-200 shadow-[0_0_15px_rgba(0,229,255,0.05)]">
+<div class="flex items-center gap-md">
+<span class="font-code-md text-code-md text-brand-cyan px-md py-xs bg-brand-cyan/10 rounded-xs border border-brand-cyan/20">
+            2 incidents selected
+        </span>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-sm">
+<button class="flex items-center gap-xs px-md py-xs bg-[#1F222C] hover:bg-[#2A2E3A] border border-outline-variant text-on-surface font-body-sm text-body-sm rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">person_add</span>
+                Assign
+            </button>
+<button class="flex items-center gap-xs px-md py-xs bg-[#1F222C] hover:bg-[#2A2E3A] border border-outline-variant text-on-surface font-body-sm text-body-sm rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">rule</span>
+                Change Status
+            </button>
+</div>
+</div>
+<button class="flex items-center gap-xs px-md py-xs bg-[#FF4757]/10 hover:bg-[#FF4757]/20 border border-[#FF4757]/30 text-[#FF4757] font-body-sm text-body-sm rounded-DEFAULT transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">delete</span>
+        Delete
+    </button>
+</div><div class="bg-[#111318] border border-brand-border rounded-DEFAULT overflow-hidden flex flex-col min-h-[500px]">
+<!-- Table Header -->
+<div class="grid grid-cols-[40px_minmax(250px,2fr)_100px_100px_150px_150px_100px_100px] gap-sm px-md py-sm border-b border-brand-border bg-[#161920] font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider items-center"><div class="flex items-center justify-center"><input class="w-4 h-4 rounded-xs bg-[#1F222C] border-outline-variant text-brand-cyan focus:ring-brand-cyan focus:ring-offset-0 cursor-pointer" type="checkbox"/></div><div>Title</div><div>Priority</div><div>Severity</div><div>Status</div><div>Assigned To</div><div>Created</div><div class="text-right">Actions</div></div>
+<!-- Table Body -->
+<div class="flex-1 overflow-y-auto">
+<!-- Row 1 -->
+<div class="grid grid-cols-[40px_minmax(250px,2fr)_100px_100px_150px_150px_100px_100px] gap-sm px-md py-sm border-b border-[#1F222C] items-center hover:bg-[#1A1D24] transition-colors group"><div class="flex items-center justify-center"><input class="w-4 h-4 rounded-xs bg-[#1F222C] border-outline-variant text-brand-cyan focus:ring-brand-cyan focus:ring-offset-0 cursor-pointer" type="checkbox"/></div>
+<div class="font-code-md text-code-md text-on-surface truncate cursor-pointer group-hover:text-brand-cyan transition-colors">
+                            Null pointer exception in auth middleware
+                        </div>
+<div>
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded-xs bg-[#FF4757]/10 text-[#FF4757] border border-[#FF4757]/20 font-label-caps text-label-caps uppercase">
+<span class="w-[4px] h-[4px] rounded-full bg-[#FF4757]"></span>P1
+                            </span>
+</div>
+<div>
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded-xs bg-[#FF4757]/10 text-[#FF4757] border border-[#FF4757]/20 font-label-caps text-label-caps uppercase">
+<span class="w-[4px] h-[4px] rounded-full bg-[#FF4757]"></span>CRITICAL
+                            </span>
+</div>
+<div>
+<span class="inline-flex items-center justify-center px-xs py-[2px] rounded-xs border border-brand-cyan text-brand-cyan font-code-sm text-code-sm shadow-[0_0_8px_rgba(0,229,255,0.2)]">
+<span class="w-[6px] h-[6px] rounded-full bg-brand-cyan mr-xs pulse-dot"></span>
+                                RUNNING_AUTOREPRO
+                            </span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-outline-variant shrink-0">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="A small developer avatar placeholder showing a generic silhouette. Professional, dark aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYskTRarMYmZJX1rnndjjs3f2M_I4CRIDRWMqT6f985jwtzyWzG-EBWMdYsY-KqG6wcIcM7F26HTAeLfydlom5yZbKSI6EJMiXv9gdXRKhQqlV0Jhw_g0hjPZndGK7K09pG7ISNk_s2Po9s2CN4kOeAnJuEiPAUHVSB0O5wCTaZqWZCtKF6XtP1TTlofzn9H25s9My1u4ETdViLsUp3ABah5dCSnSQeiEJj6I7ogJcvcLUarHWaeOA2eQonFfnwXgDBp0DAYGu2Lg"/>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface truncate">J. Doe</span>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">
+                            12m ago
+                        </div>
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="visibility" style="font-size: 16px;">visibility</span></button>
+<button class="text-on-surface-variant hover:text-brand-violet transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="person_add" style="font-size: 16px;">person_add</span></button>
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="play_arrow" style="font-size: 16px;">play_arrow</span></button>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-[40px_minmax(250px,2fr)_100px_100px_150px_150px_100px_100px] gap-sm px-md py-sm border-b border-[#1F222C] items-center hover:bg-[#1A1D24] transition-colors group"><div class="flex items-center justify-center"><input class="w-4 h-4 rounded-xs bg-[#1F222C] border-outline-variant text-brand-cyan focus:ring-brand-cyan focus:ring-offset-0 cursor-pointer" type="checkbox"/></div>
+<div class="font-code-md text-code-md text-on-surface truncate cursor-pointer group-hover:text-brand-cyan transition-colors">
+                            Memory leak in worker process #4
+                        </div>
+<div>
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded-xs bg-[#FFA502]/10 text-[#FFA502] border border-[#FFA502]/20 font-label-caps text-label-caps uppercase">
+<span class="w-[4px] h-[4px] rounded-full bg-[#FFA502]"></span>P2
+                            </span>
+</div>
+<div>
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded-xs bg-[#FFA502]/10 text-[#FFA502] border border-[#FFA502]/20 font-label-caps text-label-caps uppercase">
+<span class="w-[4px] h-[4px] rounded-full bg-[#FFA502]"></span>HIGH
+                            </span>
+</div>
+<div>
+<span class="inline-flex items-center justify-center px-xs py-[2px] rounded-xs border border-brand-cyan text-brand-cyan font-code-sm text-code-sm">
+                                IN_PROGRESS
+                            </span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-outline-variant shrink-0 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person" style="font-size: 14px;">person</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant italic truncate">Unassigned</span>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">
+                            2h ago
+                        </div>
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="visibility" style="font-size: 16px;">visibility</span></button>
+<button class="text-on-surface-variant hover:text-brand-violet transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="person_add" style="font-size: 16px;">person_add</span></button>
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="play_arrow" style="font-size: 16px;">play_arrow</span></button>
+</div>
+</div>
+<!-- Row 3 -->
+<div class="grid grid-cols-[40px_minmax(250px,2fr)_100px_100px_150px_150px_100px_100px] gap-sm px-md py-sm border-b border-[#1F222C] items-center hover:bg-[#1A1D24] transition-colors group"><div class="flex items-center justify-center"><input class="w-4 h-4 rounded-xs bg-[#1F222C] border-outline-variant text-brand-cyan focus:ring-brand-cyan focus:ring-offset-0 cursor-pointer" type="checkbox"/></div>
+<div class="font-code-md text-code-md text-on-surface truncate cursor-pointer group-hover:text-brand-cyan transition-colors">
+                            Database connection timeout on query ID 892
+                        </div>
+<div>
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded-xs bg-brand-violet/10 text-brand-violet border border-brand-violet/20 font-label-caps text-label-caps uppercase">
+<span class="w-[4px] h-[4px] rounded-full bg-brand-violet"></span>P3
+                            </span>
+</div>
+<div>
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded-xs bg-brand-violet/10 text-brand-violet border border-brand-violet/20 font-label-caps text-label-caps uppercase">
+<span class="w-[4px] h-[4px] rounded-full bg-brand-violet"></span>MEDIUM
+                            </span>
+</div>
+<div>
+<span class="inline-flex items-center justify-center px-xs py-[2px] rounded-xs border border-dashed border-outline-variant text-on-surface-variant font-code-sm text-code-sm">
+                                CREATED
+                            </span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-outline-variant shrink-0">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="A small developer avatar placeholder showing a generic silhouette. Professional, dark aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYskTRarMYmZJX1rnndjjs3f2M_I4CRIDRWMqT6f985jwtzyWzG-EBWMdYsY-KqG6wcIcM7F26HTAeLfydlom5yZbKSI6EJMiXv9gdXRKhQqlV0Jhw_g0hjPZndGK7K09pG7ISNk_s2Po9s2CN4kOeAnJuEiPAUHVSB0O5wCTaZqWZCtKF6XtP1TTlofzn9H25s9My1u4ETdViLsUp3ABah5dCSnSQeiEJj6I7ogJcvcLUarHWaeOA2eQonFfnwXgDBp0DAYGu2Lg"/>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface truncate">S. Smith</span>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">
+                            5h ago
+                        </div>
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="visibility" style="font-size: 16px;">visibility</span></button>
+<button class="text-on-surface-variant hover:text-brand-violet transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="person_add" style="font-size: 16px;">person_add</span></button>
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="play_arrow" style="font-size: 16px;">play_arrow</span></button>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="grid grid-cols-[40px_minmax(250px,2fr)_100px_100px_150px_150px_100px_100px] gap-sm px-md py-sm border-b border-[#1F222C] items-center hover:bg-[#1A1D24] transition-colors group"><div class="flex items-center justify-center"><input class="w-4 h-4 rounded-xs bg-[#1F222C] border-outline-variant text-brand-cyan focus:ring-brand-cyan focus:ring-offset-0 cursor-pointer" type="checkbox"/></div>
+<div class="font-code-md text-code-md text-on-surface truncate cursor-pointer group-hover:text-brand-cyan transition-colors">
+                            CSS misalignment in TopNavBar trailing actions
+                        </div>
+<div>
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded-xs bg-on-surface-variant/10 text-on-surface-variant border border-on-surface-variant/20 font-label-caps text-label-caps uppercase">
+<span class="w-[4px] h-[4px] rounded-full bg-on-surface-variant"></span>P4
+                            </span>
+</div>
+<div>
+<span class="inline-flex items-center gap-xs px-xs py-[2px] rounded-xs bg-on-surface-variant/10 text-on-surface-variant border border-on-surface-variant/20 font-label-caps text-label-caps uppercase">
+<span class="w-[4px] h-[4px] rounded-full bg-on-surface-variant"></span>LOW
+                            </span>
+</div>
+<div>
+<span class="inline-flex items-center justify-center px-xs py-[2px] rounded-xs border border-brand-green text-brand-green font-code-sm text-code-sm">
+                                RESOLVED
+                            </span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-outline-variant shrink-0 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="smart_toy" style="font-size: 14px;">smart_toy</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface truncate">AutoRepro Bot</span>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">
+                            1d ago
+                        </div>
+<div class="flex items-center justify-end gap-xs opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="visibility" style="font-size: 16px;">visibility</span></button>
+<button class="text-on-surface-variant hover:text-brand-violet transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="person_add" style="font-size: 16px;">person_add</span></button>
+<button class="text-on-surface-variant hover:text-brand-cyan transition-colors p-xs rounded-sm hover:bg-[#2A2E3A]"><span class="material-symbols-outlined" data-icon="play_arrow" style="font-size: 16px;">play_arrow</span></button>
+</div>
+</div>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="grid grid-cols-[40px_minmax(250px,2fr)_100px_100px_150px_150px_100px_100px] gap-sm px-md py-sm border-b border-brand-border bg-[#161920] font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider items-center"><div class="flex items-center justify-center"><input class="w-4 h-4 rounded-xs bg-[#1F222C] border-outline-variant text-brand-cyan focus:ring-brand-cyan focus:ring-offset-0 cursor-pointer" type="checkbox"/></div><div>Title</div><div>Priority</div><div>Severity</div><div>Status</div><div>Assigned To</div><div>Created</div><div class="text-right">Actions</div></div>
+</div>
+</div>
+</main>
+</body></html>

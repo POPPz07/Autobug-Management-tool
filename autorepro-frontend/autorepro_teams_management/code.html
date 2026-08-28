@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AutoRepro - Teams</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;family=Syne:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Thin 1px borders mapped to outline-variant per guidance */
+        .tech-border {
+            border: 1px solid theme('colors.outline-variant');
+        }
+        .tech-border-glow:hover {
+            border-color: theme('colors.primary');
+            box-shadow: 0 0 8px rgba(207, 188, 255, 0.2); /* primary color glow approximation */
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2b292f",
+                        "outline-variant": "#494551",
+                        "on-primary-fixed-variant": "#4f378a",
+                        "background": "#141218",
+                        "tertiary-container": "#c9a74d",
+                        "on-secondary-fixed-variant": "#4b4263",
+                        "on-secondary": "#342b4b",
+                        "on-surface": "#e6e0e9",
+                        "surface-container-highest": "#36343a",
+                        "surface-container": "#211f24",
+                        "secondary-container": "#4d4465",
+                        "tertiary-fixed-dim": "#e7c365",
+                        "error-container": "#93000a",
+                        "tertiary": "#e7c365",
+                        "surface-container-lowest": "#0f0d13",
+                        "inverse-on-surface": "#322f35",
+                        "secondary-fixed": "#e9ddff",
+                        "outline": "#948e9c",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#141218",
+                        "secondary": "#cdc0e9",
+                        "primary-fixed": "#e9ddff",
+                        "on-primary": "#381e72",
+                        "on-surface-variant": "#cbc4d2",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "on-background": "#e6e0e9",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#1f1635",
+                        "surface-container-low": "#1d1b20",
+                        "surface-tint": "#cfbcff",
+                        "on-tertiary-container": "#503d00",
+                        "on-secondary-container": "#bfb2da",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-tertiary": "#3e2e00",
+                        "inverse-primary": "#6750a4",
+                        "surface-bright": "#3b383e",
+                        "primary-fixed-dim": "#cfbcff",
+                        "on-primary-container": "#e0d2ff",
+                        "primary": "#cfbcff",
+                        "on-primary-fixed": "#22005d",
+                        "inverse-surface": "#e6e0e9",
+                        "on-error": "#690005",
+                        "primary-container": "#6750a4",
+                        "surface-variant": "#36343a",
+                        "tertiary-fixed": "#ffdf93",
+                        "secondary-fixed-dim": "#cdc0e9",
+                        "surface": "#141218"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "48px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["DM Sans"],
+                        "body-lg": ["DM Sans"],
+                        "code-md": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "h1": ["Syne"],
+                        "body-sm": ["DM Sans"],
+                        "h3": ["Syne"],
+                        "h2": ["Syne"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["11px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "500" }],
+                        "code-md": ["13px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-sm": ["12px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h3": ["18px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen w-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low text-primary font-body-md text-body-md font-medium fixed left-0 top-0 h-full w-[240px] border-r border-outline-variant flex flex-col py-lg z-20">
+<div class="px-lg mb-xl">
+<h1 class="font-h2 text-h2 font-bold text-on-surface">AutoRepro</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-xs">v2.4.0-stable</p>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full bg-primary text-on-primary py-sm px-md rounded font-code-md text-code-md hover:opacity-90 transition-opacity flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined">add</span>
+                New Repro
+            </button>
+</div>
+<ul class="flex-1 flex flex-col gap-sm px-md">
+<li class="flex items-center gap-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all px-md py-sm rounded cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+                Dashboard
+            </li>
+<li class="flex items-center gap-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all px-md py-sm rounded cursor-pointer">
+<span class="material-symbols-outlined">bug_report</span>
+                Incidents
+            </li>
+<li class="flex items-center gap-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all px-md py-sm rounded cursor-pointer">
+<span class="material-symbols-outlined">robot_2</span>
+                Automation
+            </li>
+<!-- Active Tab: Workflows -->
+<li class="flex items-center gap-md text-on-surface border-l-2 border-primary pl-[-2px] ml-[2px] bg-surface-container-highest px-md py-sm rounded cursor-pointer active:scale-[0.98] transition-transform duration-100">
+<span class="material-symbols-outlined">account_tree</span>
+                Workflows
+            </li>
+<li class="flex items-center gap-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all px-md py-sm rounded cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+                Analytics
+            </li>
+<li class="flex items-center gap-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all px-md py-sm rounded cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </li>
+</ul>
+<div class="mt-auto px-md">
+<ul class="flex flex-col gap-sm border-t border-outline-variant pt-md">
+<li class="flex items-center gap-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all px-md py-sm rounded cursor-pointer">
+<span class="material-symbols-outlined">help</span>
+                    Support
+                </li>
+<li class="flex items-center gap-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all px-md py-sm rounded cursor-pointer">
+<span class="material-symbols-outlined">menu_book</span>
+                    Documentation
+                </li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-[240px] w-[calc(100%-240px)] h-full flex flex-col relative pr-[480px]">
+<!-- TopNavBar -->
+<header class="bg-background text-primary font-code-md text-code-md w-full h-16 border-b border-outline-variant flex justify-between items-center px-lg z-10 sticky top-0">
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-sm text-on-surface-variant px-sm py-xs border border-outline-variant rounded bg-surface-container-low cursor-text w-64">
+<span class="material-symbols-outlined text-[18px]">search</span>
+<span class="opacity-50">Search logs...</span>
+</div>
+<div class="flex gap-md">
+<span class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer">Incidents</span>
+<span class="text-on-surface-variant">/</span>
+<span class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer">#1284-repro</span>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary rounded p-xs">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary rounded p-xs">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant ml-sm" data-alt="A small, circular avatar portrait of a professional individual with short hair against a neutral gray background. The lighting is soft and studio-quality, emphasizing a modern corporate aesthetic. The image is framed within a subtle dark border suitable for a dark-mode technical UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5jH2er7i5-W2Z3yjKL17iYWIlyjkBD97eUNm-_vipufzrAhwLcNhriAgoSPEMmiWriCK6I2W-72GVJdZ7RAmG8RWblsYTDGmLWGWFVynn0nl-WKhF-hw0z4t2rMz0oPkZMum9cOvUvmgDs_h9jLOOo1e_t4PRkb7XZ_GN_xDWIz4oMQ7fkuShAz5FDJ9bs8T9LOyRQ0tqd94XEJ4NZ68OC0BtsGdCt23tfbUtGZtHjkbZ0-ojCPtBWZ6ZhdNEp-NSK5e8-WcJVOs"/>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="flex-1 overflow-y-auto p-xl">
+<!-- Page Header -->
+<div class="flex justify-between items-center mb-xl">
+<h2 class="font-h1 text-h1 text-on-surface">Teams</h2>
+<button class="bg-primary text-on-primary font-body-md text-body-md px-md py-sm rounded hover:bg-primary/90 transition-colors flex items-center gap-sm shadow-[0_0_8px_rgba(207,188,255,0.2)]">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    Create Team
+                </button>
+</div>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-lg">
+<!-- Card 1: Frontend Team (Active/Expanded indication via style) -->
+<div class="bg-surface-container-low tech-border tech-border-glow rounded-lg p-lg flex flex-col gap-md cursor-pointer border-primary shadow-[0_0_8px_rgba(207,188,255,0.2)]">
+<div class="flex justify-between items-start border-b border-outline-variant pb-md">
+<h3 class="font-h3 text-h3 text-on-surface">Frontend Team</h3>
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</div>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-code-sm text-code-sm text-on-surface-variant">Lead:</span>
+<div class="flex items-center gap-xs">
+<img class="w-6 h-6 rounded-full border border-outline-variant" data-alt="A small circular avatar of a male team lead in a dark tech UI setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzE0btQ3Tni4yzzYClAG7J2CGV6ef-MLLfkgGFAJ5B6OSSn-YrYG5gn9jW7Y69BKaMKUQkctqhzaWZ1lgfJFFba2nDJK5gBnQ0Ssl1doX08Y-_3lCiM1M-bFhZ9bqbfhxCBvzeLpHPMqPDz7WCnpjnPIDg3SjVT-PQeMFApxfyLp-KEz2Yw6iZHGUEqlIoiMbl4zAhPjI8pto3r-19FsAzqlfyA1Vd43NXvkVq4-3Dt-32rUVQoj_ehiJHAJ2u8-Nce3GeyFgL7U4"/>
+<span class="font-body-sm text-body-sm text-on-surface">Alex R.</span>
+</div>
+</div>
+<div class="flex -space-x-2 mt-sm">
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of a female developer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfLQFkVRX50Mi0yvimb0R_85rnf84Y1-KVhhka8JPmGbWW2dpAuYrnGT-065jhuDSI-CLWBqWvyIHIYXi2yEj9FMIZHZCtDurSyvP5Bgw1cWIcjcdZ1D-2Y1Xbm12SLe993Y7aBFaTp2NiybzInRsknrBTvBb8Qw2UortFOGWlfVDPZrh-ZO7h7LxbPve4o6sELcI_A50OTKsDKMMkMWibspO0mtndicGYnBTtMKQDoM3ia5pZC0ft2d8CPlTlKhS93mrP0K7ycvE"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of a male developer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLN44CzkaU3boxuqg0B9iJYf9Jo2--cRpryHpE8iFk9FlfW8iZb8VA1rLmAFBQ5r6OBszLZbBCbUwh5iI7wHhqMIpHchzNUbXt6bvHrbtKeebtWBhIgufJ8tQw8o_d6mTM2UPVXDZIiG0Tak8fxBggGVHsWfLUsRXdR0MgSMHODVHkEAA7fJsqTxitnCs54CwsP1-MbtanaNuFSSMqxVpF_rfZ2XpSObk6acLgYl-7MZqFJSJSkVPYLf9RdfV4a7XRl06AHinP9Q4"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of a female designer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-cDo_gzEcDUhkq9a-TdFmRzwLsyZZ0EjtrR7U7cUtd7ekPeDjsKwh7J85YB24pWzy1vm90Qt0JGY7wDkxUjuQvlgjroQZ6UBK_Uk8z3eN_8Y8OYIu0vOELQTgZ2NP8ZKyygS79UXGEm1TsZ63ZouUMsVgno9eEVYXHYZALn_205Kkyfl1Dr3_4BszOw3aHk2jAsvO4eQUpOjZcV3PHYhmyzc0nY0VUcJDjWfqAAKv0A7f1_yZP21_EPj0OU2ynYo_3cn_cnwzjPc"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-surface-container-highest flex items-center justify-center font-code-sm text-code-sm text-on-surface-variant">+2</div>
+</div>
+<div class="mt-auto pt-md flex justify-between items-center">
+<div class="flex items-center gap-xs bg-error-container/20 border border-error-container text-error px-sm py-xs rounded font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 bg-error rounded-full"></span>
+                            12 ACTIVE BUGS
+                        </div>
+<button class="font-body-sm text-body-sm text-primary hover:text-primary-fixed transition-colors flex items-center gap-xs">
+                            Manage <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Backend Team -->
+<div class="bg-surface-container-low tech-border tech-border-glow rounded-lg p-lg flex flex-col gap-md cursor-pointer">
+<div class="flex justify-between items-start border-b border-outline-variant pb-md">
+<h3 class="font-h3 text-h3 text-on-surface">Backend Team</h3>
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</div>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-code-sm text-code-sm text-on-surface-variant">Lead:</span>
+<div class="flex items-center gap-xs">
+<img class="w-6 h-6 rounded-full border border-outline-variant" data-alt="A small circular avatar of a male tech lead." src="https://lh3.googleusercontent.com/aida-public/AB6AXuClt_n7Y7M6mAxnftoPJG2SwcyPObgEAHMELCBeq4JxqniceQi92vC0StO9K6A-6zuTHvPWWUXVQ2QFvs5XgNa_xLXdzHJaDV-mNef7ew8HR4tPMEnhNRNg-9b0NFYEDuueuQ1OGk8MwPBlebICky32ogXVXl1m3SQVaDg0dHwB0Gy5tSC6ZVrVw7XTuyySMeSNE-AqhKxcx1SqC9HOmpKQzS929R2JPSEOFnjJ3iFAo3frf95U8nhhJlhLUsimSttyetMs1B81VgY"/>
+<span class="font-body-sm text-body-sm text-on-surface">David M.</span>
+</div>
+</div>
+<div class="flex -space-x-2 mt-sm">
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of an engineer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuxao5LqbHpr73bRz77BqS0l4A4xz5CYXyGiaGMGa-4Zsb-2hCW5wzAg1u68wK2VP7mfcbIc57BGm6QFHAiQ6CUd_oyrEjSTZ_Hfb8vAccy25acT0hHa7d_kVfNC9lB2aD29gZ7fVtN8F0Rkd3MDGTFEA1LcgARRkGdk4XfsB2aG9vDAAhz-cwDnV78KL1MjNPFHV-cUe76_IcHFrdnqK5CTqBODnOcK2HIuOR007knjzU0iDGoRkpfi0ihq1_7vaKDlUr78edmDo"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of a female engineer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRDH740lyv7pEzy8mGmcQj3o8D-OSH7WcpRNpHz_RlPJTxyMCx6F9ERrulFNt-9Qp5sSYun36FbNZu9lNy_0Dp9-HDWSzNwo6n4jzLLtgjyarzlE6HQthmt4FLll-yVZbTOO74S1Z8rXJ4HN7uV-MhrpptQ_KHEXesBXbQTJaD9AQfIKWR78FWvfvrZEBLKwZDV5RgxZ2R_xri083FR2qtiIR34bXfC_Jk6GQBl_g23D_22XElQ6tLc76UFkc4CO-NdCOs4k7YNDA"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-low bg-surface-container-highest flex items-center justify-center font-code-sm text-code-sm text-on-surface-variant">+5</div>
+</div>
+<div class="mt-auto pt-md flex justify-between items-center">
+<div class="flex items-center gap-xs bg-tertiary-container/20 border border-tertiary-container text-tertiary px-sm py-xs rounded font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full"></span>
+                            3 HIGH PRIORITY
+                        </div>
+<button class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-xs">
+                            Manage <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 3: QA Automation -->
+<div class="bg-surface-container-low tech-border tech-border-glow rounded-lg p-lg flex flex-col gap-md cursor-pointer">
+<div class="flex justify-between items-start border-b border-outline-variant pb-md">
+<h3 class="font-h3 text-h3 text-on-surface">QA Automation</h3>
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</div>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-code-sm text-code-sm text-on-surface-variant">Lead:</span>
+<div class="flex items-center gap-xs">
+<img class="w-6 h-6 rounded-full border border-outline-variant" data-alt="A small circular avatar of a female QA lead." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpkUuspTJ9ObvUZQyXzUz00T_TtWSsRAllDwWF-CrSGW8cdzZlhRb25WnLO7gdOrZKwAHh6rNWhEcMIID7588nN9iFnE3S2kl36lmdnzgrzJcSZqBO_8_5ak2FmcZD4lP9mnwJ_OutPwF7KY2N5wU5ySIh7DltynVmyeAbUumhI1pocFEl7xOjEJGGETaYG7TcrEJvcA5nRUm3Xsk8bVtedImG3oel1hxjG-7MKqkTz5L7LE8wxKm_gq0Gh3WoGCheH0lNjXWRhAM"/>
+<span class="font-body-sm text-body-sm text-on-surface">Sarah K.</span>
+</div>
+</div>
+<div class="flex -space-x-2 mt-sm">
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of a QA tester." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqlGmNW1Vld2RXTQkLh2Fq1iP6MGKtiF5fnqs-yRSNw-6aVnRSxv9bjDlRFoanqnofLGGmymGK5shUHee4zMaDMBOJ5REElb-vv3_v6vOLkyC0eNCiLWmD3QgN-NUW_6EWiin5wQ0b79ewqN8ndKAlj26R5NY6ymrpvGo6jxPzn_8TWf4EAXzkwVDkB4QPTrRACc3ERZa88SeOfUroSO4XOF3-skkgYUU1g3lK3NF6mFo-YWXHRBsCfMfRGdG9J-hzS44vQ9dMN00"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of a QA tester." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ1bJteEvhzH3mj7NKL79UL3YJekYllJPOldE4bm5-E1ZDgAl3-k8J29j3_m5cdNQfa9HNt0MdDDSOcfRZFtiXIRCm1xlxwv7ULn7HkiV_y4NnQlqdINz2zPdEECD7Z5esHAczRN37YkPf2jnURPkcKQB-SNYUaX5K5QPCo193h6yK_NxYe2rjkWyqWJqy_PxWV6iEVJFkzx-1MDZQPrFFackokoV66f1s05VQwJia5WUcCacL4RDu3Qrd-ae7DkuZy_7A25weFHA"/>
+</div>
+<div class="mt-auto pt-md flex justify-between items-center">
+<div class="flex items-center gap-xs border border-outline-variant text-on-surface-variant px-sm py-xs rounded font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 bg-outline-variant rounded-full"></span>
+                            STABLE
+                        </div>
+<button class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-xs">
+                            Manage <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 4: DevOps & Infra -->
+<div class="bg-surface-container-low tech-border tech-border-glow rounded-lg p-lg flex flex-col gap-md cursor-pointer">
+<div class="flex justify-between items-start border-b border-outline-variant pb-md">
+<h3 class="font-h3 text-h3 text-on-surface">DevOps &amp; Infra</h3>
+<span class="material-symbols-outlined text-on-surface-variant">more_horiz</span>
+</div>
+<div class="flex items-center gap-sm mt-xs">
+<span class="font-code-sm text-code-sm text-on-surface-variant">Lead:</span>
+<div class="flex items-center gap-xs">
+<img class="w-6 h-6 rounded-full border border-outline-variant" data-alt="A small circular avatar of a male DevOps lead." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCw3ZHQhfHwJK_qVQTYFWRSQzmSrI5zUl8wJwJ63qM_4tbH9zNJB1BTTp-oW3TFF9vn3fugXdyDgmXb4thh9ypzKldi7JpYXFIGRUbzU7ihe5iwKWcuQpLhyHtXJA211dAdtzbB7NjCFhS9B7UarIPLfEY0y0sykNMX5-kjUcMjsoA0uW0lDCHcHiK-7n35YY_6cvnxppLmqwFzr2fNO_SVB2LoByIUH4SQQUKLLMQEqKt7L9Mp1wfsHeqGQjju6Gr10N19J0puwE4"/>
+<span class="font-body-sm text-body-sm text-on-surface">Chris W.</span>
+</div>
+</div>
+<div class="flex -space-x-2 mt-sm">
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of a DevOps engineer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC29RtCkqmQI4Y_kd5JCUnQPpIJoH4m_nmUk83y7c5UB7jNXxA1BHP2pUjxAxG3vx8LU23afYuboaU2EdZ7PcH31sEwSkU9bFUVx-xj9-c5M1f_kzMG2rnfAj9gKNL3Fi7PFkD-6UpmiWWh9DN3eA3zI05NsxvR9sgcIxVAhaVxPJ1NLRfDHXoFFLC4tCCwAKQ3Q_CvfEkGWyDQgQH3Zd9qJZ8S61I0HZx9N92TugG3gwcz0JnWc6ZQzQN8GG10khWQJYld0FjOmx0"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of an infrastructure engineer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChu_TG05cxd-rWDusSYWLeCBNCqmEh-0Lx0a8bgZPUWaz7l6nyXKmzMBe8wafQO4T6VyWuaELj1QFR1A-Bs9woq5VHmNiIhPvXnL-Y9vVvM_jnkRMgunwnCF-lJRKfy4nwwEXCLa2j8mjWsRpoc8T06wFz1I1i1Hdp1x2oVIdBDpOqYRJpsINGHeg-FPXkw9oWi3mtd3Pdx1WtLRKTGoiWmzLOgWLcRHrkkB8SWS73nBDhmsCwLytqGDsHBbWuDskx3HIygj_hA8A"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface-container-low" data-alt="Small circular avatar of a female sysadmin." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDMJW3uGZycZ2BQRfVk91YoSsMzkqDMegcaAAMg-n8KvYvzk_yH08PZUw7fp_YVfbMRchLLA5AEr6DxUvr519XoOvZGUzEZGYD7mvINvYAyjtMgBOD9RNx-zZD9vgOwG3fWBOSespq0WO0hmzWKWHkseDdwE_z3efK3LrlPydmrD3fpMFJp8Ba49ifayB2QivaSerD4hl2KfsyO8wAMidk1MqowQNJllpfZXMyxgY9-vYd0MnfR14RAllMOCz8EqJl2S1ywqn2liU"/>
+</div>
+<div class="mt-auto pt-md flex justify-between items-center">
+<div class="flex items-center gap-xs border border-primary text-primary px-sm py-xs rounded font-label-caps text-label-caps shadow-[0_0_8px_rgba(207,188,255,0.1)]">
+<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
+                            DEPLOYING
+                        </div>
+<button class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-xs">
+                            Manage <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Slide-in Drawer (Fixed Right) -->
+<aside class="fixed right-0 top-0 h-full w-[480px] bg-[#1A1D24] border-l border-outline-variant z-30 flex flex-col shadow-2xl">
+<!-- Drawer Header -->
+<div class="p-lg border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<h2 class="font-h2 text-h2 text-on-surface">Frontend Team</h2>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-xs rounded">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-xs rounded bg-surface-container-lowest border border-outline-variant">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Drawer Content -->
+<div class="flex-1 overflow-y-auto p-lg flex flex-col gap-xl">
+<!-- Supervisor -->
+<section class="flex flex-col gap-sm">
+<h4 class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-wider">Supervisor</h4>
+<div class="bg-surface-container border border-outline-variant rounded p-md flex justify-between items-center cursor-pointer hover:border-outline transition-colors">
+<div class="flex items-center gap-md">
+<img class="w-10 h-10 rounded-full border border-outline-variant" data-alt="Avatar of Alex R, team lead." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCokXWATu6I_CswLM13Iw8nhNvaP81ozG8OS1Uqfse8MOS0lOlSAwHXurrIv0UAElXnRB47o6w3P4GRgZkGia2GVxFCyT31WI9J55lBLtlctu3IQmgO4B9iPKz-mK-oOQvZhxuWj6IAD79i_a6d-0z9tb2NHIz0KL8gMckJD1S2QGYn4zlGbjq4Wfko_jobr7ACeuj83f0xfQrj-C6cchN0yWQ2JUPPfzxu49BzY4YWnZMPssjAUwYegsWqMCJwVp_R3IC_n8Jikes"/>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface">Alex R.</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">alex.r@autorepro.com</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+</section>
+<!-- Members List -->
+<section class="flex flex-col gap-sm">
+<div class="flex justify-between items-end mb-xs">
+<h4 class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-wider">Members (5)</h4>
+</div>
+<!-- Search/Add -->
+<div class="relative mb-md">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full bg-surface border border-outline-variant rounded py-sm pl-xl pr-md font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Add member by name or email..." type="text"/>
+</div>
+<!-- Member Items -->
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-center p-sm rounded hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-md">
+<img class="w-8 h-8 rounded-full border border-outline-variant" data-alt="Avatar of a female frontend developer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbjFh27vphvyNUir5EtFpFD95KaZinfs92_jljZZsHUox2Qf_MH6vEhNscYC8w12YN2G1KMb-f07aqxYtXXeco8db3sm4arNRFFfrVNTVhsTLC_2__ovs40jqxAMvmK_B-BTRzZwcQ3F1mwBa55pEYp_stKBtHBR820fe7MMvMwDPzOBKAtRtAVM7j2EE8HT-bH2ISQ5Zk1kuFgHKZ2HDWnpekODfkoyD592KLzxlJ7NXwJXFupNTrs7rhy7r9hSLkxcifN4_iN0Y"/>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Jessica T.</p>
+<span class="font-code-sm text-code-sm text-on-surface-variant border border-outline-variant rounded px-1 mt-1 inline-block bg-surface-container">Senior UI</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all p-xs rounded">
+<span class="material-symbols-outlined text-[20px]">person_remove</span>
+</button>
+</div>
+<div class="flex justify-between items-center p-sm rounded hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-md">
+<img class="w-8 h-8 rounded-full border border-outline-variant" data-alt="Avatar of a male frontend developer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-bVw2Mh418Yk5QirskhyUDwYNYl5Sf-EmNF9k6Rf39d5V8EtqrxozxSNtT4B1zL3X22TuSdomEw-4na350RXnPdWV1JpOb2ijsHMkKtVi1SJ9QCGljt31KxA4A4HcAwOlQHd4EFzIkmTz4xH3DZZ-bpQKLB6zRJqNllrAYne6-zfTJxyVPMdy_fK3R4QHxIZxx8qcFcuXSC_0L3xxIpIHtyIcSr50mDOl1vWyRNqKn2ZtxigCU7CE5KpR8zmzX3e7LvuWOtnBGJc"/>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Mark D.</p>
+<span class="font-code-sm text-code-sm text-on-surface-variant border border-outline-variant rounded px-1 mt-1 inline-block bg-surface-container">React Dev</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all p-xs rounded">
+<span class="material-symbols-outlined text-[20px]">person_remove</span>
+</button>
+</div>
+<div class="flex justify-between items-center p-sm rounded hover:bg-surface-container-low transition-colors group">
+<div class="flex items-center gap-md">
+<img class="w-8 h-8 rounded-full border border-outline-variant" data-alt="Avatar of a female UX engineer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhOrOCMNlgKq46r0O1Gkag8Jf75gb7D13gmxoO0BDIgB05cFaSaimkBF011PDdeCWeiwe70j4H7T3vXvgE0a3LKqKQ6ROBnll3GXWR8rhbwCYktcgxfkt1KitVnV2hkdPgV0Z1kt9SssXAOnWd4RCDLsK5ItnUTfzmTwhN9n_KmY95O1bXm0kr3cfzMVzRKQNWD-OvOPaGJlL9roGW8rtVIK3dzv_ss4WhxVeNV3YbZr7PHK8d6ItEXcn3Cc5uPN5Tj8qKDfYuWxE"/>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Elena G.</p>
+<span class="font-code-sm text-code-sm text-on-surface-variant border border-outline-variant rounded px-1 mt-1 inline-block bg-surface-container">UX Engineer</span>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-all p-xs rounded">
+<span class="material-symbols-outlined text-[20px]">person_remove</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Drawer Footer -->
+<div class="p-lg border-t border-outline-variant bg-surface-container-lowest mt-auto">
+<button class="w-full border border-error text-error font-body-md text-body-md py-sm rounded hover:bg-error-container/10 transition-colors flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+                Delete Team
+            </button>
+</div>
+</aside>
+</body></html>

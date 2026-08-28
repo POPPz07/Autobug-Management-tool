@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Forgot Password - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;family=Syne:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#1f1635",
+                        "tertiary-fixed": "#ffdf93",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e6e0e9",
+                        "secondary": "#cdc0e9",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "tertiary": "#e7c365",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#141218",
+                        "primary-fixed-dim": "#cfbcff",
+                        "surface-container": "#211f24",
+                        "primary-fixed": "#e9ddff",
+                        "on-secondary-container": "#bfb2da",
+                        "tertiary-container": "#c9a74d",
+                        "surface-container-lowest": "#0f0d13",
+                        "on-secondary": "#342b4b",
+                        "inverse-on-surface": "#322f35",
+                        "background": "#141218",
+                        "error-container": "#93000a",
+                        "on-primary-container": "#e0d2ff",
+                        "on-tertiary-fixed": "#241a00",
+                        "on-primary-fixed-variant": "#4f378a",
+                        "on-primary-fixed": "#22005d",
+                        "tertiary-fixed-dim": "#e7c365",
+                        "secondary-fixed-dim": "#cdc0e9",
+                        "on-background": "#e6e0e9",
+                        "on-surface-variant": "#cbc4d2",
+                        "on-error-container": "#ffdad6",
+                        "surface": "#141218",
+                        "outline": "#948e9c",
+                        "on-secondary-fixed-variant": "#4b4263",
+                        "surface-container-highest": "#36343a",
+                        "secondary-container": "#4d4465",
+                        "on-tertiary": "#3e2e00",
+                        "surface-tint": "#cfbcff",
+                        "surface-container-high": "#2b292f",
+                        "surface-bright": "#3b383e",
+                        "on-primary": "#381e72",
+                        "surface-variant": "#36343a",
+                        "secondary-fixed": "#e9ddff",
+                        "inverse-primary": "#6750a4",
+                        "surface-container-low": "#1d1b20",
+                        "on-tertiary-container": "#503d00",
+                        "primary": "#cfbcff",
+                        "outline-variant": "#494551",
+                        "on-surface": "#e6e0e9",
+                        "primary-container": "#6750a4",
+                        "cyan": {
+                            400: "#00E5FF",
+                        },
+                        "tech-canvas": "#0A0B0D",
+                        "tech-card": "#111318",
+                        "tech-border": "#1F222C"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "48px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Syne", "sans-serif"],
+                        "code-sm": ["JetBrains Mono", "monospace"],
+                        "code-md": ["JetBrains Mono", "monospace"],
+                        "h2": ["Syne", "sans-serif"],
+                        "body-md": ["DM Sans", "sans-serif"],
+                        "h3": ["Syne", "sans-serif"],
+                        "body-sm": ["DM Sans", "sans-serif"],
+                        "body-lg": ["DM Sans", "sans-serif"],
+                        "label-caps": ["JetBrains Mono", "monospace"]
+                    },
+                    "fontSize": {
+                        "h1": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "code-sm": ["11px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "code-md": ["13px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "h3": ["18px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+                        "body-sm": ["12px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "500" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .dot-grid {
+            background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+            mask-image: radial-gradient(circle at center, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 70%);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+        }
+        .btn-primary {
+            background-color: #00E5FF;
+            color: #000;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 16px rgba(0, 229, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        .input-tech {
+            background-color: #0A0B0D;
+            border: 1px solid #1F222C;
+            color: #e6e0e9;
+            transition: all 0.2s ease;
+        }
+        .input-tech:focus {
+            border-color: #00E5FF;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen text-on-surface antialiased overflow-x-hidden flex selection:bg-cyan-400 selection:text-black">
+<!-- Split Screen Container -->
+<main class="flex w-full min-h-screen flex-col lg:flex-row">
+<!-- Left Half: Brand & Atmospheric Visuals -->
+<section class="bg-[#0A0B0D] lg:w-1/2 flex flex-col justify-between p-lg lg:p-xl relative overflow-hidden hidden lg:flex border-r border-[#1F222C]">
+<!-- Brand Logo -->
+<div class="relative z-10 flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-cyan-400 flex items-center justify-center text-black">
+<span class="material-symbols-outlined font-bold text-xl">bug_report</span>
+</div>
+<span class="font-h2 text-h2 text-on-surface">AutoRepro</span>
+</div>
+<!-- Atmospheric Dot Grid -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-[80%] h-[80%] dot-grid relative">
+<!-- Glowing Dots Overlay -->
+<div class="absolute top-[30%] left-[40%] w-1.5 h-1.5 bg-cyan-400 rounded-full glow-cyan"></div>
+<div class="absolute top-[60%] left-[20%] w-1.5 h-1.5 bg-cyan-400 rounded-full glow-cyan opacity-80"></div>
+<div class="absolute top-[45%] left-[70%] w-1.5 h-1.5 bg-cyan-400 rounded-full glow-cyan opacity-60"></div>
+<div class="absolute top-[75%] left-[65%] w-1.5 h-1.5 bg-cyan-400 rounded-full glow-cyan opacity-40"></div>
+</div>
+</div>
+<!-- Bottom Tagline -->
+<div class="relative z-10 mb-xl">
+<h1 class="font-h1 text-[48px] leading-[1.1] font-bold tracking-tight text-on-surface">
+                    Reproduce bugs.<br/>
+<span class="text-[#00E5FF]">Automatically.</span>
+</h1>
+</div>
+</section>
+<!-- Right Half: Form Area -->
+<section class="bg-[#111318] w-full lg:w-1/2 flex flex-col items-center justify-center p-md lg:p-xl relative">
+<!-- Mobile Logo Header (Hidden on Desktop) -->
+<div class="absolute top-0 left-0 w-full p-md flex lg:hidden items-center gap-sm">
+<div class="w-8 h-8 rounded bg-cyan-400 flex items-center justify-center text-black">
+<span class="material-symbols-outlined font-bold text-xl">bug_report</span>
+</div>
+<span class="font-h2 text-h2 text-on-surface">AutoRepro</span>
+</div>
+<!-- Form Container -->
+<div class="w-full max-w-md flex flex-col gap-xl z-10">
+<!-- Header -->
+<div class="text-center lg:text-left">
+<h2 class="font-h1 text-h1 text-on-surface mb-sm">Reset your password</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Enter your email and we'll send a reset link.</p>
+</div>
+<!-- Input Form -->
+<form class="flex flex-col gap-lg w-full">
+<div class="flex flex-col gap-xs">
+<label class="font-label-caps text-label-caps text-on-surface-variant" for="email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none" style="font-variation-settings: 'FILL' 0;">mail</span>
+<input class="input-tech w-full h-12 rounded pl-xl pr-md font-body-md text-body-md placeholder:text-outline-variant" id="email" name="email" placeholder="j.doe@company.com" required="" type="email"/>
+</div>
+</div>
+<button class="btn-primary w-full h-12 rounded font-body-lg text-body-lg font-semibold flex items-center justify-center gap-sm" type="submit">
+                        Send Reset Link
+                        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">arrow_right_alt</span>
+</button>
+</form>
+<!-- Back to Sign In -->
+<div class="text-center">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors inline-flex items-center gap-xs" href="#">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                        Back to sign in
+                    </a>
+</div>
+</div>
+<!-- DEMONSTRATION SUCCESS STATE (Positioned below for preview, normally would replace form) -->
+<div class="w-full max-w-md mt-xl pt-xl border-t border-[#1F222C]">
+<div class="text-center lg:text-left mb-sm">
+<span class="font-label-caps text-label-caps text-outline">SUCCESS STATE PREVIEW:</span>
+</div>
+<div class="bg-[#1A1D24] border border-[#2E4A35] rounded-lg p-lg flex flex-col items-center text-center gap-md relative overflow-hidden">
+<!-- Subtle green glow behind icon -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-green-500/10 blur-xl rounded-full"></div>
+<div class="w-12 h-12 rounded-full border-2 border-green-500 text-green-500 flex items-center justify-center mb-xs relative z-10">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 0;">check</span>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-on-surface mb-xs">Check your email</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">We sent a reset link to <span class="text-on-surface">j.doe@company.com</span></p>
+</div>
+<div class="flex flex-col gap-sm w-full font-body-sm text-body-sm mt-sm">
+<p class="text-on-surface-variant">Didn't receive it? <a class="text-[#00E5FF] hover:underline" href="#">Resend</a></p>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors mt-sm" href="#">Back to sign in</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

@@ -41,6 +41,7 @@ from api.bulk_routes         import router as bulk_router        # /api/v1/bugs/
 from api.websocket_routes    import router as ws_router          # /ws
 from api.sse_routes          import router as sse_router         # /api/v1/events/*
 from api.api_key_routes      import router as api_key_router     # /api/v1/api-keys/*
+from api.dummy_routes        import router as dummy_router       # /api/v1/audit, /api/v1/analytics
 
 from db.session import engine
 from db import models     # noqa: F401 — registers all SQLModel table metadata
@@ -63,9 +64,10 @@ class NoCompressAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         for prefix in self.EXCLUDED_PREFIXES:
             if request.url.path.startswith(prefix):
-                headers = dict(request.scope["headers"])
-                headers.pop(b"accept-encoding", None)
-                request.scope["headers"] = list(headers.items())
+                request.scope["headers"] = [
+                    (k, v) for k, v in request.scope["headers"] 
+                    if k.lower() != b"accept-encoding"
+                ]
                 break
         return await call_next(request)
 
@@ -144,6 +146,18 @@ async def global_exception_handler(request: Request, exc: Exception):
 # 1. BREACH prevention (must be outermost / first)
 app.add_middleware(NoCompressAuthMiddleware)
 
+# 1.5 Security Headers (HSTS, clickjacking prevention)
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        return response
+
+app.add_middleware(SecurityHeadersMiddleware)
+
 # 2. GZip for large payloads
 app.add_middleware(GZipMiddleware, minimum_size=500)
 
@@ -181,6 +195,7 @@ app.include_router(bulk_router)         # /api/v1/bugs/bulk/*
 app.include_router(ws_router)           # /ws (WebSocket)
 app.include_router(sse_router)          # /api/v1/events/*
 app.include_router(api_key_router)      # /api/v1/api-keys/*
+app.include_router(dummy_router)        # /api/v1/audit, /api/v1/analytics
 
 
 # ── Static assets (only when built frontend is present) ───────────

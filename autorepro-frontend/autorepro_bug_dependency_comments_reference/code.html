@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bug Dependency &amp; Comments Reference - CORE_ENGINE_V1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Syne:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e3e2e5",
+                        "primary-container": "#00e5ff",
+                        "surface-container-low": "#1b1c1e",
+                        "on-tertiary-container": "#555963",
+                        "primary": "#c3f5ff",
+                        "outline-variant": "#3b494c",
+                        "secondary-fixed": "#e3dfff",
+                        "inverse-primary": "#006875",
+                        "surface-tint": "#00daf3",
+                        "surface-container-high": "#292a2c",
+                        "surface-bright": "#38393b",
+                        "on-primary": "#00363d",
+                        "surface-variant": "#343537",
+                        "secondary-container": "#3c28bf",
+                        "on-tertiary": "#2c303a",
+                        "surface-container-highest": "#343537",
+                        "surface": "#121315",
+                        "outline": "#849396",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "on-surface-variant": "#bac9cc",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "on-background": "#e3e2e5",
+                        "on-primary-fixed-variant": "#004f58",
+                        "on-primary-fixed": "#001f24",
+                        "on-tertiary-fixed": "#181c24",
+                        "on-primary-container": "#00626e",
+                        "error-container": "#93000a",
+                        "on-secondary": "#2500a2",
+                        "inverse-on-surface": "#303033",
+                        "background": "#121315",
+                        "tertiary-container": "#cdd0dc",
+                        "surface-container-lowest": "#0d0e10",
+                        "on-secondary-container": "#b2acff",
+                        "surface-container": "#1f2022",
+                        "primary-fixed": "#9cf0ff",
+                        "surface-dim": "#121315",
+                        "primary-fixed-dim": "#00daf3",
+                        "tertiary": "#e9ecf9",
+                        "error": "#ffb4ab",
+                        "secondary": "#c5c0ff",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "inverse-surface": "#e3e2e5",
+                        "on-secondary-fixed": "#140067",
+                        "tertiary-fixed": "#dfe2ee",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "margin-sm": "12px",
+                        "margin-md": "24px",
+                        "unit": "4px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Syne"],
+                        "label-caps": ["JetBrains Mono"],
+                        "code-md": ["JetBrains Mono"],
+                        "display-metrics": ["Syne"],
+                        "body-sm": ["DM Sans"],
+                        "headline-lg": ["Syne"],
+                        "body-md": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0A0B0D; }
+        .cyber-border { border: 1px solid #22262F; }
+        .cyber-glow-border { border: 1px solid #00e5ff; box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.12); }
+        .cyber-btn { border: 1px solid #00e5ff; transition: all 0.2s; }
+        .cyber-btn:hover { box-shadow: 0 0 8px rgba(0, 229, 255, 0.4); background-color: rgba(0, 229, 255, 0.1); }
+        .cyber-btn-ghost { border: 1px solid #22262F; transition: all 0.2s; }
+        .cyber-btn-ghost:hover { border-color: #00e5ff; color: #00e5ff; }
+        .thread-line { border-left: 1px solid #22262F; }
+        .thread-line-active { border-left: 1px solid #00e5ff; }
+        .status-amber { color: #F59E0B; }
+        .status-gray { color: #9CA3AF; }
+        .status-green { color: #10B981; }
+        .bg-card { background-color: #111318; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0B0D; }
+        ::-webkit-scrollbar-thumb { background: #22262F; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b494c; }
+    </style>
+</head>
+<body class="text-on-surface font-body-md min-h-screen flex antialiased selection:bg-primary-container/30 selection:text-primary">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low dark:bg-surface-container-low h-screen w-64 fixed left-0 top-0 border-r border-outline-variant flex flex-col py-4 z-40 hidden md:flex">
+<!-- Header -->
+<div class="px-4 mb-8">
+<div class="flex items-center gap-3 mb-6">
+<img alt="System Node" class="w-10 h-10 rounded-DEFAULT border border-primary-container" data-alt="A highly stylized, minimalist digital avatar representing a central system node. The image features sleek, glowing blue and cyan vector line art against a pitch-black background, evoking a futuristic, high-tech interface. The mood is precise, analytical, and distinctly cyber-minimalist, with sharp geometric shapes symbolizing connectivity and processing power." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9DrIgKw-_TAJb0k6VWIIBqK4jkyneMspicwYKe6Okkh7f65aTpZfxclnMj_QttlGsjtEEG5P8OyeAkDOR83Etd51PxIGP-1DUJ-Fa06eEPIz9KfqjPgMxG2UA2me-d7Ir54xfMTSwHPqIIUozsJt6Tf1D2LLpmzLI00XnIwOhhahDxQfTPgRZDvIZSYU0RWDLJnVkFPuwm1E7hBRePg2ZYYfpyoJx2ZBqDwwkEn0jrNJUekPSVm6e5u6vAABHAkgfNhFTmFnHv2w"/>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface truncate">NODE_01</h2>
+<p class="font-label-caps text-label-caps text-primary-container mt-1">STATUS_OPTIMAL</p>
+</div>
+</div>
+<button class="w-full cyber-btn text-primary-container font-label-caps text-label-caps py-2 rounded-DEFAULT uppercase tracking-widest flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+                DEPLOY_PATCH
+            </button>
+</div>
+<!-- Main Tabs -->
+<div class="flex-1 overflow-y-auto flex flex-col gap-1">
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-high transition-all duration-150 flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">dashboard</span>
+<span class="font-label-caps text-label-caps uppercase">Dashboard</span>
+</a>
+<a class="bg-secondary-container/20 text-primary border-l-2 border-primary px-4 py-3 flex items-center gap-3 hover:shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">bug_report</span>
+<span class="font-label-caps text-label-caps uppercase">Active_Issues</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-high transition-all duration-150 flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">history_edu</span>
+<span class="font-label-caps text-label-caps uppercase">Deployment_Log</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-high transition-all duration-150 flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">hub</span>
+<span class="font-label-caps text-label-caps uppercase">Network_Status</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-high transition-all duration-150 flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">lock</span>
+<span class="font-label-caps text-label-caps uppercase">Security_Vault</span>
+</a>
+</div>
+<!-- Footer Tabs -->
+<div class="mt-auto border-t border-outline-variant pt-4 flex flex-col gap-1">
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-high transition-all duration-150 flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">menu_book</span>
+<span class="font-label-caps text-label-caps uppercase">Docs</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-3 hover:bg-surface-container-high transition-all duration-150 flex items-center gap-3 group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-error transition-colors">logout</span>
+<span class="font-label-caps text-label-caps uppercase">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 md:ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar Context (Simulated for flow) -->
+<header class="h-16 border-b border-outline-variant bg-surface/80 backdrop-blur-md sticky top-0 z-30 flex items-center px-gutter shrink-0">
+<div class="flex items-center gap-2 text-on-surface-variant font-code-md text-code-md">
+<a class="hover:text-primary transition-colors" href="#">Active_Issues</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary-container">AR-1284</span>
+</div>
+<div class="ml-auto flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">share</span></button>
+<button class="text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">more_vert</span></button>
+</div>
+</header>
+<!-- Canvas -->
+<div class="p-gutter md:p-margin-md flex-1 overflow-y-auto flex flex-col gap-margin-md max-w-container-max mx-auto w-full">
+<!-- Context Header -->
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2 tracking-tight">Auth Gateway Timeout</h1>
+<div class="flex items-center gap-3 font-code-md text-code-md text-on-surface-variant">
+<span class="flex items-center gap-1"><div class="w-[6px] h-[6px] bg-[#F59E0B]"></div> IN_PROGRESS</span>
+<span class="text-outline-variant">|</span>
+<span>Created 2h ago</span>
+<span class="text-outline-variant">|</span>
+<span class="text-primary-container">@SystemBot</span>
+</div>
+</div>
+<!-- TOP SECTION: Bug Dependencies -->
+<section class="bg-card cyber-border rounded-DEFAULT p-margin-sm md:p-gutter flex flex-col gap-gutter relative overflow-hidden">
+<!-- Header -->
+<div class="flex items-center justify-between border-b border-[#22262F] pb-margin-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">account_tree</span>
+                        Dependencies
+                    </h2>
+<button class="cyber-btn-ghost text-on-surface-variant font-label-caps text-label-caps px-3 py-1.5 rounded-DEFAULT uppercase flex items-center gap-1 text-[10px]">
+<span class="material-symbols-outlined text-[14px]">add</span> Add Dependency
+                    </button>
+</div>
+<!-- Dependency Flow -->
+<div class="py-margin-md overflow-x-auto">
+<div class="flex items-center justify-start md:justify-center min-w-[700px] gap-8 relative">
+<!-- LEFT: THIS BUG BLOCKS -->
+<div class="flex flex-col gap-4 w-64 shrink-0">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase text-center mb-2 tracking-widest">This Bug Blocks</h3>
+<!-- Blocked Bug 1 -->
+<div class="cyber-border bg-[#0A0B0D] p-3 rounded-DEFAULT hover:border-primary-container/50 transition-colors cursor-pointer relative group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-md text-code-md text-primary-container">#AR-1290</span>
+<span class="font-label-caps text-label-caps status-amber flex items-center gap-1"><div class="w-[4px] h-[4px] bg-[#F59E0B]"></div> IN_PROGRESS</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface truncate">Payment timeout</p>
+<!-- Connection Line & Arrow to Center -->
+<div class="absolute -right-[32px] top-1/2 -translate-y-1/2 w-[32px] h-[1px] bg-error hidden md:block"></div>
+<div class="absolute -right-[32px] top-1/2 -translate-y-1/2 text-error hidden md:flex items-center justify-end w-full" style="transform: translate(100%, -50%);">
+<span class="material-symbols-outlined text-[16px] -ml-[8px]">arrow_right</span>
+</div>
+</div>
+<!-- Blocked Bug 2 -->
+<div class="cyber-border bg-[#0A0B0D] p-3 rounded-DEFAULT hover:border-primary-container/50 transition-colors cursor-pointer relative group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-md text-code-md text-primary-container">#AR-1291</span>
+<span class="font-label-caps text-label-caps status-gray flex items-center gap-1"><div class="w-[4px] h-[4px] bg-[#9CA3AF]"></div> CREATED</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface truncate">Checkout failure</p>
+<!-- Connection Line & Arrow to Center -->
+<div class="absolute -right-[32px] top-1/2 -translate-y-1/2 w-[32px] h-[1px] bg-error hidden md:block"></div>
+<div class="absolute -right-[32px] top-1/2 -translate-y-1/2 text-error hidden md:flex items-center justify-end w-full" style="transform: translate(100%, -50%);">
+<span class="material-symbols-outlined text-[16px] -ml-[8px]">arrow_right</span>
+</div>
+</div>
+</div>
+<!-- CENTER: THE PRIMARY BUG -->
+<div class="w-72 shrink-0 z-10">
+<h3 class="font-label-caps text-label-caps text-primary-container uppercase text-center mb-2 tracking-widest invisible">Current</h3>
+<div class="cyber-glow-border bg-[#0A0B0D] p-4 rounded-DEFAULT shadow-[0_0_20px_rgba(0,229,255,0.05)]">
+<div class="flex justify-between items-start mb-3">
+<span class="font-code-md text-code-md text-primary-container font-bold">#AR-1284</span>
+<span class="font-label-caps text-label-caps status-amber flex items-center gap-1"><div class="w-[6px] h-[6px] bg-[#F59E0B]"></div> IN_PROGRESS</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-medium leading-snug">Auth Gateway Timeout</p>
+</div>
+</div>
+<!-- RIGHT: BLOCKED BY -->
+<div class="flex flex-col gap-4 w-64 shrink-0">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase text-center mb-2 tracking-widest">Blocked By</h3>
+<!-- Blocker Bug 1 -->
+<div class="cyber-border bg-[#0A0B0D]/50 p-3 rounded-DEFAULT opacity-70 relative group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-md text-code-md text-on-surface-variant line-through">#AR-1101</span>
+<span class="font-label-caps text-label-caps status-green flex items-center gap-1"><div class="w-[4px] h-[4px] bg-[#10B981]"></div> RESOLVED</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate line-through">OAuth token refresh</p>
+<!-- Connection Line & Arrow to Center -->
+<div class="absolute -left-[32px] top-1/2 -translate-y-1/2 w-[32px] border-b border-dashed border-[#849396] hidden md:block"></div>
+<div class="absolute -left-[32px] top-1/2 -translate-y-1/2 text-[#849396] hidden md:flex items-center justify-start w-full" style="transform: translate(-100%, -50%);">
+<span class="material-symbols-outlined text-[16px] -mr-[8px]">arrow_left</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Note -->
+<div class="mt-2 text-center">
+<p class="font-code-md text-code-md text-outline-variant flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                        Resolving blockers may unblock 2 dependent bugs
+                    </p>
+</div>
+</section>
+<!-- Divider -->
+<div class="h-px w-full bg-[#22262F] my-margin-sm"></div>
+<!-- BOTTOM SECTION: Nested Comments -->
+<section class="flex flex-col gap-gutter">
+<div class="flex items-center justify-between mb-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">forum</span>
+                        Activity Feed
+                    </h2>
+<span class="font-code-md text-code-md text-on-surface-variant">4 Entries</span>
+</div>
+<!-- Thread Container -->
+<div class="flex flex-col gap-margin-md">
+<!-- Comment Thread 1 -->
+<div class="flex flex-col">
+<!-- Main Comment -->
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-[#22262F] shrink-0 flex items-center justify-center text-on-surface font-code-md text-[12px]">SC</div>
+<div class="flex-1">
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-code-md text-code-md text-primary-container font-bold">Sarah Connor</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant px-1.5 py-0.5 border border-[#22262F] rounded-DEFAULT">Supervisor</span>
+<span class="font-body-sm text-body-sm text-outline-variant ml-auto">1h ago</span>
+</div>
+<div class="bg-card cyber-border rounded-DEFAULT p-3 mb-2">
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">I've confirmed the reproduction steps. It seems the gateway is dropping connections exactly after the 30s timeout threshold. Logs attached in the main payload.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-1 font-code-md text-code-md text-on-surface-variant hover:text-primary-container transition-colors bg-surface-container-low px-2 py-1 rounded-DEFAULT cyber-border">
+<span class="material-symbols-outlined text-[14px]">thumb_up</span> 3
+                                    </button>
+<button class="font-code-md text-code-md text-on-surface-variant hover:text-primary-container transition-colors">Reply</button>
+</div>
+</div>
+</div>
+<!-- Replies Container -->
+<div class="ml-4 pl-8 mt-4 flex flex-col gap-4 thread-line">
+<!-- Reply 1 -->
+<div class="flex gap-4 relative">
+<div class="absolute -left-[33px] top-4 w-6 h-px bg-[#22262F]"></div>
+<div class="w-6 h-6 rounded-full bg-surface-container-high border border-[#22262F] shrink-0 flex items-center justify-center text-on-surface font-code-md text-[10px]">JD</div>
+<div class="flex-1">
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-code-md text-code-md text-on-surface font-bold">John Doe</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant px-1.5 py-0.5 border border-[#22262F] rounded-DEFAULT">Developer</span>
+<span class="font-body-sm text-body-sm text-outline-variant ml-auto">45m ago</span>
+</div>
+<div class="bg-card border-l-2 border-[#00e5ff] border-y border-r border-[#22262F] rounded-r-DEFAULT p-3 mb-2">
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">Can confirm — happens every 30 minutes on the staging environment. Looking into the load balancer config now.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-1 font-code-md text-code-md text-on-surface-variant hover:text-primary-container transition-colors bg-surface-container-low px-2 py-1 rounded-DEFAULT cyber-border">
+<span class="material-symbols-outlined text-[14px]">thumb_up</span> 1
+                                        </button>
+</div>
+</div>
+</div>
+<!-- Reply 2 -->
+<div class="flex gap-4 relative">
+<div class="absolute -left-[33px] top-4 w-6 h-px bg-[#22262F]"></div>
+<div class="w-6 h-6 rounded-full bg-surface-container-high border border-[#22262F] shrink-0 flex items-center justify-center text-on-surface font-code-md text-[10px]">AR</div>
+<div class="flex-1">
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-code-md text-code-md text-on-surface font-bold">Alex R.</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant px-1.5 py-0.5 border border-[#22262F] rounded-DEFAULT">Org Admin</span>
+<span class="font-body-sm text-body-sm text-outline-variant ml-auto">30m ago</span>
+</div>
+<div class="bg-card border-l-2 border-[#00e5ff] border-y border-r border-[#22262F] rounded-r-DEFAULT p-3">
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">Assigning to <span class="text-primary-container">@Maria</span> to track the LB config changes.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Comment 2: System Bot -->
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-primary-container shrink-0 flex items-center justify-center text-primary-container font-code-md text-[14px]">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+</div>
+<div class="flex-1">
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-code-md text-code-md text-primary-container font-bold">AutoRepro Bot</span>
+<span class="font-label-caps text-label-caps text-[#00e5ff] px-1.5 py-0.5 border border-[#00e5ff]/30 bg-[#00e5ff]/10 rounded-DEFAULT">System</span>
+<span class="font-body-sm text-body-sm text-outline-variant ml-auto">15m ago</span>
+</div>
+<div class="bg-card border-l-2 border-[#00e5ff] border-y border-r border-[#22262F] rounded-r-DEFAULT p-3 flex flex-col gap-2 shadow-[inset_4px_0_12px_rgba(0,229,255,0.05)]">
+<p class="font-code-md text-code-md text-on-surface leading-relaxed">AutoRepro job <span class="text-primary-container">#AR-9921</span> successfully reproduced the issue against staging branch `fix/gateway-timeout`.</p>
+<a class="font-label-caps text-label-caps text-primary-container uppercase tracking-widest hover:text-primary transition-colors inline-flex items-center gap-1 w-max mt-1" href="#">
+                                    View Job <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="mt-margin-md flex gap-4 pt-4 border-t border-[#22262F]">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-[#22262F] shrink-0 flex items-center justify-center text-on-surface font-code-md text-[12px]">ME</div>
+<div class="flex-1 flex flex-col gap-2">
+<div class="relative group">
+<textarea class="w-full bg-[#0A0B0D] cyber-border rounded-DEFAULT p-3 font-code-md text-code-md text-on-surface focus:outline-none focus:border-[#00e5ff] focus:ring-1 focus:ring-[#00e5ff] transition-all resize-none placeholder:text-outline-variant" placeholder="Add a comment..." rows="3"></textarea>
+<div class="absolute bottom-3 right-3 text-outline-variant font-code-md text-[11px] flex items-center gap-1 opacity-50">
+<span class="material-symbols-outlined text-[14px]">markdown</span> Markdown supported
+                            </div>
+</div>
+<div class="flex justify-end gap-3">
+<button class="cyber-btn-ghost text-on-surface-variant font-label-caps text-label-caps px-4 py-2 rounded-DEFAULT uppercase tracking-widest">Cancel</button>
+<button class="cyber-btn text-[#0A0B0D] bg-primary-container hover:bg-primary font-label-caps text-label-caps px-6 py-2 rounded-DEFAULT uppercase tracking-widest font-bold">Submit</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

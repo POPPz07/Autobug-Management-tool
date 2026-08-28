@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bug Detail - AutoRepro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=DM+Sans:opsz,wght@9..40,400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#cdc0e9",
+                      "on-surface": "#e6e0e9",
+                      "on-secondary-fixed": "#1f1635",
+                      "primary-fixed": "#e9ddff",
+                      "on-secondary-container": "#bfb2da",
+                      "inverse-on-surface": "#322f35",
+                      "on-background": "#e6e0e9",
+                      "primary-container": "#6750a4",
+                      "on-tertiary-fixed-variant": "#594400",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-low": "#1d1b20",
+                      "on-primary-fixed": "#22005d",
+                      "outline-variant": "#494551",
+                      "on-tertiary-fixed": "#241a00",
+                      "on-primary-fixed-variant": "#4f378a",
+                      "on-tertiary-container": "#503d00",
+                      "surface-tint": "#cfbcff",
+                      "surface": "#141218",
+                      "error-container": "#93000a",
+                      "tertiary-fixed-dim": "#e7c365",
+                      "surface-container-highest": "#36343a",
+                      "surface-variant": "#36343a",
+                      "on-primary": "#381e72",
+                      "secondary-fixed": "#e9ddff",
+                      "inverse-surface": "#e6e0e9",
+                      "on-tertiary": "#3e2e00",
+                      "on-primary-container": "#e0d2ff",
+                      "inverse-primary": "#6750a4",
+                      "primary-fixed-dim": "#cfbcff",
+                      "on-secondary": "#342b4b",
+                      "on-error": "#690005",
+                      "surface-bright": "#3b383e",
+                      "on-secondary-fixed-variant": "#4b4263",
+                      "secondary-container": "#4d4465",
+                      "surface-container": "#211f24",
+                      "on-surface-variant": "#cbc4d2",
+                      "surface-dim": "#141218",
+                      "tertiary": "#e7c365",
+                      "primary": "#cfbcff",
+                      "background": "#141218",
+                      "outline": "#948e9c",
+                      "tertiary-fixed": "#ffdf93",
+                      "error": "#ffb4ab",
+                      "tertiary-container": "#c9a74d",
+                      "surface-container-high": "#2b292f",
+                      "surface-container-lowest": "#0f0d13",
+                      "secondary": "#cdc0e9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "sm": "8px",
+                      "lg": "24px",
+                      "xl": "48px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "h3": [
+                              "Syne"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ],
+                      "body-sm": [
+                              "DM Sans"
+                      ],
+                      "body-md": [
+                              "DM Sans"
+                      ],
+                      "code-md": [
+                              "JetBrains Mono"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "h2": [
+                              "Syne"
+                      ],
+                      "body-lg": [
+                              "DM Sans"
+                      ],
+                      "h1": [
+                              "Syne"
+                      ]
+              },
+              "fontSize": {
+                      "h3": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "letterSpacing": "0",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-caps": [
+                              "10px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "code-md": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "code-sm": [
+                              "11px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "h2": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "h1": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0B0D;
+        }
+        .card-surface {
+            background-color: #111318;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .sidebar-surface {
+            background-color: #1A1D24;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .electric-cyan-text {
+            color: #00E5FF;
+        }
+        .electric-cyan-bg {
+            background-color: #00E5FF;
+        }
+        .electric-cyan-border {
+            border-color: #00E5FF;
+        }
+        .btn-primary {
+            background-color: #00E5FF;
+            color: #0A0B0D;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #7B6FFF;
+            color: #7B6FFF;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(123, 111, 255, 0.1);
+        }
+        .timeline-cyan { border-left-color: #00E5FF; }
+        .timeline-green { border-left-color: #00C853; }
+        .timeline-red { border-left-color: #FF4757; }
+        
+        .chip-in-progress { border: 1px solid #00E5FF; color: #00E5FF; }
+        .chip-resolved { border: 1px solid #00C853; color: #00C853; }
+        .chip-created { border: 1px dashed #cbc4d2; color: #cbc4d2; }
+    </style>
+</head>
+<body class="text-on-surface antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar Component -->
+<nav class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-low dark:bg-surface-container-low border-r border-outline-variant dark:border-outline-variant flex flex-col h-full py-lg z-20">
+<!-- Brand -->
+<div class="px-lg mb-xl flex items-center gap-md">
+<img alt="Abstract glowing logo representation in cyan and purple on dark background, technical minimalist style" class="w-8 h-8 rounded" data-alt="Abstract glowing geometric logo representation in cyan and purple on dark background. High contrast, precise edges, technical minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-lfoo-hbsUu5Dsb8vif9Y5cKGwq29T63oxtZx8oMOoPSCKf6nahVVO-jwuJypuOgut-Olcjqykw9OKVrgqXO5kQ-FiMInyyO7XBF_wo3hKcBrOGdSDEi3qk_s6bFJLdiCc7Db4EpwgOchQux0gBG4Dhcf3PxCgUkFQ6GL9N1Am3jKBfku2FyNn6tGCaO8gClWI9NykDyVfzjFTB1RaOdicxS7GJ6GD0wJ0yu0OFIfrOPRHf8e8-rgv_nWZ78DdBKku39AcbVIGJU"/>
+<div>
+<div class="font-h2 text-h2 font-bold text-on-surface dark:text-on-surface">AutoRepro</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">v2.4.0-stable</div>
+</div>
+</div>
+<!-- Main Navigation -->
+<div class="flex-1 flex flex-col gap-xs px-md">
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all active:scale-[0.98] transition-transform duration-100 px-md py-sm rounded-lg font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md text-on-surface dark:text-on-surface border-l-2 border-primary pl-[14px] bg-surface-container-highest dark:bg-surface-container-highest active:scale-[0.98] transition-transform duration-100 py-sm rounded-r-lg font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="bug_report">bug_report</span>
+                Incidents
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all active:scale-[0.98] transition-transform duration-100 px-md py-sm rounded-lg font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="robot_2">robot_2</span>
+                Automation
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all active:scale-[0.98] transition-transform duration-100 px-md py-sm rounded-lg font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+                Workflows
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all active:scale-[0.98] transition-transform duration-100 px-md py-sm rounded-lg font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all active:scale-[0.98] transition-transform duration-100 px-md py-sm rounded-lg font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+<div class="px-md mt-auto mb-md">
+<button class="w-full btn-primary py-sm px-md rounded flex items-center justify-center gap-sm font-body-md text-body-md font-medium">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Repro
+            </button>
+</div>
+<!-- Footer Navigation -->
+<div class="flex flex-col gap-xs px-md pt-md border-t border-outline-variant">
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all active:scale-[0.98] transition-transform duration-100 px-md py-sm rounded-lg font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+                Support
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-all active:scale-[0.98] transition-transform duration-100 px-md py-sm rounded-lg font-body-md text-body-md font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+                Documentation
+            </a>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="flex-1 ml-[240px] flex flex-col h-full bg-background dark:bg-background">
+<!-- TopNavBar Component -->
+<header class="flex justify-between items-center px-lg h-16 border-b border-outline-variant dark:border-outline-variant shrink-0 bg-background dark:bg-background">
+<div class="flex items-center gap-sm font-code-md text-code-md text-primary dark:text-primary">
+<span class="text-on-surface-variant">Incidents</span>
+<span class="text-on-surface-variant">/</span>
+<span class="text-on-surface font-bold">#1284-repro</span>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-md text-on-surface-variant">
+<span class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer" data-icon="search">search</span>
+<span class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer" data-icon="notifications">notifications</span>
+</div>
+<img alt="User Avatar portrait in a minimalist dark setting" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="Close up portrait of a professional user avatar in a sleek, dark tech environment. High resolution, precise lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKphpQOqiYNHcMpV0n7sAPuKbnfDCnw3wBzTSczXlBAdv1aRx2lKH1T3fKu97ySpwBau6X2SNXq-Cw5xWEPuPHWgrL3H9OfC5R74h6T7Er8mFUfOPkynEFJVgb_Zfgn_hgt4NEsDHwkQRdVbYYWv8-HbPK9CjhxbNy5dYNnkseBTzRUch_763eHt8a_J-rGsuJDdja9GKysklsvclwWMeQtyCFIEkKg5TtjEjuD6hjQYgR47v4srtoeol7vqgIMImWWFNxj52-AXY"/>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-lg flex gap-lg max-w-[1440px] mx-auto w-full">
+<!-- LEFT COLUMN (65%) -->
+<div class="w-[65%] flex flex-col gap-lg">
+<!-- Header Section -->
+<div class="flex flex-col gap-sm group">
+<div class="flex items-center gap-md">
+<h1 class="font-h1 text-h1 text-on-surface">Payment Gateway Timeout on Checkout</h1>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">edit</span>
+</div>
+<div class="flex items-center gap-sm font-code-sm text-code-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">link</span>
+<a class="hover:text-primary transition-colors" href="#">https://app.production.com/checkout/process</a>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</div>
+</div>
+<!-- Markdown Description -->
+<div class="card-surface rounded-lg p-lg font-body-md text-body-md text-on-surface-variant leading-relaxed">
+<p class="mb-md">Users are reporting intermittent timeouts when attempting to finalize checkout using the Stripe integration. The UI spins for 30 seconds before failing with a generic 500 error.</p>
+<h3 class="font-h3 text-h3 text-on-surface mt-lg mb-sm">Steps to Reproduce</h3>
+<ol class="list-decimal pl-lg mb-md space-y-sm">
+<li>Log in as a standard user.</li>
+<li>Add item to cart and proceed to checkout.</li>
+<li>Enter valid test credit card details.</li>
+<li>Click 'Complete Purchase'.</li>
+</ol>
+<h3 class="font-h3 text-h3 text-on-surface mt-lg mb-sm">Technical Context</h3>
+<div class="bg-[#0A0B0D] p-md rounded border border-outline-variant font-code-sm text-code-sm overflow-x-auto mb-md">
+<code>
+<span class="text-[#FF4757]">ERROR</span> [2023-10-24 14:32:01] stripe_service.go:142: Timeout waiting for response from Stripe API.<br/>
+<span class="text-[#e7c365]">WARN</span>  [2023-10-24 14:32:01] checkout_handler.go:88: Transaction failed, triggering rollback.
+                        </code>
+</div>
+</div>
+<!-- Reproduction History -->
+<div class="flex flex-col gap-md mt-md">
+<h2 class="font-h2 text-h2 text-on-surface">Reproduction History</h2>
+<div class="flex flex-col pl-md border-l border-outline-variant gap-lg relative">
+<!-- Timeline Item 1 -->
+<div class="relative pl-lg">
+<div class="absolute left-[-1px] top-0 bottom-0 border-l-2 timeline-cyan"></div>
+<div class="absolute left-[-5px] top-[6px] w-2 h-2 rounded-full electric-cyan-bg"></div>
+<div class="card-surface rounded-lg p-md flex items-center justify-between">
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-md">
+<span class="font-code-md text-code-md text-on-surface">#AR-9921</span>
+<span class="chip-in-progress px-sm py-[2px] rounded font-code-sm text-code-sm">RUNNING</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Started 2 mins ago by System</span>
+</div>
+<button class="btn-secondary px-md py-sm rounded font-body-md text-body-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+                                    View Logs
+                                </button>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative pl-lg">
+<div class="absolute left-[-1px] top-0 bottom-0 border-l-2 timeline-red"></div>
+<div class="absolute left-[-5px] top-[6px] w-2 h-2 rounded-full bg-[#FF4757]"></div>
+<div class="card-surface rounded-lg p-md flex items-center justify-between">
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-md">
+<span class="font-code-md text-code-md text-on-surface">#AR-9918</span>
+<span class="border border-[#FF4757] text-[#FF4757] px-sm py-[2px] rounded font-code-sm text-code-sm">FAILED</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Oct 24, 14:45 by Sarah J.</span>
+</div>
+<button class="btn-secondary px-md py-sm rounded font-body-md text-body-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">folder_zip</span>
+                                    View Artifacts
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (35%) -->
+<div class="w-[35%] flex flex-col gap-lg">
+<div class="sidebar-surface rounded-lg p-lg flex flex-col gap-lg sticky top-0">
+<!-- Primary Action -->
+<button class="w-full btn-primary py-md px-md rounded flex items-center justify-center gap-sm font-body-lg text-body-lg font-bold">
+<span class="material-symbols-outlined">bolt</span>
+                        Trigger AutoRepro
+                    </button>
+<!-- Status -->
+<div class="flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Status</span>
+<div class="flex items-center justify-between p-sm border border-outline-variant rounded cursor-pointer hover:border-primary transition-colors">
+<span class="chip-in-progress px-sm py-[2px] rounded font-code-sm text-code-sm">IN_PROGRESS</span>
+<span class="material-symbols-outlined text-on-surface-variant">arrow_drop_down</span>
+</div>
+</div>
+<!-- Priority -->
+<div class="flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Severity</span>
+<div class="flex items-center gap-sm">
+<div class="bg-[#93000a] text-[#ffdad6] px-sm py-xs rounded font-label-caps text-label-caps flex items-center gap-xs border border-[#ffdad6]">
+<div class="w-1.5 h-1.5 rounded-full bg-[#ffdad6]"></div>
+                                 CRITICAL
+                             </div>
+</div>
+</div>
+<!-- Assignee -->
+<div class="flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Assignee</span>
+<div class="flex items-center gap-md p-sm border border-transparent hover:border-outline-variant rounded cursor-pointer transition-colors">
+<img alt="Male developer avatar in tech setting" class="w-6 h-6 rounded-full" data-alt="Close up portrait of a male developer avatar in a sleek, dark tech environment. High resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp7l80yOmu9AOAxeccsAm0EzXnyZNMMfW9xaPoqrHZzy_Jrd625WdpNdpJAjWMmLAvRx32P3dEfqH7ryuWmpwiNUSjPd8WyUDCScF3smLq1wgc5EAlAn-9Dtuel22qnib37nZUx8wrFkMNcKlWtjKM1_Mz6ptaHzFQuS3GMU1rulrWpTLxwIHtvWUDmSfqdEqdfeoRJRi3FUBEngbtZTMk_VlnH6h76faRInJqGVBHPCPmIBgvWtLTkfqMt5cX2rm1F0yoNBQCBts"/>
+<span class="font-body-md text-body-md text-on-surface">Alex Chen</span>
+</div>
+</div><!-- Priority Section -->
+<div class="flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Priority</span>
+<div class="flex bg-surface-container rounded-lg p-xs border border-outline-variant">
+<button class="flex-1 py-1 text-center font-label-caps text-on-surface-variant hover:text-on-surface transition-colors">LOW</button>
+<button class="flex-1 py-1 text-center font-label-caps text-on-surface-variant hover:text-on-surface transition-colors border-l border-outline-variant">MEDIUM</button>
+<button class="flex-1 py-1 text-center font-label-caps text-on-surface border-l border-outline-variant bg-surface-container-highest rounded-sm shadow-sm">HIGH</button>
+<button class="flex-1 py-1 text-center font-label-caps text-on-surface-variant hover:text-on-surface transition-colors border-l border-outline-variant">CRITICAL</button>
+</div>
+</div>
+<!-- Labels Section -->
+<div class="flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Labels</span>
+<div class="flex flex-wrap gap-xs items-center">
+<span class="px-sm py-xs bg-primary-container/20 text-primary rounded-full font-body-sm text-[10px] border border-primary/30">frontend</span>
+<span class="px-sm py-xs bg-tertiary-container/20 text-tertiary rounded-full font-body-sm text-[10px] border border-tertiary/30">stripe-api</span>
+<button class="flex items-center gap-xs px-sm py-xs border border-dashed border-outline-variant hover:border-primary text-on-surface-variant hover:text-primary rounded-full font-body-sm text-[10px] transition-colors">
+<span class="material-symbols-outlined text-[12px]">add</span>
+            Add
+        </button>
+</div>
+</div>
+<!-- Watchers Section -->
+<div class="flex flex-col gap-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Watchers</span>
+<div class="flex items-center -space-x-2">
+<img alt="Watcher 1" class="w-7 h-7 rounded-full border-2 border-[#1A1D24]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKphpQOqiYNHcMpV0n7sAPuKbnfDCnw3wBzTSczXlBAdv1aRx2lKH1T3fKu97ySpwBau6X2SNXq-Cw5xWEPuPHWgrL3H9OfC5R74h6T7Er8mFUfOPkynEFJVgb_Zfgn_hgt4NEsDHwkQRdVbYYWv8-HbPK9CjhxbNy5dYNnkseBTzRUch_763eHt8a_J-rGsuJDdja9GKysklsvclwWMeQtyCFIEkKg5TtjEjuD6hjQYgR47v4srtoeol7vqgIMImWWFNxj52-AXY"/>
+<img alt="Watcher 2" class="w-7 h-7 rounded-full border-2 border-[#1A1D24]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp7l80yOmu9AOAxeccsAm0EzXnyZNMMfW9xaPoqrHZzy_Jrd625WdpNdpJAjWMmLAvRx32P3dEfqH7ryuWmpwiNUSjPd8WyUDCScF3smLq1wgc5EAlAn-9Dtuel22qnib37nZUx8wrFkMNcKlWtjKM1_Mz6ptaHzFQuS3GMU1rulrWpTLxwIHtvWUDmSfqdEqdfeoRJRi3FUBEngbtZTMk_VlnH6h76faRInJqGVBHPCPmIBgvWtLTkfqMt5cX2rm1F0yoNBQCBts"/>
+<div class="w-7 h-7 rounded-full bg-surface-container-highest border-2 border-[#1A1D24] flex items-center justify-center font-label-caps text-[10px] text-on-surface-variant">+1</div>
+</div>
+</div>
+<!-- Environment Grid -->
+<div class="mt-auto pt-lg border-t border-outline-variant/30">
+<div class="grid grid-cols-3 gap-md">
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Browser</span>
+<span class="font-body-sm text-on-surface">Chrome</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">OS</span>
+<span class="font-body-sm text-on-surface">macOS</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Device</span>
+<span class="font-body-sm text-on-surface">Desktop</span>
+</div>
+</div>
+</div></div>
+</div>
+</main>
+</div>
+</body></html>

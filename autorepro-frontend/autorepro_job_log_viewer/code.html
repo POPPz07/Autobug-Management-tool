@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Job #AR-9921 - AUTOREPRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&amp;family=DM+Sans:opsz,wght@9..40,400..700&amp;family=JetBrains+Mono:wght@400..700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#dfe2ee",
+                        "surface": "#121315",
+                        "surface-container-highest": "#343537",
+                        "surface-bright": "#38393b",
+                        "on-secondary": "#2500a2",
+                        "surface-container-low": "#1b1c1e",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#001f24",
+                        "secondary-fixed": "#e3dfff",
+                        "background": "#121315",
+                        "secondary-container": "#3c28bf",
+                        "on-tertiary": "#2c303a",
+                        "surface-container-lowest": "#0d0e10",
+                        "surface-container-high": "#292a2c",
+                        "outline-variant": "#3b494c",
+                        "secondary-fixed-dim": "#c5c0ff",
+                        "on-surface-variant": "#bac9cc",
+                        "on-secondary-fixed-variant": "#3c28bf",
+                        "inverse-surface": "#e3e2e5",
+                        "on-tertiary-container": "#555963",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#006875",
+                        "primary": "#c3f5ff",
+                        "on-primary": "#00363d",
+                        "secondary": "#c5c0ff",
+                        "primary-fixed-dim": "#00daf3",
+                        "primary-fixed": "#9cf0ff",
+                        "on-secondary-fixed": "#140067",
+                        "inverse-on-surface": "#303033",
+                        "on-tertiary-fixed-variant": "#434751",
+                        "on-background": "#e3e2e5",
+                        "primary-container": "#00e5ff",
+                        "tertiary-fixed-dim": "#c3c6d2",
+                        "surface-container": "#1f2022",
+                        "outline": "#849396",
+                        "on-surface": "#e3e2e5",
+                        "on-error": "#690005",
+                        "surface-variant": "#343537",
+                        "surface-dim": "#121315",
+                        "tertiary-container": "#cdd0dc",
+                        "on-secondary-container": "#b2acff",
+                        "on-primary-fixed-variant": "#004f58",
+                        "surface-tint": "#00daf3",
+                        "on-tertiary-fixed": "#181c24",
+                        "on-primary-container": "#00626e",
+                        "error": "#ffb4ab",
+                        "tertiary": "#e9ecf9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-sm": "12px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "container-max": "1440px",
+                        "margin-md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Syne"],
+                        "body-sm": ["DM Sans"],
+                        "code-md": ["JetBrains Mono"],
+                        "headline-lg": ["Syne"],
+                        "display-metrics": ["Syne"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-md": ["DM Sans"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "body-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "code-md": ["13px", { "lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }],
+                        "display-metrics": ["48px", { "lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "label-caps": ["10px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0d0e10; } /* Fallback background for main canvas */
+        .glow-hover:hover { box-shadow: 0 0 8px rgba(0, 229, 255, 0.4); }
+        .glass-panel { background: rgba(17, 19, 24, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid #22262F; }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body-md h-screen overflow-hidden flex selection:bg-primary-container/30">
+<!-- SideNavBar (Shared Component) -->
+<nav class="fixed left-0 top-0 h-full flex flex-col w-64 border-r border-outline-variant bg-surface z-50">
+<!-- Brand Header -->
+<div class="p-gutter border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-[20px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<h1 class="font-headline-lg text-[16px] font-bold text-primary tracking-widest leading-none mb-1">AUTOREPRO</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant">v4.2.0-STABLE</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 py-margin-sm flex flex-col gap-unit overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium hover:bg-surface-container-high transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium hover:bg-surface-container-high transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</a>
+<!-- Semantic Active Item: Deployments / Jobs -->
+<a class="flex items-center gap-3 px-4 py-3 border-l-2 border-primary bg-primary/10 text-primary font-bold shadow-[inset_0_0_20px_rgba(0,229,255,0.05)]" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-body-md text-body-md">Deployments</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant font-medium hover:bg-surface-container-high transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</div>
+<!-- Bottom CTA & Profile -->
+<div class="p-gutter border-t border-outline-variant">
+<button class="w-full mb-4 border border-primary text-primary font-code-md text-code-md py-2 px-4 rounded glow-hover transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                NEW DEPLOY
+            </button>
+<div class="flex items-center gap-3">
+<img alt="System Operator" class="w-8 h-8 rounded border border-outline-variant" data-alt="A small square profile picture of a young professional woman with dark hair, looking directly at the camera. The lighting is soft and neutral, typical of a professional headshot. The background is slightly out of focus and muted, allowing the subject to stand out. She wears subtle, minimalist makeup." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg-i8lio-nzZxK-stkkwxvVu5aPcqcPGLo6CFKlY10ykD0vHhHzrJGEMj7rneDHs53xPK9lISvKDFvjf-qvQkxnQkeDakNSllWmnoxcbN_vkTPD-ZkbzlG7YDzpqd495LPicnNMNUgHCLTc11HXghFphnuwNYysrdtBE6Atq-tnNyHVSZXgO6RSaeoz1WH2Qqgc5JPYjy1eo99PSuPlvMulMfpHHGhNyWdanIZP0NkpeJTDBQZYy-LshZDGS_axtO2jI7RQjUv_7s"/>
+<div>
+<p class="font-body-sm text-body-sm font-medium text-on-surface leading-tight">System Operator</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Admin</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Wrapper -->
+<div class="ml-64 flex-1 flex flex-col h-screen">
+<!-- TopAppBar (Shared Component) -->
+<header class="w-full h-16 border-b border-outline-variant bg-surface-dim/80 backdrop-blur-md z-40 flex justify-between items-center px-gutter shrink-0">
+<!-- Left: Breadcrumb & Title -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 font-code-md text-[13px] text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Deployments</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-bold border-b border-primary/30 pb-[1px]">#AR-9921</span>
+</div>
+<div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Job #AR-9921</h2>
+<!-- Status Chip -->
+<div class="ml-2 px-2 py-0.5 rounded border border-[#2ecc71]/40 bg-[#2ecc71]/10 flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 bg-[#2ecc71] rounded-none shadow-[0_0_6px_rgba(46,204,113,0.6)]"></div>
+<span class="font-label-caps text-[10px] text-[#2ecc71] tracking-wider font-bold">SUCCESS</span>
+</div>
+</div>
+<!-- Right: Actions -->
+<div class="flex items-center gap-gutter">
+<button class="border border-primary text-primary font-code-md text-code-md py-1.5 px-4 rounded glow-hover transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">folder_zip</span>
+                    Download Artifacts
+                </button>
+<div class="h-6 w-[1px] bg-outline-variant"></div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="help_outline">help_outline</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas: 2-Column Layout -->
+<main class="flex-1 overflow-hidden p-gutter flex gap-gutter bg-[#0A0B0D]">
+<!-- LEFT COLUMN (35%) - Job Summary Panel -->
+<aside class="w-[35%] flex flex-col gap-gutter overflow-y-auto pr-2 custom-scrollbar">
+<!-- Top Meta Card -->
+<div class="glass-panel rounded-lg p-margin-md flex flex-col gap-6 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">TARGET ISSUE</p>
+<a class="font-headline-sm text-[18px] text-primary hover:underline underline-offset-4 decoration-primary/50 block leading-tight" href="#">
+                            Null pointer exception in auth service
+                            <span class="material-symbols-outlined text-[14px] inline-block ml-1 opacity-70">open_in_new</span>
+</a>
+</div>
+<div class="grid grid-cols-2 gap-y-4 gap-x-6 border-t border-outline-variant/50 pt-4">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">ATTEMPT</p>
+<p class="font-code-md text-code-md text-on-surface">Attempt 2 of 3</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">DURATION</p>
+<p class="font-code-md text-code-md text-on-surface">4m 32s</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">STARTED</p>
+<p class="font-code-md text-code-md text-on-surface text-[12px]">Oct 24, 2024 14:32:01</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">COMPLETED</p>
+<p class="font-code-md text-code-md text-on-surface text-[12px]">Oct 24, 2024 14:36:33</p>
+</div>
+<div class="col-span-2 flex items-center gap-3 pt-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">TRIGGERED BY</p>
+<div class="flex items-center gap-2 bg-surface-container-low px-2 py-1 rounded border border-outline-variant">
+<img alt="Sarah Connor" class="w-5 h-5 rounded-sm" data-alt="A tiny profile thumbnail of a woman looking confident, lit with a subtle blue neon rim light against a dark background, fitting a cyberpunk or tech-noir aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBd03GeWEWhrdxidI4OmeycLIRRGYcywx4AsgXVA9OUuudgEV7zIUrp3MQO5QIC8WM7M9s3JHlMLKu3TcRtSq5vKw9KkcDjFDgXLPB-Ivsr3R0GVWPk3sHZxCflAjQOOCCMHZ5Odsynq-eywIkv1hkMk3e9TfTIBHJuQcMQNOpvz0hSSQH0n1cc1WkWbyJDRZTDFyqfBXUHIh69O0Vg3bavoBLbfs5SG6mFTDvL2vLbyfzFt01Jhzalwgh3yJ79f0REhGmCGPamirk"/>
+<span class="font-body-sm text-[12px] text-on-surface">Sarah Connor</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Score Card -->
+<div class="glass-panel rounded-lg p-margin-md flex items-center justify-between border-l-4 border-l-[#2ecc71] bg-gradient-to-r from-[#2ecc71]/10 to-transparent">
+<div>
+<p class="font-headline-sm text-[16px] text-on-surface mb-1">Reproduction Confidence</p>
+<p class="font-body-sm text-[13px] text-on-surface-variant">Statistical match with reported error</p>
+</div>
+<div class="font-display-metrics text-[42px] text-[#2ecc71] drop-shadow-[0_0_12px_rgba(46,204,113,0.3)]">
+                        0.94
+                    </div>
+</div>
+<!-- Execution Steps -->
+<div class="glass-panel rounded-lg flex flex-col flex-1 min-h-[300px]">
+<div class="p-4 border-b border-outline-variant/50 bg-surface/50">
+<h3 class="font-label-caps text-[12px] text-on-surface-variant tracking-widest">PIPELINE STEPS</h3>
+</div>
+<div class="p-4 flex flex-col gap-0 relative">
+<!-- Vertical Line Connecting Steps -->
+<div class="absolute left-[27px] top-6 bottom-6 w-[1px] bg-outline-variant/30"></div>
+<!-- Step 1 -->
+<div class="flex items-start gap-4 py-3 relative z-10 group">
+<div class="w-6 h-6 rounded-full bg-[#2ecc71]/20 border border-[#2ecc71] flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(46,204,113,0.2)]">
+<span class="material-symbols-outlined text-[14px] text-[#2ecc71]">check</span>
+</div>
+<div class="flex-1 pt-0.5 flex justify-between items-start">
+<div>
+<p class="font-body-md text-on-surface group-hover:text-primary transition-colors cursor-default">Environment Analysis</p>
+</div>
+<span class="font-code-md text-[12px] text-on-surface-variant">1.2s</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-4 py-3 relative z-10 group">
+<div class="w-6 h-6 rounded-full bg-[#2ecc71]/20 border border-[#2ecc71] flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(46,204,113,0.2)]">
+<span class="material-symbols-outlined text-[14px] text-[#2ecc71]">check</span>
+</div>
+<div class="flex-1 pt-0.5 flex justify-between items-start">
+<div>
+<p class="font-body-md text-on-surface group-hover:text-primary transition-colors cursor-default">DOM Parsing</p>
+</div>
+<span class="font-code-md text-[12px] text-on-surface-variant">0.8s</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-4 py-3 relative z-10 group">
+<div class="w-6 h-6 rounded-full bg-[#2ecc71]/20 border border-[#2ecc71] flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(46,204,113,0.2)]">
+<span class="material-symbols-outlined text-[14px] text-[#2ecc71]">check</span>
+</div>
+<div class="flex-1 pt-0.5 flex justify-between items-start">
+<div>
+<p class="font-body-md text-on-surface group-hover:text-primary transition-colors cursor-default">Script Generation</p>
+</div>
+<span class="font-code-md text-[12px] text-on-surface-variant">2.1s</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex items-start gap-4 py-3 relative z-10 group">
+<div class="w-6 h-6 rounded-full bg-[#2ecc71]/20 border border-[#2ecc71] flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(46,204,113,0.2)]">
+<span class="material-symbols-outlined text-[14px] text-[#2ecc71]">check</span>
+</div>
+<div class="flex-1 pt-0.5 flex justify-between items-start">
+<div>
+<p class="font-body-md text-on-surface group-hover:text-primary transition-colors cursor-default">Execution</p>
+</div>
+<span class="font-code-md text-[12px] text-on-surface-variant">45.3s</span>
+</div>
+</div>
+<!-- Step 5 -->
+<div class="flex items-start gap-4 py-3 relative z-10 group">
+<div class="w-6 h-6 rounded-full bg-[#2ecc71]/20 border border-[#2ecc71] flex items-center justify-center shrink-0 shadow-[0_0_8px_rgba(46,204,113,0.2)]">
+<span class="material-symbols-outlined text-[14px] text-[#2ecc71]">check</span>
+</div>
+<div class="flex-1 pt-0.5 flex justify-between items-start">
+<div>
+<p class="font-body-md text-on-surface group-hover:text-primary transition-colors cursor-default">Verification</p>
+</div>
+<span class="font-code-md text-[12px] text-on-surface-variant">8.4s</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- RIGHT COLUMN (65%) - Terminal Log Viewer -->
+<section class="flex-1 flex flex-col border border-outline-variant rounded-lg overflow-hidden bg-[#0A0B0D] shadow-[0_4px_24px_rgba(0,0,0,0.5)]">
+<!-- Tab Header -->
+<div class="h-12 border-b border-outline-variant bg-[#111318] flex items-end px-2 shrink-0">
+<button class="px-6 py-2 border-b-2 border-primary text-primary font-code-md text-[13px] bg-primary-container/5 hover:bg-primary-container/10 transition-colors">
+                        Execution Log
+                    </button>
+<button class="px-6 py-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-code-md text-[13px] transition-colors">
+                        Generated Script
+                    </button>
+<button class="px-6 py-2 border-b-2 border-transparent text-on-surface-variant hover:text-on-surface font-code-md text-[13px] transition-colors">
+                        Screenshots
+                    </button>
+<div class="flex-1"></div>
+<div class="px-4 py-2 flex gap-2">
+<div class="w-3 h-3 rounded-full border border-outline-variant"></div>
+<div class="w-3 h-3 rounded-full border border-outline-variant"></div>
+<div class="w-3 h-3 rounded-full border border-outline-variant"></div>
+</div>
+</div>
+<!-- Terminal Content -->
+<div class="flex-1 p-4 overflow-y-auto font-code-md text-[13px] leading-relaxed custom-scrollbar relative">
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors">
+<span class="text-on-surface-variant/60 w-24 shrink-0 select-none">[14:32:01]</span>
+<span class="text-on-surface-variant w-16 shrink-0 font-bold select-none">INFO</span>
+<span class="text-[#E3E2E5]">Bootstrapping environment...</span>
+</div>
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors">
+<span class="text-on-surface-variant/60 w-24 shrink-0 select-none">[14:32:02]</span>
+<span class="text-on-surface-variant w-16 shrink-0 font-bold select-none">INFO</span>
+<span class="text-[#E3E2E5]">Loaded target: <a class="text-primary hover:underline" href="#">https://app.production.com</a></span>
+</div>
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors">
+<span class="text-on-surface-variant/60 w-24 shrink-0 select-none">[14:32:05]</span>
+<span class="text-[#f1c40f] w-16 shrink-0 font-bold select-none">WARN</span>
+<span class="text-[#f1c40f]">Rate limit threshold near (85%)</span>
+</div>
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors">
+<span class="text-on-surface-variant/60 w-24 shrink-0 select-none">[14:32:08]</span>
+<span class="text-on-surface-variant w-16 shrink-0 font-bold select-none">INFO</span>
+<span class="text-[#E3E2E5]">Executing payload sequence A-44...</span>
+</div>
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors">
+<span class="text-on-surface-variant/60 w-24 shrink-0 select-none">[14:32:45]</span>
+<span class="text-on-surface-variant w-16 shrink-0 font-bold select-none">INFO</span>
+<span class="text-[#E3E2E5]">DOM snapshot captured (2.4MB)</span>
+</div>
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors">
+<span class="text-on-surface-variant/60 w-24 shrink-0 select-none">[14:33:12]</span>
+<span class="text-on-surface-variant w-16 shrink-0 font-bold select-none">INFO</span>
+<span class="text-[#E3E2E5]">Generating reproduction script...</span>
+</div>
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors">
+<span class="text-on-surface-variant/60 w-24 shrink-0 select-none">[14:35:01]</span>
+<span class="text-on-surface-variant w-16 shrink-0 font-bold select-none">INFO</span>
+<span class="text-[#E3E2E5]">Script execution started</span>
+</div>
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors">
+<span class="text-on-surface-variant/60 w-24 shrink-0 select-none">[14:36:28]</span>
+<span class="text-on-surface-variant w-16 shrink-0 font-bold select-none">INFO</span>
+<span class="text-[#E3E2E5]">Assertion passed: error state reproduced</span>
+</div>
+<div class="flex mb-1 hover:bg-white/5 px-2 -mx-2 rounded transition-colors bg-[#2ecc71]/5 border-l-2 border-[#2ecc71] -ml-[9px] pl-[7px]">
+<span class="text-[#2ecc71]/70 w-24 shrink-0 select-none">[14:36:33]</span>
+<span class="text-[#2ecc71] w-16 shrink-0 font-bold select-none drop-shadow-[0_0_4px_rgba(46,204,113,0.5)]">SUCCESS</span>
+<span class="text-[#2ecc71] font-bold">Reproduction confirmed. Score: 0.94</span>
+</div>
+<!-- Blinking cursor effect -->
+<div class="mt-2 w-2 h-4 bg-primary/80 animate-pulse"></div>
+</div>
+<!-- Log Footer Actions -->
+<div class="h-12 border-t border-outline-variant bg-[#111318] flex items-center justify-between px-4 shrink-0">
+<button class="text-on-surface-variant hover:text-primary font-code-md text-[12px] flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+                        Copy Log
+                    </button>
+<button class="text-on-surface-variant hover:text-primary font-code-md text-[12px] flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px]">keyboard_double_arrow_down</span>
+                        Scroll to bottom
+                    </button>
+</div>
+</section>
+</main>
+</div>
+<!-- Custom Scrollbar Styles for Terminal/Sidebar -->
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(17, 19, 24, 0.5);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #292a2c;
+            border-radius: 4px;
+            border: 1px solid #111318;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3b494c;
+        }
+    </style>
+</body></html>

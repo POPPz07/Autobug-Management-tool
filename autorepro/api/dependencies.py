@@ -110,9 +110,14 @@ def get_request_context_with_api_key(
 
     # ── Path 1: Bearer JWT ──────────────────────────────────────────
     auth_header = request.headers.get("Authorization", "")
+    token = None
     if auth_header.startswith("Bearer "):
-        from api.auth import decode_token
         token = auth_header.removeprefix("Bearer ").strip()
+    elif request.query_params.get("token"):
+        token = request.query_params.get("token")
+
+    if token:
+        from api.auth import decode_token
         payload = decode_token(token)
         user_id = payload.get("sub")
         if not user_id:
